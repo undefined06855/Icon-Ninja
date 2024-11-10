@@ -1,21 +1,35 @@
 {
 	"geode": "3.9.0",
 	"gd": {
-		"win": "2.206",
+		"win": "2.2073",
 		"android": "2.206",
 		"mac": "2.206"
 	},
+
 	"id": "undefined0.icon_ninja",
 	"name": "Icon Ninja",
 	"version": "v1.0.0",
 	"developer": "undefined0",
 	"description": "Makes killing icons like Fruit Ninja!",
+	"tags": [ "joke", "offline" ],
+
+	"resources": {
+		"sprites": [ "./resources/*.png" ],
+		"files": [ "./resources/*.wav" ]
+	},
 
 	"settings": {
 		"custom-player-movement": {
-			"name": "Fruit Ninja Icon Movement",
+			"name": "Fruit Ninja icon movement",
 			"type": "bool",
 			"default": true
+		},
+		"enable-gameplay": {
+			"name": "Enable custom gameplay",
+			"description": "When you kill an icon, the UI disappears and a combo meter appears to really allow you to find your inner ninja!",
+			"type": "bool",
+			"default": true,
+			"enable-if": "custom-player-movement"
 		}
 	}
 }

@@ -1,17 +1,17 @@
 #pragma once
-#include <Geode/Geode.hpp>
+// #include "CCBlade.hpp"
 
 class NinjaSwipeLayer : public cocos2d::CCLayer {
 public:
     static NinjaSwipeLayer* create();
     bool init() override;
 
-    cocos2d::CCPoint m_lastTouchPoint;
-    HardStreak* m_hardStreak;
+    // CCBlade* m_blade;
+    cocos2d::CCPoint m_lastSwipePoint;
 
     bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
 
-    void checkSwipeIntersection(cocos2d::CCPoint& point, cocos2d::CCPoint& last);
+    void checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to);
 };

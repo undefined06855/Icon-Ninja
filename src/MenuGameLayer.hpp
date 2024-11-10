@@ -9,19 +9,36 @@ class $modify(HookedMenuGameLayer, MenuGameLayer) {
 		cocos2d::CCPoint playerSpeed = {0.f, 0.f};
 		float playerRotation = 0.f;
 		float playerRotationSpeed = 0.f;
-		const float gravity = 280;
+		const float gravity = 315;
 
+		int combo = 0;
+		int hiCombo = 0;
+		int displayHiCombo = 0;
+		bool isInGameplay = false;
 
 		std::mt19937 gen;
 		std::uniform_real_distribution<float> startXDistribution;
 		std::uniform_real_distribution<float> launchSpeedXDistribution;
 		std::uniform_real_distribution<float> launchSpeedYDistribution;
 		std::uniform_real_distribution<float> rotationSpeedDistribution;
+
+		CCMenuItemSpriteExtra* exitButton = nullptr;
+		cocos2d::CCLabelBMFont* comboLabel = nullptr;
+		cocos2d::CCLabelBMFont* hiComboLabel = nullptr;
+		cocos2d::CCLayer* scoreLayer = nullptr;
 	};
 
-	bool init() override;
-	void update(float dt) override;
-	void resetPlayer(); /* override */
+	bool init();
+	void update(float dt);
+	void resetPlayer();
+	void destroyPlayer();
+
+	void runEnterGameplayAnimations();
+	void runExitGameplayAnimations();
+	void exitGameplay(CCObject* sender);
+	void enterGameplay();
+
+	void updateComboShit();
 
 	float getRandomXPos();
 	float getRandomRotationSpeed();
