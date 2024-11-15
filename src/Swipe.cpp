@@ -59,9 +59,9 @@ void Swipe::draw() {
         auto& point = m_points[i];
         auto pointPositions = point.calculatePointPositions();
         points.push_back(pointPositions.first);
-        texCoords.push_back({0.5f, 0.f});
+        texCoords.push_back({0.5f, 1.f}); // v is flipped
         points.push_back(pointPositions.second);
-        texCoords.push_back({0.5f, 1.f});
+        texCoords.push_back({0.5f, 0.f}); // v is flipped
     }
     points.push_back(m_points.back().location);
     texCoords.push_back({1.f, 0.5f});
