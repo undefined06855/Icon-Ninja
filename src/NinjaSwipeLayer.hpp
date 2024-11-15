@@ -1,12 +1,12 @@
 #pragma once
-// #include "CCBlade.hpp"
+#include "Swipe.hpp"
 
 class NinjaSwipeLayer : public cocos2d::CCLayer {
 public:
     static NinjaSwipeLayer* create();
     bool init() override;
 
-    // CCBlade* m_blade;
+    Swipe* m_swipe;
     cocos2d::CCPoint m_lastSwipePoint;
 
     bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;

@@ -13,7 +13,7 @@ class $modify(HookedMenuGameLayer, MenuGameLayer) {
 
 		int combo = 0;
 		int hiCombo = 0;
-		int displayHiCombo = 0;
+		bool comboAnimationPlayed = false;
 		bool isInGameplay = false;
 
 		std::mt19937 gen;
@@ -25,7 +25,7 @@ class $modify(HookedMenuGameLayer, MenuGameLayer) {
 		CCMenuItemSpriteExtra* exitButton = nullptr;
 		cocos2d::CCLabelBMFont* comboLabel = nullptr;
 		cocos2d::CCLabelBMFont* hiComboLabel = nullptr;
-		cocos2d::CCLayer* scoreLayer = nullptr;
+		cocos2d::CCLayerRGBA* scoreLayer = nullptr;
 	};
 
 	bool init();

@@ -14,16 +14,11 @@ NinjaSwipeLayer* NinjaSwipeLayer::create() {
 bool NinjaSwipeLayer::init() {
     if (!CCLayer::init()) return false;
 
-    // m_blade = CCBlade::createWithMaximumPoint(50);
-    // m_blade->_texture = cocos2d::CCSprite::create("testswipe.png"_spr)->getTexture();
-    // addChild(m_blade);
+    auto spr = cocos2d::CCSprite::create("swipe.png"_spr);
+    m_swipe = Swipe::create(spr->getTexture());
+    addChild(m_swipe);
 
-    // if (!m_blade->_texture) {
-    //     geode::log::error("texture cache did not contain texture!!!!");
-    //     return false;
-    // }
-
-    // stupid cocos touch
+    // stupid cocos touch 
     setTouchEnabled(true);    
     cocos2d::CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, cocos2d::kCCMenuHandlerPriority, true);
 
@@ -32,20 +27,19 @@ bool NinjaSwipeLayer::init() {
 
 bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     m_lastSwipePoint = touch->getLocation();
-    // m_blade->push(touch->getLocation());
+    m_swipe->addPoint(touch->getLocation());
     return true; // claim touch
 }
 
 void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     checkSwipeIntersection(m_lastSwipePoint, touch->getLocation());
-    // m_blade->push(touch->getLocation());
+    m_swipe->addPoint(touch->getLocation());
     m_lastSwipePoint = touch->getLocation();
 }
 
 void NinjaSwipeLayer::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     checkSwipeIntersection(m_lastSwipePoint, touch->getLocation());
-    // m_blade->push(touch->getLocation());
-    // m_blade->finish();
+    m_swipe->addPoint(touch->getLocation());
 }
 
 void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to) {
@@ -57,14 +51,14 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
     if (!ml) return;
 
     auto menuGameLayer = ml->m_menuGameLayer;
-    if (!menuGameLayer) return; // idfk
+    if (!menuGameLayer) return;
 
     auto player = menuGameLayer->m_playerObject;
-    if (!player) return; // idfk part 2
+    if (!player) return;
 
     // ok so this may be cheating
     // but instead of drawing a line i just get the last two points and place
-    // 10 points spread out between them
+    // 20 points spread out between them
     // and then check if any of them are inside the icon's hitbox
 
     // create points to test
@@ -77,7 +71,9 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
     }
 
     // check if any intersect icon
-    auto rect = player->getObjectRect();
+    // see https://discord.com/channels/911701438269386882/911702535373475870/1306658231854170246
+    // broken vtable remember to update once it gets fixed
+    auto rect = player->GameObject::getObjectRect();
     bool intersectsAtLeastOnePoint = false;
     for (auto& point : points) {
         if (rect.containsPoint(point)) {
@@ -91,6 +87,4 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
 
     // ok so time to kill muahaha
     menuGameLayer->destroyPlayer();
-
-    // TODO: combos idfk
 }

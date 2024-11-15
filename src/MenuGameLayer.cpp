@@ -13,6 +13,8 @@ bool HookedMenuGameLayer::init() {
     // remove touch from this
     setTouchEnabled(false);
 
+    setKeyboardEnabled(true);
+
     auto dir = cocos2d::CCDirector::sharedDirector();
 
     // create exit button for gameplay
@@ -28,11 +30,12 @@ bool HookedMenuGameLayer::init() {
     addChild(menu);
 
     // create label for gameplay
-    fields->scoreLayer = cocos2d::CCLayer::create();
+    fields->scoreLayer = cocos2d::CCLayerRGBA::create();
+    fields->scoreLayer->setCascadeOpacityEnabled(true);
     fields->scoreLayer->setID("score-layer"_spr);
     fields->scoreLayer->setPosition(dir->getWinSize() / 2);
     fields->scoreLayer->setPositionY(fields->scoreLayer->getPositionY() + 140.f);
-    fields->scoreLayer->setOpacity(0.f);
+    fields->scoreLayer->runAction(cocos2d::CCFadeOut::create(0.f)); // setOpacity(0) doesnt work idfk please tell me why
 
     fields->comboLabel = cocos2d::CCLabelBMFont::create("...", "gjFont31.fnt");
     fields->comboLabel->setID("combo-label"_spr);
@@ -46,7 +49,7 @@ bool HookedMenuGameLayer::init() {
     fields->scoreLayer->addChild(fields->hiComboLabel);
 
     addChild(fields->scoreLayer);
-
+    fields->hiCombo = geode::Mod::get()->getSavedValue<int>("hi-combo", 0);
     updateComboShit();
 
     // everything below here isn't needed if this is normal player movement
@@ -54,7 +57,7 @@ bool HookedMenuGameLayer::init() {
 
     std::random_device seed;
     fields->gen = std::mt19937(seed());
-    fields->startXDistribution = std::uniform_real_distribution<float>(130.f, getContentWidth() - 130.f);
+    fields->startXDistribution = std::uniform_real_distribution<float>(70.f, getContentWidth() - 70.f);
     fields->launchSpeedXDistribution = std::uniform_real_distribution<float>(0.f, 200.f); // could become 0 to -200 depending on start side
     fields->launchSpeedYDistribution = std::uniform_real_distribution<float>(360.0, 380.f); 
     fields->rotationSpeedDistribution = std::uniform_real_distribution<float>(-6.f, 6.f); 
@@ -87,9 +90,10 @@ void HookedMenuGameLayer::update(float dt) {
     if (fields->playerPos.y <= -50.f || fields->playerPos.x <= -50.f || fields->playerPos.x >= getContentWidth() + 50.f) {
         // offscreen, below starting point, reset
         resetPlayer();
-        if (fields->combo > fields->hiCombo) fields->hiCombo = fields->combo;
         fields->combo = 0;
+        fields->comboAnimationPlayed = false;
         updateComboShit();
+        geode::Mod::get()->setSavedValue<int>("hi-combo", fields->hiCombo);
     }
 }
 
@@ -139,16 +143,15 @@ cocos2d::CCPoint HookedMenuGameLayer::getRandomLaunchSpeed() {
 
 
 // gameplay stuff ---------------------------------------
-
 void HookedMenuGameLayer::updateComboShit() {
     auto fields = m_fields.self();
 
     if (fields->combo > fields->hiCombo) {
-        fields->hiComboLabel->setColor({255, 213, 46}); // yellow
-        
-        fields->displayHiCombo = fields->combo;
+        // high score rn
+        fields->hiComboLabel->setColor({255, 213, 46});
+        if (!fields->comboAnimationPlayed) {
+            fields->comboAnimationPlayed = true;
 
-        if (fields->hiCombo + 1 == fields->combo) {
             // literally just got a high score
             // make label "bounce" and rotate
             fields->hiComboLabel->runAction(
@@ -164,12 +167,14 @@ void HookedMenuGameLayer::updateComboShit() {
                 )
             );
         }
+
+        fields->hiCombo = fields->combo;
     } else {
         fields->hiComboLabel->setColor({255, 255, 255}); // normal white
     }
 
     fields->comboLabel->setString(fmt::format("Combo: {}", fields->combo).c_str());
-    fields->hiComboLabel->setString(fmt::format("High Score: {}", fields->displayHiCombo).c_str());
+    fields->hiComboLabel->setString(fmt::format("High Score: {}", fields->hiCombo).c_str());
 }
 
 #define FADE_OUT_ACTION(x, y) cocos2d::CCSpawn::createWithTwoActions(cocos2d::CCEaseBackIn::create(cocos2d::CCMoveBy::create(.9f, {x, y})), cocos2d::CCFadeOut::create(.9f))
@@ -268,6 +273,7 @@ void HookedMenuGameLayer::enterGameplay() {
 
     // fade out music
     FMODAudioEngine::sharedEngine()->fadeOutMusic(1.f, 0);
+    FMODAudioEngine::sharedEngine()->playEffect("gamestart.wav"_spr);
 }
 
 void HookedMenuGameLayer::exitGameplay(CCObject* sender) {
@@ -279,4 +285,5 @@ void HookedMenuGameLayer::exitGameplay(CCObject* sender) {
 
     // fade in music
     FMODAudioEngine::sharedEngine()->fadeInMusic(1.f, 0);
+    FMODAudioEngine::sharedEngine()->playEffect("gameover.wav"_spr);
 }
