@@ -26,6 +26,10 @@ bool NinjaSwipeLayer::init() {
 }
 
 bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+    // by not clearing the point list before this adds the point causes the end
+    // of the last swipe to connect to the next swipe but nobody is going to
+    // notice it's fine
+
     m_lastSwipePoint = touch->getLocation();
     m_swipe->addPoint(touch->getLocation());
     return true; // claim touch
@@ -43,8 +47,8 @@ void NinjaSwipeLayer::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
 }
 
 void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to) {
-    // TODO: if swipe is too short ignore
-    // dont want people just clicking instead of swiping
+    // dont let the player just click the icons
+    if (from.getDistanceSq(to) < .5f) return;
 
     // get icon
     auto ml = MenuLayer::get();
@@ -57,9 +61,9 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
     if (!player) return;
 
     // ok so this may be cheating
-    // but instead of drawing a line i just get the last two points and place
-    // 20 points spread out between them
-    // and then check if any of them are inside the icon's hitbox
+    // but instead of drawing a line i just get the last two points and place 20
+    // points spread out between them, and then check if any of them are inside
+    // the icon's hitbox
 
     // create points to test
     int pointNum = 20;

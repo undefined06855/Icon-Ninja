@@ -53,7 +53,7 @@ void Swipe::draw() {
     std::vector<cocos2d::CCPoint> points = {};
     std::vector<cocos2d::CCPoint> texCoords = {};
 
-    points.push_back(m_points.front().location);
+    points.push_back(m_points.front().location); // taper to a point (front)
     texCoords.push_back({0.f, 0.5f});
     for (int i = 1; i < m_points.size() - 1; i++) {
         auto& point = m_points[i];
@@ -63,7 +63,7 @@ void Swipe::draw() {
         points.push_back(pointPositions.second);
         texCoords.push_back({0.5f, 0.f}); // v is flipped
     }
-    points.push_back(m_points.back().location);
+    points.push_back(m_points.back().location); // taper to a point (back)
     texCoords.push_back({1.f, 0.5f});
 
     glVertexAttribPointer(cocos2d::kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, points.data());

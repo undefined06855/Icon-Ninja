@@ -18,6 +18,10 @@
 		"files": [ "./resources/*.wav" ]
 	},
 
+	"links": {
+		"source": "https://github.com/undefined06855/icon-ninja"
+	},
+
 	"settings": {
 		"custom-player-movement": {
 			"name": "Fruit Ninja icon movement",
