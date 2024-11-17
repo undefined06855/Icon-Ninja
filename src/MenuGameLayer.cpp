@@ -22,7 +22,7 @@ bool HookedMenuGameLayer::init() {
         cocos2d::CCSprite::createWithSpriteFrameName("GJ_undoBtn_001.png"), // probably not the best sprite to use but whatever
         this, menu_selector(HookedMenuGameLayer::exitGameplay)
     );
-    fields->exitButton->setPosition({dir->getScreenLeft() + 20.f, dir->getScreenTop() - 20.f + 50.f}); // +50 so its offscreen and can move down later
+    fields->exitButton->setPosition({20.f, dir->getScreenTop() - 20.f + 50.f}); // +50 so its offscreen and can move down later
     auto menu = cocos2d::CCMenu::create();
     menu->setID("gameplay-exit-button"_spr);
     menu->addChild(fields->exitButton);
@@ -57,7 +57,7 @@ bool HookedMenuGameLayer::init() {
 
     std::random_device seed;
     fields->gen = std::mt19937(seed());
-    fields->startXDistribution = std::uniform_real_distribution<float>(70.f, getContentWidth() - 70.f);
+    fields->startXDistribution = std::uniform_real_distribution<float>(70.f, dir->getScreenRight() - 70.f);
     fields->launchSpeedXDistribution = std::uniform_real_distribution<float>(0.f, 200.f); // could become 0 to -200 depending on start side
     fields->launchSpeedYDistribution = std::uniform_real_distribution<float>(360.0, 380.f); 
     fields->rotationSpeedDistribution = std::uniform_real_distribution<float>(-6.f, 6.f); 
@@ -87,7 +87,8 @@ void HookedMenuGameLayer::update(float dt) {
     m_playerObject->setPosition(fields->playerPos);
     m_playerObject->setRotation(fields->playerRotation);
 
-    if (fields->playerPos.y <= -50.f || fields->playerPos.x <= -50.f || fields->playerPos.x >= getContentWidth() + 50.f) {
+    auto dir = cocos2d::CCDirector::sharedDirector();
+    if (fields->playerPos.y <= -50.f || fields->playerPos.x <= -50.f || fields->playerPos.x >= dir->getScreenRight() + 50.f) {
         // offscreen, below starting point, reset
         resetPlayer();
         fields->combo = 0;
@@ -110,7 +111,8 @@ void HookedMenuGameLayer::resetPlayer() {
 
     // make player move towards the middle
     // by default speed is positive, so if the icon starts on the left it's fine
-    if (fields->playerPos.x > getContentWidth() / 2) {
+    auto dir = cocos2d::CCDirector::sharedDirector();
+    if (fields->playerPos.x > dir->getScreenRight() / 2) {
         // starts on the right, speed should be negative
         fields->playerSpeed.x = -fields->playerSpeed.x;
     }
@@ -118,6 +120,8 @@ void HookedMenuGameLayer::resetPlayer() {
 
 void HookedMenuGameLayer::destroyPlayer() {
     MenuGameLayer::destroyPlayer();
+    if (!geode::Mod::get()->getSettingValue<bool>("enable-gameplay")) return;
+
     m_fields->combo++;
     updateComboShit();
 
@@ -177,43 +181,40 @@ void HookedMenuGameLayer::updateComboShit() {
     fields->hiComboLabel->setString(fmt::format("High Score: {}", fields->hiCombo).c_str());
 }
 
-#define FADE_OUT_ACTION(x, y) cocos2d::CCSpawn::createWithTwoActions(cocos2d::CCEaseBackIn::create(cocos2d::CCMoveBy::create(.9f, {x, y})), cocos2d::CCFadeOut::create(.9f))
-#define FADE_IN_ACTION(x, y) cocos2d::CCSpawn::createWithTwoActions(cocos2d::CCEaseBackOut::create(cocos2d::CCMoveBy::create(.9f, {-x, -y})), cocos2d::CCFadeIn::create(.9f))
+#define FADE_OUT_ACTION(movement) cocos2d::CCSpawn::createWithTwoActions(cocos2d::CCEaseBackIn::create(cocos2d::CCMoveBy::create(.9f, movement)), cocos2d::CCFadeOut::create(.9f))
+#define FADE_IN_ACTION(movement) cocos2d::CCSpawn::createWithTwoActions(cocos2d::CCEaseBackOut::create(cocos2d::CCMoveBy::create(.9f, -movement)), cocos2d::CCFadeIn::create(.9f))
 
 void HookedMenuGameLayer::runEnterGameplayAnimations() {
     auto ml = getParent();
+    auto dir = cocos2d::CCDirector::sharedDirector();
+    m_fields->movedNodeMovements.clear();
 
-    auto buttons = ml->getChildByID("main-menu");
-    if (buttons) buttons->runAction(FADE_OUT_ACTION(0, 120));
+    for (auto& child : geode::cocos::CCArrayExt<CCNode*>(ml->getChildren())) {
+        if (child == this) continue;
 
-    auto bottom = ml->getChildByID("bottom-menu");
-    if (bottom) bottom->runAction(FADE_OUT_ACTION(0, -90));
+        // get side + move dist
+        cocos2d::CCPoint movement;
 
-    auto profile = ml->getChildByID("profile-menu");
-    if (profile) profile->runAction(FADE_OUT_ACTION(-182, 0));
-    auto username = ml->getChildByID("player-username");
-    if (username) username->runAction(FADE_OUT_ACTION(-182, 0));
+        if (child->getPositionX() == dir->getScreenRight()/2) {
+            // middle
+            if (child->getPositionY() < dir->getScreenTop()/2) {
+                // bottom middle
+                movement = cocos2d::CCPoint{0.f, -child->getPositionY() - child->getContentHeight()};
+            } else {
+                // top middle (default if in centre)
+                movement = cocos2d::CCPoint{0.f, dir->getScreenTop() - child->getPositionY() + child->getContentHeight()};
+            }
+        } else if (child->getPositionX() < dir->getScreenRight()/2) {
+            // left
+            movement = cocos2d::CCPoint{-child->getPositionX() - child->getContentWidth(), 0.f};
+        } else {
+            // right
+            movement = cocos2d::CCPoint{(dir->getScreenRight() - child->getPositionX()) + child->getContentWidth(), 0.f};
+        }
 
-    auto right = ml->getChildByID("right-side-menu");
-    if (right) right->runAction(FADE_OUT_ACTION(87, 0));
-
-    auto topRight = ml->getChildByID("top-right-menu");
-    if (topRight) topRight->runAction(FADE_OUT_ACTION(203, 58));
-
-    auto side = ml->getChildByID("side-menu");
-    if (side) side->runAction(FADE_OUT_ACTION(-50, 0));
-
-    auto title = ml->getChildByID("main-title");
-    if (title) title->runAction(FADE_OUT_ACTION(0, 120));
-
-    auto social = ml->getChildByID("social-media-menu");
-    if (social) social->runAction(FADE_OUT_ACTION(-107, -52));
-
-    auto moreGames = ml->getChildByID("more-games-menu");
-    if (moreGames) moreGames->runAction(FADE_OUT_ACTION(118, -50));
-
-    auto close = ml->getChildByID("close-menu");
-    if (close) close->runAction(FADE_OUT_ACTION(-202, 40));
+        child->runAction(FADE_OUT_ACTION(movement));
+        m_fields->movedNodeMovements[child] = movement;
+    }
 
     m_fields->scoreLayer->runAction(cocos2d::CCFadeIn::create(.9f));
     m_fields->exitButton->runAction(cocos2d::CCSpawn::createWithTwoActions(
@@ -223,39 +224,11 @@ void HookedMenuGameLayer::runEnterGameplayAnimations() {
 }
 
 void HookedMenuGameLayer::runExitGameplayAnimations() {
-    auto ml = getParent();
-
-    auto buttons = ml->getChildByID("main-menu");
-    if (buttons) buttons->runAction(FADE_IN_ACTION(0, 120));
-
-    auto bottom = ml->getChildByID("bottom-menu");
-    if (bottom) bottom->runAction(FADE_IN_ACTION(0, -90));
-
-    auto profile = ml->getChildByID("profile-menu");
-    if (profile) profile->runAction(FADE_IN_ACTION(-182, 0));
-    auto username = ml->getChildByID("player-username");
-    if (username) username->runAction(FADE_IN_ACTION(-182, 0));
-
-    auto right = ml->getChildByID("right-side-menu");
-    if (right) right->runAction(FADE_IN_ACTION(87, 0));
-
-    auto topRight = ml->getChildByID("top-right-menu");
-    if (topRight) topRight->runAction(FADE_IN_ACTION(203, 58));
-
-    auto side = ml->getChildByID("side-menu");
-    if (side) side->runAction(FADE_IN_ACTION(-50, 0));
-
-    auto title = ml->getChildByID("main-title");
-    if (title) title->runAction(FADE_IN_ACTION(0, 120));
-
-    auto social = ml->getChildByID("social-media-menu");
-    if (social) social->runAction(FADE_IN_ACTION(-107, -52));
-
-    auto moreGames = ml->getChildByID("more-games-menu");
-    if (moreGames) moreGames->runAction(FADE_IN_ACTION(118, -50));
-
-    auto close = ml->getChildByID("close-menu");
-    if (close) close->runAction(FADE_IN_ACTION(-202, 40));
+    for (auto& pair : m_fields->movedNodeMovements) {
+        auto& child = pair.first;
+        auto movement = pair.second;
+        child->runAction(FADE_IN_ACTION(movement));
+    }
 
     m_fields->scoreLayer->runAction(cocos2d::CCFadeOut::create(.9f));
     m_fields->exitButton->runAction(cocos2d::CCSpawn::createWithTwoActions(

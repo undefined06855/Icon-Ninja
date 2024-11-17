@@ -14,4 +14,5 @@ public:
     void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
 
     void checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to);
+    bool lineIntersectsRect(const cocos2d::CCRect& rect, const cocos2d::CCPoint& p1, const cocos2d::CCPoint& p2);
 };

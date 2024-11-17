@@ -15,6 +15,7 @@ class $modify(HookedMenuGameLayer, MenuGameLayer) {
 		int hiCombo = 0;
 		bool comboAnimationPlayed = false;
 		bool isInGameplay = false;
+		std::map<cocos2d::CCNode*, cocos2d::CCPoint> movedNodeMovements;
 
 		std::mt19937 gen;
 		std::uniform_real_distribution<float> startXDistribution;

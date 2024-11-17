@@ -79,7 +79,7 @@ void Swipe::draw() {
 void Swipe::addPoint(cocos2d::CCPoint point) {
     // calculate positions of points
     float angle = atan2(m_lastPoint.y - point.y, m_lastPoint.x - point.x);
-
+    
     SwipePoint sp = {
         .location = point,
         .direction = angle
