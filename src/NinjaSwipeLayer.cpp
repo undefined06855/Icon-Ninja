@@ -62,9 +62,11 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
 
     // broken vtables so have to do this shit
     auto rect = player->GameObject::getObjectRect();
-    float margin = 5.f;
-    rect.origin -= cocos2d::CCPoint{ margin, margin };
-    rect.size += cocos2d::CCPoint{ margin, margin } * 2;
+    if (!geode::Mod::get()->getSettingValue<bool>("disable-margin")) {
+        float margin = 5.f;
+        rect.origin -= cocos2d::CCPoint{ margin, margin };
+        rect.size += cocos2d::CCPoint{ margin, margin } * 2;
+    }
     
     if (lineIntersectsRect(rect, from, to)) {
         // ok so time to kill muahaha

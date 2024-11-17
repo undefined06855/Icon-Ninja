@@ -33,6 +33,18 @@
 			"type": "bool",
 			"default": true,
 			"enable-if": "custom-player-movement"
+		},
+		"disable-stats-increment": {
+			"name": "Disable \"Players Destroyed\" stats incrementing",
+			"description": "This disables the Players Destroyed stats incrementing when an icon is killed using this mod.",
+			"type": "bool",
+			"default": false
+		},
+		"disable-margin": {
+			"name": "Disable extra margin",
+			"description": "The disables the extra 5px margin added to make killing small icons easier. Hard mode!",
+			"type": "bool",
+			"default": false
 		}
 	}
 }
