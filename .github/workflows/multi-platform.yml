@@ -15,8 +15,9 @@ jobs:
         - name: Windows
           os: windows-latest
 
-        - name: macOS
-          os: macos-latest
+        # bindings still not found :broken_heart:
+        # - name: macOS
+        #   os: macos-latest
 
         - name: Android32
           os: ubuntu-latest
