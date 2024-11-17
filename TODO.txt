@@ -1,6 +1,5 @@
 - Bombs
 - Delay between icons
 - Customisable swords (based on player colours, perhaps)
-- Dont increment the combo when you dont have fruit ninja physics enabled or something 
 - multiple icons???
 - leaderboards???????????

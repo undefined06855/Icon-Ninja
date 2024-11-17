@@ -120,12 +120,14 @@ void HookedMenuGameLayer::resetPlayer() {
 
 void HookedMenuGameLayer::destroyPlayer() {
     MenuGameLayer::destroyPlayer();
+
+    if (!geode::Mod::get()->getSettingValue<bool>("custom-player-movement")) return;
     if (!geode::Mod::get()->getSettingValue<bool>("enable-gameplay")) return;
 
     m_fields->combo++;
     updateComboShit();
 
-    if (!m_fields->isInGameplay && geode::Mod::get()->getSettingValue<bool>("enable-gameplay")) {
+    if (!m_fields->isInGameplay && geode::Mod::get()->getSettingValue<bool>("enable-gameplay") && geode::Mod::get()->getSettingValue<bool>("custom-player-movement")) {
         enterGameplay();
     }
 }

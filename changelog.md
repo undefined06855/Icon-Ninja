@@ -1,4 +1,7 @@
 # Icon Ninja Changelog
+## v1.0.3
+- Reverted changes in v1.0.2
+- Fixed issues where disabling custom icon movement would not disable custom gameplay
 ## v1.0.2 (unlisted)
 - Fixed issues and incompatibilities relating to touch
 ## v1.0.1
