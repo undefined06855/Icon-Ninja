@@ -11,10 +11,6 @@ NinjaSwipeLayer* NinjaSwipeLayer::create() {
     return nullptr;
 }
 
-NinjaSwipeLayer::~NinjaSwipeLayer() {
-    cocos2d::CCTouchDispatcher::get()->removeDelegate(this);
-}
-
 bool NinjaSwipeLayer::init() {
     if (!CCLayer::init()) return false;
 

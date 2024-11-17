@@ -1,5 +1,5 @@
 # Icon Ninja Changelog
-## v1.0.2
+## v1.0.2 (unlisted)
 - Fixed issues and incompatibilities relating to touch
 ## v1.0.1
 - Added margin of +/-5px on icons
