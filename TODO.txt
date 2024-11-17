@@ -6,3 +6,6 @@
 - Disable incrementing destroyed players option in settings
 - multiple icons???
 - leaderboards???????????
+- hide everything except menugamelayer on mainlayer (incl. controller glyphs and other mod's buttons)
+    - https://discord.com/channels/911701438269386882/911702535373475870/1307641722360303679
+    - https://github.com/undefined06855/Icon-Ninja/issues/1

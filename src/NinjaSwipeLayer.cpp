@@ -61,12 +61,12 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
     if (!player) return;
 
     // ok so this may be cheating
-    // but instead of drawing a line i just get the last two points and place 20
+    // but instead of drawing a line i just get the last two points and place 40
     // points spread out between them, and then check if any of them are inside
     // the icon's hitbox
 
     // create points to test
-    int pointNum = 20;
+    int pointNum = 40;
     cocos2d::CCPoint distanceBetweenPointSegments = (to - from) / pointNum;
 
     std::vector<cocos2d::CCPoint> points;

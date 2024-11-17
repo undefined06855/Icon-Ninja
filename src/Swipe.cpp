@@ -70,7 +70,10 @@ void Swipe::draw() {
     glVertexAttribPointer(cocos2d::kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, 0, texCoords.data());
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, points.size());
+#ifndef GEODE_IS_MACOS
+    // req. g_uNumberOfDraws which literally cannot be found on mac/ios since broma doesnt support it
     CC_INCREMENT_GL_DRAWS(1);
+#endif
 }
 
 void Swipe::addPoint(cocos2d::CCPoint point) {

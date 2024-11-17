@@ -7,6 +7,7 @@ Liked Fruit Ninja, and wanted a similar experience in GD? Well now you can, righ
 Don't like the custom physics? Disable them, along with gameplay, right in the mod settings!
 
 Idea from Alphalaneous, see [this discord message](https://discord.com/channels/911701438269386882/911702535373475870/1303111747539963905)!
+
 Sound effects from Fruit Ninja are the property of Halfbrick Studios.
 
 
@@ -14,4 +15,5 @@ Planned Features:
 - Bombs
 - Delay between icons
 - Customisable swords (based on player colours, perhaps)
+
 Suggest features and report bugs at the github link in the bottom left!
