@@ -5,6 +5,7 @@ class NinjaSwipeLayer : public cocos2d::CCLayer {
 public:
     static NinjaSwipeLayer* create();
     bool init() override;
+    ~NinjaSwipeLayer();
 
     Swipe* m_swipe;
     cocos2d::CCPoint m_lastSwipePoint;

@@ -11,6 +11,10 @@ NinjaSwipeLayer* NinjaSwipeLayer::create() {
     return nullptr;
 }
 
+~NinjaSwipeLayer() {
+    cocos2d::CCTouchDispatcher::get()->removeDelegate(this);
+}
+
 bool NinjaSwipeLayer::init() {
     if (!CCLayer::init()) return false;
 
@@ -20,7 +24,7 @@ bool NinjaSwipeLayer::init() {
 
     // stupid cocos touch 
     setTouchEnabled(true);    
-    cocos2d::CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, cocos2d::kCCMenuHandlerPriority, true);
+    cocos2d::CCTouchDispatcher::get()->addTargetedDelegate(this, cocos2d::kCCMenuHandlerPriority, true);
 
     return true;
 }
