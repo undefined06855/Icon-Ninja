@@ -1,4 +1,8 @@
 # Icon Ninja Changelog
+## v1.0.4
+- Fixed issues with multiple touches on mobile
+- Added volume slider for sound effects
+- Added option to change font used
 ## v1.0.3
 - Reverted changes in v1.0.2
 - Fixed issues where disabling custom icon movement would not disable custom gameplay

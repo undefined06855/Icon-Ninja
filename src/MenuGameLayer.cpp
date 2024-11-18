@@ -37,11 +37,19 @@ bool HookedMenuGameLayer::init() {
     fields->scoreLayer->setPositionY(fields->scoreLayer->getPositionY() + 140.f);
     fields->scoreLayer->runAction(cocos2d::CCFadeOut::create(0.f)); // setOpacity(0) doesnt work idfk please tell me why
 
-    fields->comboLabel = cocos2d::CCLabelBMFont::create("...", "gjFont31.fnt");
+    std::string fontString = "bigFont.fnt";
+    int64_t font = geode::Mod::get()->getSettingValue<int64_t>("font");
+    if (font > 1) {
+        fontString = fmt::format("gjFont{:02}.fnt", font - 1);
+    }
+
+    geode::log::info("{}", fontString);
+
+    fields->comboLabel = cocos2d::CCLabelBMFont::create("...", fontString.c_str());
     fields->comboLabel->setID("combo-label"_spr);
     fields->scoreLayer->addChild(fields->comboLabel);
 
-    fields->hiComboLabel = cocos2d::CCLabelBMFont::create("...", "gjFont31.fnt");
+    fields->hiComboLabel = cocos2d::CCLabelBMFont::create("...", fontString.c_str());
     fields->hiComboLabel->setID("hi-combo-label"_spr);
     fields->hiComboLabel->setScale(.4f);
     fields->hiComboLabel->setPositionY(-24.f);
@@ -248,7 +256,7 @@ void HookedMenuGameLayer::enterGameplay() {
 
     // fade out music
     FMODAudioEngine::sharedEngine()->fadeOutMusic(1.f, 0);
-    FMODAudioEngine::sharedEngine()->playEffect("gamestart.wav"_spr);
+    FMODAudioEngine::sharedEngine()->playEffect("gamestart.wav"_spr, 1.f, 0.f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
 }
 
 void HookedMenuGameLayer::exitGameplay(CCObject* sender) {
@@ -260,5 +268,5 @@ void HookedMenuGameLayer::exitGameplay(CCObject* sender) {
 
     // fade in music
     FMODAudioEngine::sharedEngine()->fadeInMusic(1.f, 0);
-    FMODAudioEngine::sharedEngine()->playEffect("gameover.wav"_spr);
+    FMODAudioEngine::sharedEngine()->playEffect("gameover.wav"_spr, 1.f, 0.f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
 }

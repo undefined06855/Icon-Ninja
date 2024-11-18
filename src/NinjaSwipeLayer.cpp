@@ -29,6 +29,8 @@ bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
     // by not clearing the point list before this adds the point causes the end
     // of the last swipe to connect to the next swipe but nobody is going to
     // notice it's fine
+    if (m_isFingerDown) return false;
+    m_isFingerDown = true;
 
     m_lastSwipePoint = touch->getLocation();
     m_swipe->addPoint(touch->getLocation());
@@ -42,6 +44,8 @@ void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
 }
 
 void NinjaSwipeLayer::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+    m_isFingerDown = false;
+
     checkSwipeIntersection(m_lastSwipePoint, touch->getLocation());
     m_swipe->addPoint(touch->getLocation());
 }

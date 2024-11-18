@@ -6,6 +6,7 @@ public:
     static NinjaSwipeLayer* create();
     bool init() override;
 
+    bool m_isFingerDown = false;
     Swipe* m_swipe;
     cocos2d::CCPoint m_lastSwipePoint;
 
