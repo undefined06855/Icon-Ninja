@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.0.5
+- Fixed MacOS support!
 ## v1.0.4
 - Fixed issues with multiple touches on mobile
 - Added volume slider for sound effects
