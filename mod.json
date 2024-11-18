@@ -2,7 +2,8 @@
 	"geode": "4.0.0-beta.1",
 	"gd": {
 		"win": "2.2074",
-		"android": "2.2074"
+		"android": "2.2074",
+		"mac": "2.2074"
 	},
 
 	"id": "undefined0.icon_ninja",
