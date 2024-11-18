@@ -48,6 +48,8 @@ jobs:
     steps:
       - uses: geode-sdk/build-geode-mod/combine@main
         id: build
+        with:
+          bindings: undefined06855/bindings
 
       - uses: actions/upload-artifact@v4
         with:
