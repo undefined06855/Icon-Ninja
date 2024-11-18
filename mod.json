@@ -8,7 +8,7 @@
 
 	"id": "undefined0.icon_ninja",
 	"name": "Icon Ninja",
-	"version": "v1.0.3",
+	"version": "v1.0.4",
 	"developer": "undefined0",
 	"description": "Makes killing icons like Fruit Ninja!",
 	"tags": [ "joke", "offline" ],
@@ -35,6 +35,19 @@
 			"default": true,
 			"enable-if": "custom-player-movement"
 		},
+		"sfx-volume": {
+			"name": "SFX Volume",
+			"type": "float",
+			"default": 1.0,
+			"min": 0.0,
+			"max": 1.0,
+			"control": {
+				"slider": true,
+				"arrows": false,
+				"input": true
+			},
+			"enable-if": "enable-gameplay"
+		},
 		"disable-stats-increment": {
 			"name": "Disable \"Players Destroyed\" stats incrementing",
 			"description": "This disables the Players Destroyed stats incrementing when an icon is killed using this mod.",
@@ -46,6 +59,19 @@
 			"description": "The disables the extra 5px margin added to make killing small icons easier. Hard mode!",
 			"type": "bool",
 			"default": false
+		},
+		"font": {
+			"name": "Font",
+			"description": "The font used - see https://gdcolon.com/gdfont",
+			"type": "int",
+			"default": 32,
+			"min": 1,
+			"max": 60,
+			"control": {
+				"slider": false,
+				"arrows": true,
+				"input": true
+			}
 		}
 	}
 }
