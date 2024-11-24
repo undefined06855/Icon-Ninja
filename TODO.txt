@@ -1,5 +1,2 @@
-- Bombs
-- Delay between icons
 - Customisable swords (based on player colours, perhaps)
-- multiple icons???
 - leaderboards???????????

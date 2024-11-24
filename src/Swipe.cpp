@@ -1,7 +1,7 @@
 #include "Swipe.hpp"
 
 Swipe* Swipe::create(cocos2d::CCTexture2D* texture) {
-    auto ret = new Swipe();
+    auto ret = new Swipe;
     if (ret->init(texture)) {
         ret->autorelease();
         return ret;
