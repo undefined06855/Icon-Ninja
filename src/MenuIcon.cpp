@@ -56,31 +56,19 @@ void MenuIcon::initialiseValues() {
     m_rotationSpeed = ninja::random::rotationSpeedDistribution(ninja::random::gen);
 }
 
-cocos2d::CCRect MenuIcon::boundingBox() {
-    if (m_type == MenuIconType::Bomb) {
-        return m_bombSprite->boundingBox();
-    } else {
-        return m_playerObject->GameObject::getObjectRect();
-    }
-}
-
-cocos2d::CCRect MenuIcon::getWorldBoundingBox() {
+cocos2d::CCPoint MenuIcon::getWorldPos() {
     auto bound = boundingBox();
     
     // convert to world space
-    cocos2d::CCPoint bottomLeft = convertToWorldSpace({bound.getMinX(), bound.getMinY()});
-    cocos2d::CCPoint topRight = convertToWorldSpace({bound.getMaxX(), bound.getMaxY()});
+    cocos2d::CCPoint worldPos = convertToWorldSpace(getPosition());
 
     // convert to node space relative to swipeLayer
     auto swipeLayer = static_cast<HookedMenuGameLayer*>(MenuLayer::get()->m_menuGameLayer)->m_fields->ninjaSwipeLayer;
 
-    cocos2d::CCPoint bottomLeft2 = swipeLayer->convertToNodeSpace(bottomLeft);
-    cocos2d::CCPoint topRight2 = swipeLayer->convertToNodeSpace(topRight);
+    return swipeLayer->convertToNodeSpace(worldPos);
+}
 
-    cocos2d::CCRect ret;
-
-    ret.origin = bottomLeft2;
-    ret.size = topRight2 - bottomLeft2;
-
-    return ret;
+float MenuIcon::getRadius() {
+    if (m_type == MenuIconType::Bomb) return 15.f;
+    return m_playerObject->m_vehicleSize * 16.f;
 }

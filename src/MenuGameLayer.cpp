@@ -23,11 +23,12 @@ void HookedMenuGameLayer::update(float dt) {
 }
 
 void HookedMenuGameLayer::randomisePlayerObject(PlayerObject* player) {
+    geode::log::info("before: {}", player->retainCount());
     PlayerObject* old = m_playerObject;
     cocos2d::CCPoint pos = player->getPosition();
     m_playerObject = player;
     resetPlayer();
-    player = m_playerObject;
     player->setPosition(pos);
     m_playerObject = old;
+    geode::log::info("after: {}", player->retainCount());
 }

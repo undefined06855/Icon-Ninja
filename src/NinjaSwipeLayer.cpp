@@ -73,6 +73,11 @@ bool NinjaSwipeLayer::init() {
 
     scheduleUpdate();
 
+    if (m_isDebug) {
+        m_debugNode = cocos2d::CCDrawNode::create();
+        m_debugNode->init();
+        addChild(m_debugNode);
+    }
 
     return true;
 }
@@ -105,75 +110,159 @@ void NinjaSwipeLayer::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
 void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to) {
     // dont let the player just click the icons
     if (from.getDistanceSq(to) < .5f) return;
+    if (m_isBombCurrentlyExploding) return;
 
     for (auto& player : m_players) {
-        auto rect = player->getWorldBoundingBox();
-        if (!geode::Mod::get()->getSettingValue<bool>("disable-margin")) {
+        float radius = player->getRadius();
+        if (!geode::Mod::get()->getSettingValue<bool>("disable-margin") && player->m_type != MenuIconType::Bomb) {
             float margin = 5.f;
-            rect.origin -= cocos2d::CCPoint{ margin, margin };
-            rect.size += cocos2d::CCPoint{ margin, margin } * 2;
+            radius += margin * 2.f;
         }
         
-        if (lineIntersectsRect(rect, from, to)) {
-            if (player->m_type == MenuIconType::Bomb) {
-                // oh no
-                geode::log::error("TODO: KABLOOEY");
-                if (m_state == State::Default) {
-                    // ok nothing really
-
-                } else {
-                    // KABOOM
-                    
-                }
-            } else {
-                // ok so time to kill muahaha
-                killPlayer(player);
-            }
+        geode::log::info("{}", player->retainCount());
+        if (lineIntersectsCircle(player->getPosition(), radius, from, to)) {
+            // ok so time to kill muahaha
+            killPlayer(player);
         }
+
+        if (m_isBombCurrentlyExploding) break; // couldve been set by killPlayer
     }
 }
 
-// code courtesy of yours truly, gpt-4o (idk wtf half of this means)
-// The algorithm used here is a Line-AABB Intersection Algorithm.
-// It's commonly implemented using the Cohen-Sutherland clipping or the
-// Liang-Barsky algorithm principles, but in this specific case, it's closer to
-// the Liang-Barsky algorithm because it uses parametric line equations to
-// calculate intersection intervals.
-bool NinjaSwipeLayer::lineIntersectsRect(const cocos2d::CCRect& rect, const cocos2d::CCPoint& p1, const cocos2d::CCPoint& p2) {
-    if (rect.containsPoint(p1) || rect.containsPoint(p2)) return true;
+// im sure i could do this myself,
+// but chatgpt is easier but WAIT it's not for actual mod code this is for a thing
+// that someone smarter than me figured out in the past that im just using now
+bool NinjaSwipeLayer::lineIntersectsCircle(const cocos2d::CCPoint& circleCenter, const float circleRadius, const cocos2d::CCPoint& from, const cocos2d::CCPoint& to) {
+    // Vector from 'from' to 'to'
+    cocos2d::CCPoint d = to - from;
+    // Vector from 'from' to circle center
+    cocos2d::CCPoint f = from - circleCenter;
 
-    auto lineIntersect = [](float p1, float p2, float min, float max, float& t1, float& t2) {
-        float d = p2 - p1;
-        if (fabs(d) < 1e-6) return p1 >= min && p1 <= max; // Line parallel to the edge
-        float tMin = (min - p1) / d;
-        float tMax = (max - p1) / d;
-        if (tMin > tMax) std::swap(tMin, tMax);
-        t1 = std::max(t1, tMin);
-        t2 = std::min(t2, tMax);
-        return t1 <= t2;
-    };
+    float a = d.dot(d);              // d·d (squared magnitude of d)
+    float b = 2 * f.dot(d);          // 2 * (f·d)
+    float c = f.dot(f) - circleRadius * circleRadius; // f·f - r²
 
-    float t1 = 0.0f, t2 = 1.0f;
-    if (!lineIntersect(p1.x, p2.x, rect.getMinX(), rect.getMaxX(), t1, t2)) return false;
-    if (!lineIntersect(p1.y, p2.y, rect.getMinY(), rect.getMaxY(), t1, t2)) return false;
-    return true;
+    // Solve the quadratic equation: at² + bt + c = 0
+    float discriminant = b * b - 4 * a * c;
+
+    if (discriminant < 0) {
+        // No intersection
+        return false;
+    }
+
+    // Check if the intersection points are within the line segment
+    discriminant = sqrt(discriminant);
+    float t1 = (-b - discriminant) / (2 * a);
+    float t2 = (-b + discriminant) / (2 * a);
+
+    return (t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1);
 }
 
 void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
-    m_combo++;
-    updateComboShit();
+    // sorry never nesters but there wasnt an easy way out of this unless i use
+    // goto or something :broken_heart:
+    if (player->m_type == MenuIconType::Bomb) {
+        geode::log::info("bomb!");
+        m_isBombCurrentlyExploding = true;
+        player->m_isBombExploding = true;
+        FMODAudioEngine::sharedEngine()->playEffect("kablooey.wav"_spr, 1.0f, 0.0f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
 
-    geode::log::error("TODO: DEATH ANIMATIONS??");
+        auto flash = CCLightFlash::create();
+        // https://github.com/gd-hyperdash/Cocos2Dx/blob/master/cocos2dx/extensions/RobTop/CCLightFlash.h
+        // for param names
+        // some copied from PlayLayer::showCompleteEffect
+        auto size = cocos2d::CCDirector::sharedDirector()->getWinSize();
+        float screenDiagonalSize = sqrtf(size.width*size.width + size.height*size.height) + 30.f;
+        flash->playEffect(
+            /* pos */ player->getPosition(),
+            /* col */ { 255, 255, 255 },
+            /* bW */ 1.f,
+            /* bwVar */ 0.f,
+            /* tW */ 30.f,
+            /* tWVar */ 25.f,
+            /* tH */ screenDiagonalSize,
+            /* dur */ .34f,
+            /* durVar */ .24f,
+            /* stripInterval */ .08f,
+            /* stripDelay */ .08f,
+            /* stripDelayVar */ .2f,
+            /* rotation */ 0.f, // (doesnt matter)
+            /* rotationVar */ 180.f,
+            /* opacity */ 155.f,
+            /* opacityVar */ 100.f,
+            /* lightStripCount */ 14.f,
+            /* circleRotation */ false,
+            /* fadeIn */ false,
+            0.1f
+        );
+        flash->setZOrder(-10);
+        addChild(flash);
 
-    if (m_state == State::Gameplay && geode::Mod::get()->getSettingValue<bool>("enable-gameplay")) {
+        auto shake = cocos2d::CCSequence::createWithTwoActions(
+            cocos2d::CCMoveTo::create(0.05f, { -5.f, 0.f }),
+            cocos2d::CCMoveTo::create(0.05f, { 5.f, 0.f })
+        );
+
+        player->m_bombSprite->runAction(
+            cocos2d::CCSpawn::createWithTwoActions(
+                cocos2d::CCScaleBy::create(1.8f, 1.5f),
+                cocos2d::CCRepeat::create(shake, 69420)
+            )
+        );
+
+        this->runAction(
+            cocos2d::CCSequence::createWithTwoActions(
+                cocos2d::CCDelayTime::create(1.6f),
+                geode::cocos::CallFuncExt::create([this, player]{
+                    // spawn particles and delete bomb
+                    spawnPlayerExplosionParticles(player->getPosition(), { 65, 64, 66 });
+                    resetCombo();
+                    removePlayer(player);
+                    m_isBombCurrentlyExploding = false;
+                    player->m_isBombExploding = true;
+                })
+            )
+        );
+    } else {
+        m_combo++; // increment combo if this isnt a bomb
+        updateComboShit();
+
+        // taken from MenuGameLayer::killPlayer - thanks prevter for decomp
+        if (!geode::Mod::get()->getSettingValue<bool>("disable-stats-increment"))
+            GameStatsManager::sharedState()->incrementStat("9", 1);
+        FMODAudioEngine::sharedEngine()->playEffect("explode_11.ogg", 1.0f, 0.0f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
+        
+        spawnPlayerExplosionParticles(player->getPosition(), player->m_playerObject->m_playerColor1);
+        removePlayer(player);
+    }
+
+    if (m_state == State::Default && geode::Mod::get()->getSettingValue<bool>("enable-gameplay")) {
         enterGameplay();
     }
 }
 
+void NinjaSwipeLayer::spawnPlayerExplosionParticles(const cocos2d::CCPoint& pos, const cocos2d::ccColor3B& col) {
+    auto particles = cocos2d::CCParticleSystemQuad::create("explodeEffect.plist", false);
+    particles->setPositionType(cocos2d::kCCPositionTypeGrouped);
+    addChild(particles, 1);
+    particles->setAutoRemoveOnFinish(true);
+    particles->setPosition(pos);
+    particles->setStartColor({ col.r / 255.f, col.g / 255.f, col.b / 255.f, 1.0f });
+    particles->resetSystem();
+    
+    auto circleWave = CCCircleWave::create(10.f, 90.f, 0.5f, false);
+    circleWave->m_color = col;
+    circleWave->setPosition(pos);
+    addChild(circleWave, 0);
+}
+
 void NinjaSwipeLayer::update(float dt) {
+    m_swipe->setVisible(!m_isBombCurrentlyExploding);
+
     // physics
     std::vector<MenuIcon*> playersToRemove = {};
     for (auto player : m_players) {
+        if (player->m_isBombExploding) continue;
         player->setPosition(player->getPosition() + (player->m_speed * dt));
         player->m_speed.y -= m_gravity * dt;
         player->setRotation(player->getRotation() + (player->m_speed.x * player->m_rotationSpeed * dt));
@@ -184,20 +273,17 @@ void NinjaSwipeLayer::update(float dt) {
             playersToRemove.push_back(player);
 
             // offscreen, below starting point, remove and reset combo
-            m_combo = 0;
-            m_comboAnimationPlayed = false;
-            updateComboShit();
-            geode::Mod::get()->setSavedValue<int>("hi-combo", m_hiCombo);
+            if (player->m_type != MenuIconType::Bomb) {
+                resetCombo();
+            }
         }
     }
 
     for (auto player : playersToRemove) {
-        auto location = std::find(m_players.begin(), m_players.end(), player);
-        m_players.erase(location);
-        player->removeFromParent();
+        removePlayer(player);
     }
 
-    if (m_players.size() == 0 && !m_waitingForNextSpawn && !m_isSendingOutSpree) {
+    if (m_players.size() == 0 && !m_waitingForNextSpawn && !m_isSendingOutSpree && !m_isBombCurrentlyExploding) {
         geode::log::info("ran out! wait 1.5 secs, ill spawn some more");
         // ran out!
         auto action = cocos2d::CCSequence::createWithTwoActions(
@@ -210,9 +296,29 @@ void NinjaSwipeLayer::update(float dt) {
         runAction(action);
         m_waitingForNextSpawn = true;
     }
+
+    if (m_isDebug) {
+        m_debugNode->clear();
+        for (auto player : m_players) {
+            float radius = player->getRadius();
+            auto origin = player->getPosition();
+            cocos2d::ccColor4F col;
+            if (player->m_type == MenuIconType::Bomb) col = { 1.f, 0.f, 0.f, 1.f };
+            else col = { 0.f, 0.f, 1.f, 1.f };
+            m_debugNode->drawCircle(origin, radius, { 0.f, 0.f, 0.f, 0.f }, 1, col, 32);
+        }
+    }
+}
+
+void NinjaSwipeLayer::removePlayer(MenuIcon* player) {
+    auto location = std::find(m_players.begin(), m_players.end(), player);
+    m_players.erase(location);
+    player->removeFromParent();
 }
 
 void NinjaSwipeLayer::enterGameplay() {
+    m_state = State::Gameplay;
+    geode::log::info("NINJA TIME BABY");
     auto menuLayer = static_cast<HookedMenuLayer*>(MenuLayer::get());
     menuLayer->runEnterGameplayAnimations();
 
@@ -221,9 +327,14 @@ void NinjaSwipeLayer::enterGameplay() {
         cocos2d::CCEaseBackOut::create(cocos2d::CCMoveBy::create(.9f, {0.f, -50.f})),
         cocos2d::CCFadeIn::create(.9f)
     ));
+
+    FMODAudioEngine::sharedEngine()->fadeOutMusic(1.f, 0);
+    FMODAudioEngine::sharedEngine()->playEffect("gamestart.wav"_spr, 1.f, 0.f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
 }
 
 void NinjaSwipeLayer::exitGameplay(cocos2d::CCObject* sender) {
+    m_state = State::Default;
+    geode::log::info("no more ninja time :broken_heart:");
     auto menuLayer = static_cast<HookedMenuLayer*>(MenuLayer::get());
     menuLayer->runExitGameplayAnimations();
     
@@ -232,6 +343,9 @@ void NinjaSwipeLayer::exitGameplay(cocos2d::CCObject* sender) {
         cocos2d::CCEaseBackOut::create(cocos2d::CCMoveBy::create(.9f, {0.f, 50.f})),
         cocos2d::CCFadeOut::create(.9f)
     ));
+
+    FMODAudioEngine::sharedEngine()->fadeInMusic(1.f, 0);
+    FMODAudioEngine::sharedEngine()->playEffect("gameover.wav"_spr, 1.f, 0.f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
 }
 
 void NinjaSwipeLayer::updateComboShit() {
@@ -266,12 +380,23 @@ void NinjaSwipeLayer::updateComboShit() {
     m_hiComboLabel->setString(fmt::format("High Score: {}", m_hiCombo).c_str());
 }
 
+void NinjaSwipeLayer::resetCombo() {
+    m_combo = 0;
+    m_comboAnimationPlayed = false;
+    updateComboShit();
+    geode::Mod::get()->setSavedValue<int>("hi-combo", m_hiCombo);
+}
 
 void NinjaSwipeLayer::spawnPlayers() {
     if (m_players.size() != 0) return;
 
-    int type = ninja::random::spawnTypeDistribution(ninja::random::gen); // same height, spree, bomb one, bomb two, random one, random two, mix
+    int type;
+    do {
+        type = ninja::random::spawnTypeDistribution(ninja::random::gen); // same height, spree, bomb one, bomb two, random one, random two, mix
+    } while (type == m_lastSpawnType);
+
     geode::log::info("spawning players (type: {})", type);
+    m_lastSpawnType = type;
     switch(type) {
         case 0: {
             // all go to the same height
@@ -349,5 +474,5 @@ void NinjaSwipeLayer::spawnPlayers() {
 }
 
 $on_mod(Loaded) {
-    geode::log::info("hi spaghett ive removed the logs dw");
+    geode::log::info("hi spaghettdev");
 }

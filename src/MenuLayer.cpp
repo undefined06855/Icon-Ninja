@@ -6,19 +6,18 @@ void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code) {
     auto mgl = static_cast<HookedMenuGameLayer*>(m_menuGameLayer);
     auto nsl = mgl->m_fields->ninjaSwipeLayer;
     if (nsl->m_state == State::Gameplay) {
-        // block keybinds when in gameplay
+        if (code == cocos2d::enumKeyCodes::KEY_Escape) nsl->exitGameplay(nullptr);
+        // dont call orig
         return;
     }
 
     MenuLayer::keyDown(code);
 }
 
-
 #define FADE_OUT_ACTION(movement) cocos2d::CCSpawn::createWithTwoActions(cocos2d::CCEaseBackIn::create(cocos2d::CCMoveBy::create(.9f, movement)), cocos2d::CCFadeOut::create(.9f))
 #define FADE_IN_ACTION(movement) cocos2d::CCSpawn::createWithTwoActions(cocos2d::CCEaseBackOut::create(cocos2d::CCMoveBy::create(.9f, -movement)), cocos2d::CCFadeIn::create(.9f))
 
 void HookedMenuLayer::runEnterGameplayAnimations() {
-    auto ml = getParent();
     auto dir = cocos2d::CCDirector::sharedDirector();
     m_fields->movedNodeMovements.clear();
 
@@ -26,9 +25,9 @@ void HookedMenuLayer::runEnterGameplayAnimations() {
     // rewrite it if you wish
     // gets all children and if they're not this figures out where they should
     // move to and stores it in (std::map)m_fields->movedNodeMovements
-    for (auto& child : geode::cocos::CCArrayExt<CCNode*>(ml->getChildren())) {
-        if (child == this) continue;
-
+    for (auto& child : geode::cocos::CCArrayExt<CCNode*>(getChildren())) {
+        if (child == m_menuGameLayer) continue;
+        
         // get side + move dist
         cocos2d::CCPoint movement;
 

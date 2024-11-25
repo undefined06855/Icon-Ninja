@@ -12,12 +12,20 @@ public:
     static NinjaSwipeLayer* create();
     bool init() override;
 
+    bool m_isDebug = false;
+    cocos2d::CCDrawNode* m_debugNode;
+
     bool m_isFingerDown = false;
     Swipe* m_swipe;
     cocos2d::CCPoint m_lastSwipePoint;
+
     std::vector<MenuIcon*> m_players;
     State m_state = State::Default;
+
+    bool m_isBombCurrentlyExploding = false;
+
     bool m_isSendingOutSpree = false;
+    int m_lastSpawnType = 1; // spree is 1 - so spree will never be the first one
     
     const float m_gravity = 315;
 
@@ -38,11 +46,14 @@ public:
     void update(float dt) override;
 
     void checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to);
-    bool lineIntersectsRect(const cocos2d::CCRect& rect, const cocos2d::CCPoint& p1, const cocos2d::CCPoint& p2);
+    bool lineIntersectsCircle(const cocos2d::CCPoint& circleCenter, const float circleRadius, const cocos2d::CCPoint& from, const cocos2d::CCPoint& to);
 
     void killPlayer(MenuIcon* player);
+    void removePlayer(MenuIcon* player);
 	void spawnPlayers();
+    void spawnPlayerExplosionParticles(const cocos2d::CCPoint& pos, const cocos2d::ccColor3B& col);
 	void exitGameplay(CCObject* sender);
 	void enterGameplay();
     void updateComboShit();
+    void resetCombo();
 };

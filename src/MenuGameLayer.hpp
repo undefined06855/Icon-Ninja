@@ -10,3 +10,4 @@ class $modify(HookedMenuGameLayer, MenuGameLayer) {
 	void update(float dt);
 	void randomisePlayerObject(PlayerObject* player);
 };
+ 
