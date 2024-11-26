@@ -27,9 +27,7 @@ void FlashbangLayer::flashAndRemove() {
             cocos2d::CCFadeIn::create(0.f),
             cocos2d::CCDelayTime::create(1.f),
             cocos2d::CCFadeOut::create(1.5f),
-            geode::cocos::CallFuncExt::create([this]{
-                removeFromParent();
-            }),
+            cocos2d::CCRemoveSelf::create(),
             nullptr
         )
     );
