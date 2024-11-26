@@ -7,7 +7,7 @@ Liked Fruit Ninja, and wanted a similar experience in GD? Well now you can, righ
 Don't like the custom physics? Disable them, along with gameplay, right in the mod settings!
 
 Idea from Alphalaneous, see [this discord message](https://discord.com/channels/911701438269386882/911702535373475870/1303111747539963905)! \
-Bomb sprite by dasshu!
+Bomb sprite by [dasshu](https://bsky.app/profile/dasshu.dev)!
 
 Planned Features:
 - Customisable swords (based on player colours, perhaps)

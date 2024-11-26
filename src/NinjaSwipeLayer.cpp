@@ -231,8 +231,12 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
                         layer->flashAndRemove();
                     }
 
-                    // shake
-                    
+                    // funny
+                    // auto skibidi = cocos2d::CCNode::create();
+                    // skibidi->release();
+                    // geode::Loader::get()->queueInMainThread([=]{
+                    //     geode::log::info("{}", skibidi);
+                    // });
                 })
             )
         );
