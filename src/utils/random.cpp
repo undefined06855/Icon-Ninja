@@ -27,8 +27,8 @@ std::uniform_int_distribution<int> mixIconCountDistribution = std::uniform_int_d
 // but actual logic is kept identical
 void randomisePlayerObject(PlayerObject* player) {
     player->m_hasGlow = (float)rand() / RAND_MAX > 0.8;
-    player->setColor(GameManager::sharedState()->colorForIdx(rand() / RAND_MAX * 108.0));
-    player->setSecondColor(GameManager::sharedState()->colorForIdx(rand() / RAND_MAX * 108.0));
+    player->setColor(GameManager::sharedState()->colorForIdx((float)rand() / RAND_MAX * 108.0));
+    player->setSecondColor(GameManager::sharedState()->colorForIdx((float)rand() / RAND_MAX * 108.0));
 
     float randFloat = (float)rand() / RAND_MAX;
     if (randFloat < 0.12) {

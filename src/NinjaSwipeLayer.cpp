@@ -113,7 +113,12 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
     if (from.getDistanceSq(to) < .5f) return;
     if (m_isBombCurrentlyExploding) return;
 
-    for (auto& player : m_players) {
+    for (auto player : m_players) {
+        if (!player || player->retainCount() == 0) {
+            geode::log::warn("player is nullptr!");
+            continue;
+        }
+
         float radius = player->getRadius();
         if (!geode::Mod::get()->getSettingValue<bool>("disable-margin") && player->m_type != MenuIconType::Bomb) {
             float margin = 5.f;
@@ -181,7 +186,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
             /* tW */ 30.f,
             /* tWVar */ 25.f,
             /* tH */ screenDiagonalSize,
-            /* dur */ .34f,
+            /* dur */ .4f,
             /* durVar */ .24f,
             /* stripInterval */ .08f,
             /* stripDelay */ .13f,

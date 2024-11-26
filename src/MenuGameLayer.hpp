@@ -9,4 +9,3 @@ class $modify(HookedMenuGameLayer, MenuGameLayer) {
 	bool init();
 	void update(float dt);
 };
- 

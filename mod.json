@@ -8,7 +8,7 @@
 
 	"id": "undefined0.icon_ninja",
 	"name": "Icon Ninja",
-	"version": "v1.0.5",
+	"version": "v1.0.6",
 	"developer": "undefined0",
 	"description": "Makes killing icons like Fruit Ninja!",
 	"tags": [ "joke", "offline", "modtober24" ],
@@ -18,9 +18,15 @@
 		"files": [ "./resources/*.wav" ]
 	},
 
-	"links": {
-		"source": "https://github.com/undefined06855/icon-ninja"
-	},
+	"links": { "source": "https://github.com/undefined06855/icon-ninja" },
+
+	"incompatibilities": [
+		{
+			"id": "iandyhd3.known_players",
+			"importance": "conflicting",
+			"version": "*"
+		}
+	],
 
 	"settings": {
 		"enable-gameplay": {
@@ -44,7 +50,7 @@
 		},
 		"flashbang": {
 			"name": "FLASHBANG MODE",
-			"description": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+			"description": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 			"type": "bool",
 			"default": false
 		},

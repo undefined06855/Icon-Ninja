@@ -12,6 +12,7 @@ Bomb sprite by dasshu!
 Planned Features:
 - Customisable swords (based on player colours, perhaps)
 - Leaderboards
+- Screen shake
 Suggest features and report bugs at the github link in the bottom left!
 
 ---
