@@ -1,4 +1,11 @@
 # Icon Ninja Changelog
+## v1.1.0
+- Bombs!
+- Multiple players at once!
+- Flashbang mode (for bombs)
+- Rewrote randomisation algorithm, Known Players compatibility will be added later
+- Improved launch randomisation
+- Improved collision
 ## v1.0.5
 - Fixed MacOS support!
 ## v1.0.4
