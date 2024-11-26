@@ -6,6 +6,7 @@
 - Rewrote randomisation algorithm, Known Players compatibility will be added later
 - Improved launch randomisation
 - Improved collision
+- MacOS support temporarily removed
 ## v1.0.5
 - Fixed MacOS support!
 ## v1.0.4
