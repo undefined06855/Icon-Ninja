@@ -8,6 +8,5 @@ class $modify(HookedMenuGameLayer, MenuGameLayer) {
 	};
 	bool init();
 	void update(float dt);
-	void randomisePlayerObject(PlayerObject* player);
 };
  

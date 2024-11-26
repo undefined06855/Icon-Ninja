@@ -16,5 +16,7 @@ extern std::uniform_int_distribution<int> menuIconTypeDistribution;
 extern std::uniform_int_distribution<int> spreeIconCountDistribution;
 extern std::uniform_int_distribution<int> mixIconCountDistribution;
 
+void randomisePlayerObject(PlayerObject* player);
+
 }
 }

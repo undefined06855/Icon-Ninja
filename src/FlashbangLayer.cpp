@@ -23,6 +23,14 @@ void FlashbangLayer::addSelfToScene() {
 
 void FlashbangLayer::flashAndRemove() {
     runAction(
-        
+        cocos2d::CCSequence::create(
+            cocos2d::CCFadeIn::create(0.f),
+            cocos2d::CCDelayTime::create(1.f),
+            cocos2d::CCFadeOut::create(1.5f),
+            geode::cocos::CallFuncExt::create([this]{
+                removeFromParent();
+            }),
+            nullptr
+        )
     );
 }

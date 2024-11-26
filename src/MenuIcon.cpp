@@ -34,7 +34,7 @@ bool MenuIcon::init(MenuIconType type) {
 
 void MenuIcon::initialiseValues() {
     if (m_type == MenuIconType::Player) {
-        static_cast<HookedMenuGameLayer*>(MenuLayer::get()->m_menuGameLayer)->randomisePlayerObject(m_playerObject);
+        ninja::random::randomisePlayerObject(m_playerObject);
     }
 
     setPosition({

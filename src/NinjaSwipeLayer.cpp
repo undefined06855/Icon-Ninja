@@ -1,6 +1,7 @@
 #include "NinjaSwipeLayer.hpp"
 #include "MenuLayer.hpp"
 #include "utils/random.hpp"
+#include "FlashbangLayer.hpp"
 
 NinjaSwipeLayer* NinjaSwipeLayer::create() {
     auto ret = new NinjaSwipeLayer;
@@ -119,7 +120,6 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
             radius += margin * 2.f;
         }
         
-        geode::log::info("{}", player->retainCount());
         if (lineIntersectsCircle(player->getPosition(), radius, from, to)) {
             // ok so time to kill muahaha
             killPlayer(player);
@@ -184,7 +184,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
             /* dur */ .34f,
             /* durVar */ .24f,
             /* stripInterval */ .08f,
-            /* stripDelay */ .08f,
+            /* stripDelay */ .13f,
             /* stripDelayVar */ .2f,
             /* rotation */ 0.f, // (doesnt matter)
             /* rotationVar */ 180.f,
@@ -210,7 +210,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
             )
         );
 
-        this->runAction(
+        runAction(
             cocos2d::CCSequence::createWithTwoActions(
                 cocos2d::CCDelayTime::create(1.6f),
                 geode::cocos::CallFuncExt::create([this, player]{
@@ -219,7 +219,15 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
                     resetCombo();
                     removePlayer(player);
                     m_isBombCurrentlyExploding = false;
-                    player->m_isBombExploding = true;
+
+                    if (geode::Mod::get()->getSettingValue<bool>("flashbang")) {
+                        auto layer = FlashbangLayer::create();
+                        layer->addSelfToScene();
+                        layer->flashAndRemove();
+                    }
+
+                    // shake
+                    
                 })
             )
         );
