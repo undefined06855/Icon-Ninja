@@ -16,7 +16,7 @@ std::uniform_int_distribution<int> bombSpawnDistribution = std::uniform_int_dist
 std::uniform_int_distribution<int> menuIconTypeDistribution = std::uniform_int_distribution<int>(0, 1); // 0 = MenuIconType::Player  1 = MenuIconType::Bomb
 std::uniform_int_distribution<int> spreeIconCountDistribution = std::uniform_int_distribution<int>(4, 15); // should be a bit more than normal
 std::uniform_int_distribution<int> mixIconCountDistribution = std::uniform_int_distribution<int>(3, 5); // should be a bit more than normal
-
+std::uniform_real_distribution<float> shakeMovementDistribution = std::uniform_real_distribution<float>(-1.f, 1.f);
 
 // reimplemented from MenuGameLayer::resetPlayer
 // it kinda broke when i tried to use it without using the menugamelayer's 

@@ -15,6 +15,7 @@ extern std::uniform_int_distribution<int> bombSpawnDistribution;
 extern std::uniform_int_distribution<int> menuIconTypeDistribution;
 extern std::uniform_int_distribution<int> spreeIconCountDistribution;
 extern std::uniform_int_distribution<int> mixIconCountDistribution;
+extern std::uniform_real_distribution<float> shakeMovementDistribution;
 
 void randomisePlayerObject(PlayerObject* player);
 

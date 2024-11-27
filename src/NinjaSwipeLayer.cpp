@@ -96,6 +96,8 @@ bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
 }
 
 void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+    if (m_lastSwipePoint.getDistanceSq(touch->getLocation()) < 1.f) return; // too close smh stop being stupid
+
     checkSwipeIntersection(m_lastSwipePoint, touch->getLocation());
     m_swipe->addPoint(touch->getLocation());
     m_lastSwipePoint = touch->getLocation();
@@ -210,7 +212,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
 
         player->m_bombSprite->runAction(
             cocos2d::CCSpawn::createWithTwoActions(
-                cocos2d::CCScaleBy::create(1.8f, 1.5f),
+                cocos2d::CCScaleBy::create(1.6f, 1.7f),
                 cocos2d::CCRepeat::create(shake, 69420)
             )
         );
@@ -230,6 +232,8 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
                         layer->addSelfToScene();
                         layer->flashAndRemove();
                     }
+
+                    startShake();
 
                     // funny
                     // auto skibidi = cocos2d::CCNode::create();
@@ -325,6 +329,50 @@ void NinjaSwipeLayer::update(float dt) {
             m_debugNode->drawCircle(origin, radius, { 0.f, 0.f, 0.f, 0.f }, 1, col, 32);
         }
     }
+
+    updateShake(dt);
+}
+
+void NinjaSwipeLayer::updateShake(float dt) {
+    if (m_shakeTick <= 0) {
+        MenuLayer::get()->setPosition({ 0.f, 0.f });
+        return;
+    }
+
+    m_shakeTick -= dt;
+    float shakePercentage = m_shakeTick / m_maxShakeTick;
+    
+    float offsetX = ninja::random::shakeMovementDistribution(ninja::random::gen) * 12.f * shakePercentage;
+    float offsetY = ninja::random::shakeMovementDistribution(ninja::random::gen) * 12.f * shakePercentage;
+
+    MenuLayer::get()->setPosition({ offsetX, offsetY });
+}
+
+void NinjaSwipeLayer::startShake() {
+    if (GameManager::get()->getGameVariable("0172")) return;
+
+    // I stay out too late
+    // Got nothing in my brain
+    // That's what people say, mm-mm
+    // That's what people say, mm-mm
+
+    // I go on too many dates
+    // But I can't make 'em stay
+    // At least that's what people say, mm-mm
+    // That's what people say, mm-mm
+
+    // But I keep cruisin'
+    // Can't stop, won't stop movin'
+    // It's like I got this music in my mind
+    // Sayin' it's gonna be alright
+
+    // 'Cause the players gonna play, play, play, play, play
+    // And the haters gonna hate, hate, hate, hate, hate
+    // Baby, I'm just gonna shake, shake, shake, shake, shake
+    // I shake it off, I shake it off (hoo-hoo-hoo)
+
+    m_shakeTick = m_maxShakeTick;
+    geode::log::info("shakey bakey");
 }
 
 void NinjaSwipeLayer::removePlayer(MenuIcon* player) {

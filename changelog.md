@@ -1,4 +1,7 @@
 # Icon Ninja Changelog
+## v1.1.1
+- Improved swipe trail
+- Added shake effect on bomb explosion
 ## v1.1.0
 - Bombs!
 - Multiple players at once!

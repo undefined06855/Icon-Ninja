@@ -23,17 +23,17 @@ bool Swipe::init(cocos2d::CCTexture2D* texture) {
 }
 
 void Swipe::update(float dt) {
-    std::vector<SwipePoint> pointsForDeletion = {};
+    std::vector<SwipePoint*> pointsForDeletion = {};
 
-    for (auto& point : m_points) {
-        point.size -= dt;
+    for (auto point : m_points) {
+        point->m_tick += dt;
 
-        if (point.size <= 0) {
+        if (point->m_tick >= point->m_tickLength) {
             pointsForDeletion.push_back(point);
         }
     }
 
-    for (auto& point : pointsForDeletion) {
+    for (auto point : pointsForDeletion) {
         auto pos = std::find(m_points.begin(), m_points.end(), point);
         if (pos != m_points.end()) m_points.erase(pos);
     }
@@ -53,17 +53,17 @@ void Swipe::draw() {
     std::vector<cocos2d::CCPoint> points = {};
     std::vector<cocos2d::CCPoint> texCoords = {};
 
-    points.push_back(m_points.front().location); // taper to a point (front)
+    points.push_back(m_points.front()->m_location); // taper to a point (front)
     texCoords.push_back({0.f, 0.5f});
     for (int i = 1; i < m_points.size() - 1; i++) {
-        auto& point = m_points[i];
-        auto pointPositions = point.calculatePointPositions();
+        auto point = m_points[i];
+        auto pointPositions = point->calculatePointPositions();
         points.push_back(pointPositions.first);
         texCoords.push_back({0.5f, 1.f}); // v is flipped
         points.push_back(pointPositions.second);
         texCoords.push_back({0.5f, 0.f}); // v is flipped
     }
-    points.push_back(m_points.back().location); // taper to a point (back)
+    points.push_back(m_points.back()->m_location); // taper to a point (back)
     texCoords.push_back({1.f, 0.5f});
 
     glVertexAttribPointer(cocos2d::kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, points.data());
@@ -80,10 +80,7 @@ void Swipe::addPoint(cocos2d::CCPoint point) {
     // calculate positions of points
     float angle = atan2(m_lastPoint.y - point.y, m_lastPoint.x - point.x);
     
-    SwipePoint sp = {
-        .location = point,
-        .direction = angle
-    };
+    auto sp = new SwipePoint(point, angle);
 
     m_points.push_back(sp);
     m_lastPoint = point;

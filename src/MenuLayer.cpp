@@ -1,6 +1,7 @@
 #include "MenuLayer.hpp"
 #include "MenuGameLayer.hpp"
 #include "NinjaSwipeLayer.hpp"
+#include "utils/random.hpp"
 
 void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code) {
     auto mgl = static_cast<HookedMenuGameLayer*>(m_menuGameLayer);

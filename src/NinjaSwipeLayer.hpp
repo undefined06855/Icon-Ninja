@@ -12,7 +12,7 @@ public:
     static NinjaSwipeLayer* create();
     bool init() override;
 
-    bool m_isDebug = false;
+    static const bool m_isDebug = false;
     cocos2d::CCDrawNode* m_debugNode;
 
     bool m_isFingerDown = false;
@@ -40,10 +40,14 @@ public:
     cocos2d::CCLabelBMFont* m_hiComboLabel = nullptr;
     cocos2d::CCLayerRGBA* m_scoreLayer = nullptr;
 
+    float m_shakeTick = 0.f;
+    const float m_maxShakeTick = 0.7f;
+
     bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void update(float dt) override;
+    void updateShake(float dt);
 
     void checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to);
     bool lineIntersectsCircle(const cocos2d::CCPoint& circleCenter, const float circleRadius, const cocos2d::CCPoint& from, const cocos2d::CCPoint& to);
@@ -56,4 +60,5 @@ public:
 	void enterGameplay();
     void updateComboShit();
     void resetCombo();
+    void startShake();
 };
