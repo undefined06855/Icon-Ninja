@@ -2,6 +2,36 @@
 #include "MenuGameLayer.hpp"
 #include "NinjaSwipeLayer.hpp"
 #include "utils/random.hpp"
+#include "LeaderboardScene.hpp"
+
+bool HookedMenuLayer::init() {
+    if (!MenuLayer::init()) return false;
+
+    if (geode::Mod::get()->getSettingValue<bool>("hide-menu-button")) return true;
+
+    auto btnSpr = cocos2d::CCSprite::create("logobtn.png"_spr);
+    auto button = CCMenuItemSpriteExtra::create(
+        geode::BasedButtonSprite::create(
+            btnSpr,
+            geode::BaseType::Editor,
+            static_cast<int>(geode::EditorBaseSize::Normal),
+            static_cast<int>(geode::EditorBaseColor::BrightGreen)
+        ),
+        this, menu_selector(HookedMenuLayer::enterLeaderboardScene)
+    );
+    btnSpr->setScale(0.167f);
+    auto topRightMenu = getChildByID("top-right-menu");
+    topRightMenu->addChild(button);
+    topRightMenu->updateLayout();
+
+    return true;
+}
+
+void HookedMenuLayer::enterLeaderboardScene(cocos2d::CCObject*) {
+    cocos2d::CCDirector::sharedDirector()->pushScene(
+        cocos2d::CCTransitionFade::create(0.5f, LeaderboardScene::scene())
+    );
+}
 
 void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code) {
     auto mgl = static_cast<HookedMenuGameLayer*>(m_menuGameLayer);
