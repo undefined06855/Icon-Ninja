@@ -22,9 +22,9 @@ bool NinjaSwipeLayer::init() {
     addChild(m_swipe);
 
     // stupid cocos touch 
-    setTouchEnabled(true);    
+    setTouchEnabled(true);
     cocos2d::CCTouchDispatcher::get()->addTargetedDelegate(this, cocos2d::kCCMenuHandlerPriority, true);
-
+    setTouchMode(cocos2d::kCCTouchesAllAtOnce);
 
     // add layers n shit
     auto dir = cocos2d::CCDirector::sharedDirector();
@@ -87,8 +87,8 @@ bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
     // by not clearing the point list before this adds the point causes the end
     // of the last swipe to connect to the next swipe but nobody is going to
     // notice it's fine
-    if (m_isFingerDown) return false;
-    m_isFingerDown = true;
+    // if (m_isFingerDown) return false;
+    // m_isFingerDown = true;
 
     m_lastSwipePoint = touch->getLocation();
     m_swipe->addPoint(touch->getLocation());
@@ -172,7 +172,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
         geode::log::info("bomb!");
         m_isBombCurrentlyExploding = true;
         player->m_isBombExploding = true;
-        player->m_bombSprite->getChildByID("particles")->removeFromParentAndCleanup(true);
+        player->m_particles->removeFromParent();
         FMODAudioEngine::sharedEngine()->playEffect("kablooey.wav"_spr, 1.0f, 0.0f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
 
         auto flash = CCLightFlash::create();
@@ -258,6 +258,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
         removePlayer(player);
     }
 
+    // state check is redundant but here for readability
     if (m_state == State::Default && geode::Mod::get()->getSettingValue<bool>("enable-gameplay")) {
         enterGameplay();
     }
@@ -384,6 +385,8 @@ void NinjaSwipeLayer::removePlayer(MenuIcon* player) {
 }
 
 void NinjaSwipeLayer::enterGameplay() {
+    if (m_state == State::Gameplay) return;
+
     m_state = State::Gameplay;
     geode::log::info("NINJA TIME BABY");
     auto menuLayer = static_cast<HookedMenuLayer*>(MenuLayer::get());
@@ -400,6 +403,8 @@ void NinjaSwipeLayer::enterGameplay() {
 }
 
 void NinjaSwipeLayer::exitGameplay(cocos2d::CCObject* sender) {
+    if (m_state == State::Default) return;
+
     m_state = State::Default;
     geode::log::info("no more ninja time :broken_heart:");
     auto menuLayer = static_cast<HookedMenuLayer*>(MenuLayer::get());

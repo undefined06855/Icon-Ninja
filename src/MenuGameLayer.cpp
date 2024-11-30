@@ -10,6 +10,7 @@ bool HookedMenuGameLayer::init() {
     addChild(m_fields->ninjaSwipeLayer);
     // remove touch from this
     setTouchEnabled(false);
+    cocos2d::CCTouchDispatcher::get()->removeDelegate(this);
 
     // remove shit
     m_groundLayer->setVisible(false);

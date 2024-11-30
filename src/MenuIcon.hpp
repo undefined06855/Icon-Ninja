@@ -14,8 +14,11 @@ public:
     cocos2d::CCPoint m_speed = {0.f, 0.f};
     float m_rotationSpeed = 0.f;
 
-    PlayerObject* m_playerObject = nullptr;    // only one of these two will be
-    cocos2d::CCSprite* m_bombSprite = nullptr; // nullptr and one will be valid
+    // either playerobject or bombSprite and particles will be valid
+    // one or the other, never both
+    PlayerObject* m_playerObject = nullptr;
+    cocos2d::CCSprite* m_bombSprite = nullptr;
+    cocos2d::CCParticleSystemQuad* m_particles = nullptr;
     MenuIconType m_type;
     
     bool m_isBombExploding = false;
