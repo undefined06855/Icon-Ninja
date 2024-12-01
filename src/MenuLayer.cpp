@@ -3,6 +3,17 @@
 #include "NinjaSwipeLayer.hpp"
 #include "utils/random.hpp"
 
+bool HookedMenuLayer::init() {
+    if (!MenuLayer::init()) return false;
+
+    // gd lunar compatibility
+    if (auto title = geode::cast::typeinfo_cast<cocos2d::CCSprite*>(getChildByID("main-title"))) {
+        title->setCascadeOpacityEnabled(true);
+    }
+
+    return true;
+}
+
 void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code) {
     auto mgl = static_cast<HookedMenuGameLayer*>(m_menuGameLayer);
     auto nsl = mgl->m_fields->ninjaSwipeLayer;

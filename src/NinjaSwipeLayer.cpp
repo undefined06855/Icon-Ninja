@@ -172,7 +172,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
         geode::log::info("bomb!");
         m_isBombCurrentlyExploding = true;
         player->m_isBombExploding = true;
-        player->m_particles->removeFromParent();
+        if (geode::Mod::get()->getSettingValue<bool>("particles")) player->m_particles->removeFromParent();
         FMODAudioEngine::sharedEngine()->playEffect("kablooey.wav"_spr, 1.0f, 0.0f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
 
         auto flash = CCLightFlash::create();

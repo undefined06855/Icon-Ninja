@@ -53,6 +53,11 @@
 			"type": "bool",
 			"default": false
 		},
+		"particles": {
+			"name": "Enable bomb particles",
+			"type": "bool",
+			"default": false
+		},
 		"disable-stats-increment": {
 			"name": "Disable \"Players Destroyed\" stats incrementing",
 			"description": "This disables the Players Destroyed stats incrementing when an icon is killed using this mod.",

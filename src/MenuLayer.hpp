@@ -7,6 +7,7 @@ struct $modify(HookedMenuLayer, MenuLayer) {
         std::map<cocos2d::CCNode*, cocos2d::CCPoint> movedNodeMovements;
     };
 
+    bool init();
     void keyDown(cocos2d::enumKeyCodes code);
 
     void runEnterGameplayAnimations();

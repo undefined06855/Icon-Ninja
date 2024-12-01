@@ -22,13 +22,15 @@ bool MenuIcon::init(MenuIconType type) {
         m_bombSprite->setID("bomb-icon");
         addChild(m_bombSprite);
 
-        m_particles = GameToolbox::particleFromString("27a-1a0.68a0.67a-1a90a17a2a0a0a0a0a0a57a0a0a0a4a1a0a360a1a0a1a0a0a0a1a0a1a1a360a0a1a0a0a0a0a0a1a0a0.03a0a0.28a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0", nullptr, false);
-        m_particles->setPosition({-21.f, 20.f});
-        m_particles->setRotation(-98);
-        m_particles->setZOrder(-1);
-        m_particles->setID("particles");
-        m_particles->setPositionType(cocos2d::kCCPositionTypeFree);
-        addChild(m_particles);
+        if (geode::Mod::get()->getSettingValue<bool>("particles")) {
+            m_particles = GameToolbox::particleFromString("20a-1a0.68a0.67a-1a90a17a98a0a0a0a13a-200a57a0a0a0a4a1a0a360a1a0a1a0a0a0a1a0a1a1a360a0a1a0a0a0a0a0a1a0a0.03a0a0.28a0a0a0a0a0a0a0a0a1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0", nullptr, false);
+            m_particles->setPosition({-21.f, 20.f});
+            m_particles->setRotation(-98);
+            m_particles->setZOrder(-1);
+            m_particles->setID("particles");
+            m_particles->setPositionType(cocos2d::kCCPositionTypeFree);
+            addChild(m_particles);
+        }
     } else {
         auto layer = cocos2d::CCLayer::create();
         m_playerObject = PlayerObject::create(1, 1, nullptr, layer, false);
