@@ -56,11 +56,11 @@ bool NinjaSwipeLayer::init() {
     }
 
     m_comboLabel = cocos2d::CCLabelBMFont::create("...", fontString.c_str());
-    m_comboLabel->setID("combo-label"_spr);
+    m_comboLabel->setID("combo-label");
     m_scoreLayer->addChild(m_comboLabel);
 
     m_hiComboLabel = cocos2d::CCLabelBMFont::create("...", fontString.c_str());
-    m_hiComboLabel->setID("hi-combo-label"_spr);
+    m_hiComboLabel->setID("hi-combo-label");
     m_hiComboLabel->setScale(.4f);
     m_hiComboLabel->setPositionY(-24.f);
     m_hiComboLabel->setOpacity(176);
@@ -86,7 +86,9 @@ bool NinjaSwipeLayer::init() {
 bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     // by not clearing the point list before this adds the point causes the end
     // of the last swipe to connect to the next swipe but nobody is going to
-    // notice it's fine
+    // notice unless you have speedhack on and in that case youll see that the
+    // trail actually folds in on itself and caves in in some circumstances oh
+    // god ive said too much ok goodbye good luck with the rest of the code
 
     m_lastSwipePoint = touch->getLocation();
     m_swipe->addPoint(touch->getLocation());
@@ -162,8 +164,6 @@ bool NinjaSwipeLayer::lineIntersectsCircle(const cocos2d::CCPoint& circleCenter,
 }
 
 void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
-    // sorry never nesters but there wasnt an easy way out of this unless i use
-    // goto or something :broken_heart:
     if (player->m_type == MenuIconType::Bomb) {
         geode::log::info("bomb!");
         m_isBombCurrentlyExploding = true;
