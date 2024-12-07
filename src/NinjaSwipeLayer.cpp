@@ -197,7 +197,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
             /* lightStripCount */ 14.f,
             /* circleRotation */ false,
             /* fadeIn */ false,
-            0.1f
+            /* delay */ 0.1f
         );
         flash->setZOrder(-10);
         addChild(flash);
@@ -460,7 +460,7 @@ void NinjaSwipeLayer::spawnPlayers() {
 
     int type;
     do {
-        type = ninja::random::spawnTypeDistribution(ninja::random::gen); // same height, spree, bomb one, bomb two, random one, random two, mix
+        type = ninja::random::spawnTypeDistribution(ninja::random::gen);
     } while (type == m_lastSpawnType);
 
     geode::log::info("spawning players (type: {})", type);
@@ -506,8 +506,7 @@ void NinjaSwipeLayer::spawnPlayers() {
             break;
         }
 
-        case 2:
-        case 3: {
+        case 2: {
             // random # of bombs
             int count = ninja::random::bombSpawnDistribution(ninja::random::gen);
             for (int i = 0; i < count; i++) {
@@ -516,8 +515,8 @@ void NinjaSwipeLayer::spawnPlayers() {
             break;
         }
 
-        case 4:
-        case 5: {
+        case 3:
+        case 4: {
             // random # of icons
             int count = ninja::random::playerSpawnDistribution(ninja::random::gen);
             for (int i = 0; i < count; i++) {
@@ -526,6 +525,7 @@ void NinjaSwipeLayer::spawnPlayers() {
             break;
         }
 
+        case 5:
         case 6: {
             // random mix
             int count = ninja::random::mixIconCountDistribution(ninja::random::gen);

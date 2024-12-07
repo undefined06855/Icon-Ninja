@@ -60,8 +60,4 @@ public:
     void updateComboShit();
     void resetCombo();
     void startShake();
-
-    // uint8_t* generateTextureArray(cocos2d::ccColor3B colOuter, cocos2d::ccColor3B colInner);
-    // uint8_t* genrateTextureArray(cocos2d::ccColor3B colOuter, cocos2d::ccColor3B colInner, int margin);
-    // cocos2d::CCTexture generateTexture(uint8_t* colArray, int width, int height);
 };
