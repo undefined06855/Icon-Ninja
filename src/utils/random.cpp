@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include "random.hpp"
+#include "KnownPlayers.h"
 
 namespace ninja {
 namespace random {
@@ -25,7 +26,18 @@ auto shakeMovementDistribution = std::uniform_real_distribution<float>(-1.f, 1.f
 // https://discord.com/channels/911701438269386882/911702535373475870/1310683736152477708
 // most things specific to menugamelayer have been removed and the rest cleaned up
 // but actual logic is kept identical
+
+
+
 void randomisePlayerObject(PlayerObject* player) {
+    //known players compatibility
+    if(knownPlayersLoaded) {
+        auto event = known_players::events::NextIconModifyPlayerObject(player);
+        event.post();
+        //make sure the event has been handled
+        if(event.done) return;
+    }
+
     player->m_hasGlow = (float)rand() / RAND_MAX > 0.8;
     player->setColor(GameManager::sharedState()->colorForIdx((float)rand() / RAND_MAX * 108.0));
     player->setSecondColor(GameManager::sharedState()->colorForIdx((float)rand() / RAND_MAX * 108.0));
@@ -73,7 +85,7 @@ void randomisePlayerObject(PlayerObject* player) {
     float timeMod = 0;
     randFloat = (float)rand() / RAND_MAX;
 
-         if (randFloat < 0.2)  timeMod = 1.3f;
+    if (randFloat < 0.2)  timeMod = 1.3f;
     else if (randFloat < 0.4)  timeMod = 1.1f;
     else if (randFloat < 0.6)  timeMod = 0.7f;
     else if (randFloat < 0.65) timeMod = 1.6f;
@@ -82,6 +94,7 @@ void randomisePlayerObject(PlayerObject* player) {
     player->updateTimeMod(timeMod, false);
     player->updateEffects(0.f);
 }
+
 
 }
 }
