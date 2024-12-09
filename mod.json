@@ -19,14 +19,6 @@
 
 	"links": { "source": "https://github.com/undefined06855/icon-ninja" },
 
-	"incompatibilities": [
-		{
-			"id": "iandyhd3.known_players",
-			"importance": "conflicting",
-			"version": "*"
-		}
-	],
-
 	"settings": {
 		"enable-gameplay": {
 			"name": "Enable custom gameplay",

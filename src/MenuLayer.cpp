@@ -11,6 +11,9 @@ bool HookedMenuLayer::init() {
         title->setCascadeOpacityEnabled(true);
     }
 
+    //known players compatibility
+    ninja::random::knownPlayersLoaded = geode::Loader::get()->isModLoaded("iandyhd3.known_players");
+
     return true;
 }
 
