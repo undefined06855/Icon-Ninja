@@ -74,11 +74,12 @@ bool NinjaSwipeLayer::init() {
 
     scheduleUpdate();
 
-    if (m_isDebug) {
-        m_debugNode = cocos2d::CCDrawNode::create();
-        m_debugNode->init();
-        addChild(m_debugNode);
-    }
+#ifdef DEBUG
+    m_debugNode = cocos2d::CCDrawNode::create();
+    m_debugNode->init();
+    m_debugNode->setZOrder(999999);
+    addChild(m_debugNode);
+#endif
 
     return true;
 }
@@ -112,6 +113,11 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
     // dont let the player just click the icons
     if (from.getDistanceSq(to) < .5f) return;
     if (m_isBombCurrentlyExploding) return;
+
+#ifdef DEBUG
+    m_debugLastCheckFrom = from;
+    m_debugLastCheckTo = to;
+#endif
 
     for (auto player : m_players) {
         if (!player || player->retainCount() == 0) {
@@ -316,17 +322,19 @@ void NinjaSwipeLayer::update(float dt) {
         m_waitingForNextSpawn = true;
     }
 
-    if (m_isDebug) {
-        m_debugNode->clear();
-        for (auto player : m_players) {
-            float radius = player->getRadius();
-            auto origin = player->getPosition();
-            cocos2d::ccColor4F col;
-            if (player->m_type == MenuIconType::Bomb) col = { 1.f, 0.f, 0.f, 1.f };
-            else col = { 0.f, 0.f, 1.f, 1.f };
-            m_debugNode->drawCircle(origin, radius, { 0.f, 0.f, 0.f, 0.f }, 1, col, 32);
-        }
+#ifdef DEBUG
+    m_debugNode->clear();
+    for (auto player : m_players) {
+        float radius = player->getRadius();
+        auto origin = player->getPosition();
+        cocos2d::ccColor4F col;
+        if (player->m_type == MenuIconType::Bomb) col = { 1.f, 0.f, 0.f, 1.f };
+        else col = { 0.f, 0.f, 1.f, 1.f };
+        m_debugNode->drawCircle(origin, radius, { 0.f, 0.f, 0.f, 0.f }, 0.5f, col, 32); // no fill
     }
+
+    m_debugNode->drawSegment(m_debugLastCheckFrom, m_debugLastCheckTo, 1.f, { 0.f, 1.f, 0.f, 1.f });
+#endif
 
     updateShake(dt);
 }

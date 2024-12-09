@@ -12,8 +12,11 @@ public:
     static NinjaSwipeLayer* create();
     bool init() override;
 
-    static const bool m_isDebug = false;
+#ifdef DEBUG
     cocos2d::CCDrawNode* m_debugNode;
+    cocos2d::CCPoint m_debugLastCheckFrom = {0, 0};
+    cocos2d::CCPoint m_debugLastCheckTo = {0, 0};
+#endif
 
     Swipe* m_swipe;
     cocos2d::CCPoint m_lastSwipePoint;
