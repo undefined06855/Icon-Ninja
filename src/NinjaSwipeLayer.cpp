@@ -140,33 +140,41 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
     }
 }
 
-// im sure i could do this myself,
-// but chatgpt is easier but WAIT it's not for actual mod code this is for a thing
-// that someone smarter than me figured out in the past that im just using now
+
 bool NinjaSwipeLayer::lineIntersectsCircle(const cocos2d::CCPoint& circleCenter, const float circleRadius, const cocos2d::CCPoint& from, const cocos2d::CCPoint& to) {
-    // Vector from 'from' to 'to'
-    cocos2d::CCPoint d = to - from;
-    // Vector from 'from' to circle center
-    cocos2d::CCPoint f = from - circleCenter;
+    float effectiveRadius = circleRadius + m_capsuleThickness / 2.0f;
 
-    float a = d.dot(d);              // d·d (squared magnitude of d)
-    float b = 2 * f.dot(d);          // 2 * (f·d)
-    float c = f.dot(f) - circleRadius * circleRadius; // f·f - r²
+    cocos2d::CCPoint d = to - from;    
+    cocos2d::CCPoint f = from - circleCenter; 
 
-    // Solve the quadratic equation: at² + bt + c = 0
+    float a = d.dot(d);  
+    float b = 2 * f.dot(d); 
+    float c = f.dot(f) - effectiveRadius * effectiveRadius;
+
+    // cuz if d is > 0 then x1 and x2 is not imaginary
     float discriminant = b * b - 4 * a * c;
 
+    // front capsule
     if (discriminant < 0) {
-        // No intersection
         return false;
     }
 
-    // Check if the intersection points are within the line segment
-    discriminant = sqrt(discriminant);
+    // the ray, which is now a square
+    discriminant = std::sqrt(discriminant);
     float t1 = (-b - discriminant) / (2 * a);
     float t2 = (-b + discriminant) / (2 * a);
 
-    return (t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1);
+    if ((t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1)) {
+        return true;
+    }
+
+    // the end cap
+    float distFrom = (circleCenter.x - from.x) * (circleCenter.x - from.x) +
+        (circleCenter.y - from.y) * (circleCenter.y - from.y);
+    float distTo = (circleCenter.x - to.x) * (circleCenter.x - to.x) +
+        (circleCenter.y - to.y) * (circleCenter.y - to.y);
+
+    return distFrom <= effectiveRadius * effectiveRadius || distTo <= effectiveRadius * effectiveRadius;
 }
 
 void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
@@ -333,7 +341,7 @@ void NinjaSwipeLayer::update(float dt) {
         m_debugNode->drawCircle(origin, radius, { 0.f, 0.f, 0.f, 0.f }, 0.5f, col, 32); // no fill
     }
 
-    m_debugNode->drawSegment(m_debugLastCheckFrom, m_debugLastCheckTo, 1.f, { 0.f, 1.f, 0.f, 1.f });
+    m_debugNode->drawSegment(m_debugLastCheckFrom, m_debugLastCheckTo, m_capsuleThickness / 2.0f, { 0.f, 1.f, 0.f, 1.f });
 #endif
 
     updateShake(dt);

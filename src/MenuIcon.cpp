@@ -81,6 +81,6 @@ cocos2d::CCPoint MenuIcon::getWorldPos() {
 }
 
 float MenuIcon::getRadius() {
-    if (m_type == MenuIconType::Bomb) return 15.f;
+    if (m_type == MenuIconType::Bomb) return 14.f;
     return m_playerObject->m_vehicleSize * 16.f;
 }

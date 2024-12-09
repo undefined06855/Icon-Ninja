@@ -30,6 +30,7 @@ public:
     int m_lastSpawnType = 1; // spree is 1 - so spree will never be the first one
     
     const float m_gravity = 315;
+    const float m_capsuleThickness = 16.f;
 
     int m_combo = 0;
     int m_hiCombo = 0;
