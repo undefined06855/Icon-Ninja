@@ -1,4 +1,5 @@
 #pragma once
+// See https://github.com/iAndyHD3/KnownPlayers/blob/master/src/KnownPlayers.h
 
 #include "Geode/binding/PlayerObject.hpp"
 #include <optional>

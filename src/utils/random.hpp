@@ -17,8 +17,7 @@ extern std::uniform_int_distribution<int> spreeIconCountDistribution;
 extern std::uniform_int_distribution<int> mixIconCountDistribution;
 extern std::uniform_real_distribution<float> shakeMovementDistribution;
 
-inline bool knownPlayersLoaded = false;
-
+PlayerObject* createRandomPlayerObject();
 void randomisePlayerObject(PlayerObject* player);
 
 }

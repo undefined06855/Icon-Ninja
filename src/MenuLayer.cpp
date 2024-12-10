@@ -7,12 +7,16 @@ bool HookedMenuLayer::init() {
     if (!MenuLayer::init()) return false;
 
     // gd lunar compatibility
-    if (auto title = geode::cast::typeinfo_cast<cocos2d::CCSprite*>(getChildByID("main-title"))) {
+    if (auto title = geode::cast::typeinfo_cast<cocos2d::CCNodeRGBA*>(getChildByID("main-title"))) {
         title->setCascadeOpacityEnabled(true);
     }
 
-    //known players compatibility
-    ninja::random::knownPlayersLoaded = geode::Loader::get()->isModLoaded("iandyhd3.known_players");
+    // geode compat
+    if (auto bottomMenu = getChildByID("bottom-menu")) {
+        if (auto geodeButton = geode::cast::typeinfo_cast<cocos2d::CCNodeRGBA*>(bottomMenu->getChildByID("geode.loader/geode-button"))) {
+            geodeButton->setCascadeOpacityEnabled(true);
+        }
+    }
 
     return true;
 }

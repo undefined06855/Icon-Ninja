@@ -32,11 +32,9 @@ bool MenuIcon::init(MenuIconType type) {
             addChild(m_particles);
         }
     } else {
-        auto layer = cocos2d::CCLayer::create();
-        m_playerObject = PlayerObject::create(1, 1, nullptr, layer, false);
+        m_playerObject = ninja::random::createRandomPlayerObject();
         m_playerObject->setID("player-icon");
         addChild(m_playerObject);
-        addChild(layer); // not sure what this is for yet, let's see later
     }
 
     initialiseValues();
@@ -45,10 +43,6 @@ bool MenuIcon::init(MenuIconType type) {
 }
 
 void MenuIcon::initialiseValues() {
-    if (m_type == MenuIconType::Player) {
-        ninja::random::randomisePlayerObject(m_playerObject);
-    }
-
     setPosition({
         ninja::random::startXDistribution(ninja::random::gen),
         -40.f

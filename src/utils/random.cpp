@@ -1,6 +1,6 @@
 #include <Geode/Geode.hpp>
 #include "random.hpp"
-#include "KnownPlayers.h"
+#include "../external/KnownPlayers.h"
 
 namespace ninja {
 namespace random {
@@ -19,6 +19,26 @@ auto spreeIconCountDistribution = std::uniform_int_distribution<int>(4, 15); // 
 auto mixIconCountDistribution = std::uniform_int_distribution<int>(3, 5); // should be a bit more than normal
 auto shakeMovementDistribution = std::uniform_real_distribution<float>(-1.f, 1.f);
 
+
+PlayerObject* createRandomPlayerObject() {
+    auto ret = PlayerObject::create(1, 1, nullptr, cocos2d::CCLayer::create(), false);
+
+    // known players compatibility
+    if (geode::Loader::get()->isModLoaded("iandyhd3.known_players")) {
+        auto event = known_players::events::NextIconModifyPlayerObject(ret);
+        event.post();
+
+        if (!event.done) {
+            geode::log::warn("Known Players did not return event! Switching to fallback...");
+            randomisePlayerObject(ret);
+        }
+    } else {
+        randomisePlayerObject(ret);
+    }
+
+    return ret;
+}
+
 // reimplemented from MenuGameLayer::resetPlayer
 // it kinda broke when i tried to use it without using the menugamelayer's 
 // m_playerObject so thanks to prevter for remaking it well enough so that it can
@@ -26,18 +46,7 @@ auto shakeMovementDistribution = std::uniform_real_distribution<float>(-1.f, 1.f
 // https://discord.com/channels/911701438269386882/911702535373475870/1310683736152477708
 // most things specific to menugamelayer have been removed and the rest cleaned up
 // but actual logic is kept identical
-
-
-
 void randomisePlayerObject(PlayerObject* player) {
-    //known players compatibility
-    if(knownPlayersLoaded) {
-        auto event = known_players::events::NextIconModifyPlayerObject(player);
-        event.post();
-        //make sure the event has been handled
-        if(event.done) return;
-    }
-
     player->m_hasGlow = (float)rand() / RAND_MAX > 0.8;
     player->setColor(GameManager::sharedState()->colorForIdx((float)rand() / RAND_MAX * 108.0));
     player->setSecondColor(GameManager::sharedState()->colorForIdx((float)rand() / RAND_MAX * 108.0));
