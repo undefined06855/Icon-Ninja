@@ -12,8 +12,9 @@ Bomb sprite by [dasshu](https://bsky.app/profile/dasshu.dev)!
 Planned Features:
 - Customisable swords (based on player colours, perhaps)
 - Leaderboards
-- Screen shake
 Suggest features and report bugs at the github link in the bottom left!
+
+This mod has Known Players compatibility! Install the mod to be able to slice up your favourite GD players!
 
 ---
 
