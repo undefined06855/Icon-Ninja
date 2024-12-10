@@ -1,4 +1,11 @@
 # Icon Ninja Changelog
+## v1.2.0
+- Added Known Players compatibility!
+- Added bomb particles (by flingus)
+- Slightly fixed trail texture
+- Added GD Lunar compatibility
+- (Internal) Changed debug workings and moved debug to be to behind `-DDEBUG`
+- Adjusted chance of bombs spawning
 ## v1.1.1
 - Improved swipe trail
 - Added shake effect on bomb explosion
@@ -6,7 +13,7 @@
 - Bombs!
 - Multiple players at once!
 - Flashbang mode (for bombs)
-- Rewrote randomisation algorithm, Known Players compatibility will be added later
+- Rewrote randomisation algorithm
 - Improved launch randomisation
 - Improved collision
 - MacOS support temporarily removed

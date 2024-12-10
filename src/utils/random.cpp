@@ -94,7 +94,7 @@ void randomisePlayerObject(PlayerObject* player) {
     float timeMod = 0;
     randFloat = (float)rand() / RAND_MAX;
 
-    if (randFloat < 0.2)  timeMod = 1.3f;
+         if (randFloat < 0.2)  timeMod = 1.3f;
     else if (randFloat < 0.4)  timeMod = 1.1f;
     else if (randFloat < 0.6)  timeMod = 0.7f;
     else if (randFloat < 0.65) timeMod = 1.6f;

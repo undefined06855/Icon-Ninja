@@ -11,13 +11,6 @@ bool HookedMenuLayer::init() {
         title->setCascadeOpacityEnabled(true);
     }
 
-    // geode compat
-    if (auto bottomMenu = getChildByID("bottom-menu")) {
-        if (auto geodeButton = geode::cast::typeinfo_cast<cocos2d::CCNodeRGBA*>(bottomMenu->getChildByID("geode.loader/geode-button"))) {
-            geodeButton->setCascadeOpacityEnabled(true);
-        }
-    }
-
     return true;
 }
 
