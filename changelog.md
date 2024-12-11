@@ -1,4 +1,7 @@
 # Icon Ninja Changelog
+## v1.2.1
+- Made robots and spiders not animate while being flung
+- Made swing fire show all fires instead of the two by default
 ## v1.2.0
 - Added Known Players compatibility!
 - Added bomb particles (by flingus)
