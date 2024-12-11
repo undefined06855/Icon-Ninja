@@ -40,12 +40,13 @@ PlayerObject* createRandomPlayerObject() {
 }
 
 // reimplemented from MenuGameLayer::resetPlayer
-// it kinda broke when i tried to use it without using the menugamelayer's 
+// it kinda broke when i tried to use resetPlayer without using the menugamelayer's 
 // m_playerObject so thanks to prevter for remaking it well enough so that it can
 // be used in this silly joke mod
 // https://discord.com/channels/911701438269386882/911702535373475870/1310683736152477708
 // most things specific to menugamelayer have been removed and the rest cleaned up
-// but actual logic is kept identical
+// but actual logic is kept identical so this can be plonked into any project and
+// it will work fine - no icon ninja specific stuff has been overridden here
 void randomisePlayerObject(PlayerObject* player) {
     player->m_hasGlow = (float)rand() / RAND_MAX > 0.8;
     player->setColor(GameManager::sharedState()->colorForIdx((float)rand() / RAND_MAX * 108.0));
