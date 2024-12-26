@@ -1,4 +1,7 @@
 # Icon Ninja Changelog
+## v1.2.2
+- Added option to disable logging
+- (Internal) Renamed debug flag to `-DDEBUG_DRAW_NODE` to prevent conflicts that may have been happening
 ## v1.2.1
 - Made robots and spiders not animate while being flung
 - Made swing fire show all fires instead of the two by default

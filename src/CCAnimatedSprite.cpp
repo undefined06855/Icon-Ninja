@@ -1,8 +1,9 @@
 #include "CCAnimatedSprite.hpp"
+#include "utils/log.hpp"
 
 void HookedCCAnimatedSprite::runAnimation(gd::string animID) {
     std::string replacement = getReplacementAnimID(animID);
-    geode::log::info("convert anim {} -> {}", animID, replacement);
+    ninja::log::info("convert anim {} -> {}", animID, replacement);
     CCAnimatedSprite::runAnimation(replacement);
 }
 

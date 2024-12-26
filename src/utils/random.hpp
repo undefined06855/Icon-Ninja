@@ -1,8 +1,7 @@
 #pragma once
 #include <random>
 
-namespace ninja {
-namespace random {
+namespace ninja::random {
 
 extern std::mt19937 gen;
 extern std::uniform_real_distribution<float> startXDistribution;
@@ -20,5 +19,4 @@ extern std::uniform_real_distribution<float> shakeMovementDistribution;
 PlayerObject* createRandomPlayerObject();
 void randomisePlayerObject(PlayerObject* player);
 
-}
 }

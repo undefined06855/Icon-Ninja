@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include "random.hpp"
+#include "log.hpp"
 #include "../external/KnownPlayers.h"
 
 namespace ninja {
@@ -29,7 +30,7 @@ PlayerObject* createRandomPlayerObject() {
         event.post();
 
         if (!event.done) {
-            geode::log::warn("Known Players did not return event! Switching to fallback...");
+            ninja::log::warn("Known Players did not return event! Switching to fallback...");
             randomisePlayerObject(ret);
         }
     } else {
