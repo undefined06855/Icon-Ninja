@@ -49,6 +49,7 @@ bool NinjaSwipeLayer::init() {
     m_scoreLayer->setPosition(dir->getWinSize() / 2);
     m_scoreLayer->setPositionY(m_scoreLayer->getPositionY() + 140.f);
     m_scoreLayer->runAction(cocos2d::CCFadeOut::create(0.f)); // setOpacity(0) doesnt work idfk please tell me why
+    m_scoreLayer->setOpacity(0); // for the platforms where it does (also it might have fixed itself maybe)
 
     std::string fontString = "bigFont.fnt";
     int64_t font = geode::Mod::get()->getSettingValue<int64_t>("font");

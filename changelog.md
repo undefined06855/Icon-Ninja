@@ -1,4 +1,8 @@
 # Icon Ninja Changelog
+## v1.2.3
+- Moved around node order for better compatibility
+- Added Day & Night System compatibility
+- Fixed issues with glyphs of certain buttons not fading out
 ## v1.2.2
 - Added option to disable logging
 - (Internal) Renamed debug flag to `-DDEBUG_DRAW_NODE` to prevent conflicts that may have been happening

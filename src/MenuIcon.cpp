@@ -1,5 +1,5 @@
 #include "MenuIcon.hpp"
-#include "MenuGameLayer.hpp"
+#include "MenuLayer.hpp"
 #include "utils/random.hpp"
 
 MenuIcon* MenuIcon::create(MenuIconType type) {
@@ -69,7 +69,7 @@ cocos2d::CCPoint MenuIcon::getWorldPos() {
     cocos2d::CCPoint worldPos = convertToWorldSpace(getPosition());
 
     // convert to node space relative to swipeLayer
-    auto swipeLayer = static_cast<HookedMenuGameLayer*>(MenuLayer::get()->m_menuGameLayer)->m_fields->ninjaSwipeLayer;
+    auto swipeLayer = static_cast<HookedMenuLayer*>(MenuLayer::get())->m_fields->ninjaSwipeLayer;
 
     return swipeLayer->convertToNodeSpace(worldPos);
 }
