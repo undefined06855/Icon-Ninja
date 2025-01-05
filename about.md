@@ -14,7 +14,7 @@ Planned Features:
 - Leaderboards
 Suggest features and report bugs at the github link in the bottom left!
 
-This mod now has Known Players compatibility! Install the mod to be able to slice up your favourite GD players!
+This mod has Known Players compatibility! Install the mod to be able to slice up your favourite GD players!
 
 ---
 

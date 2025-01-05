@@ -1,5 +1,5 @@
 {
-	"geode": "4.0.1",
+	"geode": "4.1.0",
 	"gd": {
 		"win": "2.2074",
 		"android": "2.2074"
@@ -7,7 +7,7 @@
 
 	"id": "undefined0.icon_ninja",
 	"name": "Icon Ninja",
-	"version": "v1.2.0",
+	"version": "v1.2.2",
 	"developer": "undefined0",
 	"description": "Makes killing icons like Fruit Ninja!",
 	"tags": [ "joke", "offline", "modtober24" ],
@@ -47,6 +47,7 @@
 		},
 		"particles": {
 			"name": "Enable bomb particles",
+			"description": "Can be buggy at times, so has been disabled by default. Made by flingus!",
 			"type": "bool",
 			"default": false
 		},
@@ -74,6 +75,12 @@
 				"arrows": true,
 				"input": true
 			}
+		},
+		"enable-log": {
+			"name": "Enable logging",
+			"description": "Enables logging to help debugging the mod.",
+			"type": "bool",
+			"default": false
 		}
 	}
 }

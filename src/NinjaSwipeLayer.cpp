@@ -1,6 +1,7 @@
 #include "NinjaSwipeLayer.hpp"
 #include "MenuLayer.hpp"
 #include "utils/random.hpp"
+#include "utils/log.hpp"
 #include "FlashbangLayer.hpp"
 
 NinjaSwipeLayer* NinjaSwipeLayer::create() {
@@ -74,7 +75,7 @@ bool NinjaSwipeLayer::init() {
 
     scheduleUpdate();
 
-#ifdef DEBUG
+#ifdef DEBUG_DRAW_NODE
     m_debugNode = cocos2d::CCDrawNode::create();
     m_debugNode->init();
     m_debugNode->setZOrder(999999);
@@ -114,14 +115,14 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
     if (from.getDistanceSq(to) < .5f) return;
     if (m_isBombCurrentlyExploding) return;
 
-#ifdef DEBUG
+#ifdef DEBUG_DRAW_NODE
     m_debugLastCheckFrom = from;
     m_debugLastCheckTo = to;
 #endif
 
     for (auto player : m_players) {
         if (!player || player->retainCount() == 0) {
-            geode::log::warn("player is nullptr!");
+            ninja::log::warn("player is nullptr!");
             continue;
         }
 
@@ -171,7 +172,7 @@ bool NinjaSwipeLayer::lineIntersectsCircle(const cocos2d::CCPoint& circleCenter,
 
 void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
     if (player->m_type == MenuIconType::Bomb) {
-        geode::log::info("bomb!");
+        ninja::log::info("bomb!");
         m_isBombCurrentlyExploding = true;
         player->m_isBombExploding = true;
         if (geode::Mod::get()->getSettingValue<bool>("particles")) player->m_particles->removeFromParent();
@@ -242,7 +243,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
                     // auto skibidi = cocos2d::CCNode::create();
                     // skibidi->release();
                     // geode::Loader::get()->queueInMainThread([=]{
-                    //     geode::log::info("{}", skibidi);
+                    //     ninja::log::info("{}", skibidi);
                     // });
                 })
             )
@@ -294,7 +295,7 @@ void NinjaSwipeLayer::update(float dt) {
 
         auto dir = cocos2d::CCDirector::sharedDirector();
         if (player->getPositionY() <= -50.f || player->getPositionX() <= -50.f || player->getPositionX() >= dir->getScreenRight() + 50.f) {
-            geode::log::info("icon fell offscreen :broken_heart:");
+            ninja::log::info("icon fell offscreen :broken_heart:");
             playersToRemove.push_back(player);
 
             // offscreen, below starting point, remove and reset combo
@@ -309,7 +310,7 @@ void NinjaSwipeLayer::update(float dt) {
     }
 
     if (m_players.size() == 0 && !m_waitingForNextSpawn && !m_isSendingOutSpree && !m_isBombCurrentlyExploding) {
-        geode::log::info("ran out! wait 1.5 secs, ill spawn some more");
+        ninja::log::info("ran out! wait 1.5 secs, ill spawn some more");
         // ran out!
         auto action = cocos2d::CCSequence::createWithTwoActions(
             cocos2d::CCDelayTime::create(1.5f),
@@ -322,7 +323,7 @@ void NinjaSwipeLayer::update(float dt) {
         m_waitingForNextSpawn = true;
     }
 
-#ifdef DEBUG
+#ifdef DEBUG_DRAW_NODE
     m_debugNode->clear();
     for (auto player : m_players) {
         float radius = player->getRadius();
@@ -378,7 +379,7 @@ void NinjaSwipeLayer::startShake() {
     // I shake it off, I shake it off (hoo-hoo-hoo)
 
     m_shakeTick = m_maxShakeTick;
-    geode::log::info("shakey bakey");
+    ninja::log::info("shakey bakey");
 }
 
 void NinjaSwipeLayer::removePlayer(MenuIcon* player) {
@@ -392,7 +393,7 @@ void NinjaSwipeLayer::enterGameplay() {
     if (m_state == State::Gameplay) return;
 
     m_state = State::Gameplay;
-    geode::log::info("NINJA TIME BABY");
+    ninja::log::info("NINJA TIME BABY");
     auto menuLayer = static_cast<HookedMenuLayer*>(MenuLayer::get());
     menuLayer->runEnterGameplayAnimations();
 
@@ -410,7 +411,7 @@ void NinjaSwipeLayer::exitGameplay(cocos2d::CCObject* sender) {
     if (m_state == State::Default) return;
 
     m_state = State::Default;
-    geode::log::info("no more ninja time :broken_heart:");
+    ninja::log::info("no more ninja time :broken_heart:");
     auto menuLayer = static_cast<HookedMenuLayer*>(MenuLayer::get());
     menuLayer->runExitGameplayAnimations();
     
@@ -471,7 +472,7 @@ void NinjaSwipeLayer::spawnPlayers() {
         type = ninja::random::spawnTypeDistribution(ninja::random::gen);
     } while (type == m_lastSpawnType);
 
-    geode::log::info("spawning players (type: {})", type);
+    ninja::log::info("spawning players (type: {})", type);
     m_lastSpawnType = type;
     switch(type) {
         case 0: {
@@ -550,5 +551,5 @@ void NinjaSwipeLayer::spawnPlayers() {
 }
 
 $on_mod(Loaded) {
-    geode::log::info("hi spaghettdev");
+    ninja::log::info("hi spaghettdev");
 }
