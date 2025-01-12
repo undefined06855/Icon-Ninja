@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.2.4
+- Added Geodify compatibility
 ## v1.2.3
 - Moved around node order for better compatibility
 - Added Day & Night System compatibility
