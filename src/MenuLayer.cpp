@@ -81,7 +81,7 @@ void HookedMenuLayer::runEnterGameplayAnimations() {
     // gets all children and if they should be moved figures out where they
     // should move to and stores it in (std::map)m_fields->movedNodeMovements
     for (auto& child : geode::cocos::CCArrayExt<CCNode*>(getChildren())) {
-        if (child == m_menuGameLayer || child == m_fields->ninjaSwipeLayer || child->getID() == "swelvy-background") continue;
+        if (child->getZOrder() < m_fields->ninjaSwipeLayer->getZOrder()) continue;
         
         // get side + move dist
         cocos2d::CCPoint movement;
