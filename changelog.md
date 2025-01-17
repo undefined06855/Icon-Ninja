@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.2.5
+- MacOS support! #16, by Jasmine (hiimjustin000)
 ## v1.2.4
 - Added Geodify compatibility
 - Checked Z orders to allow more mod compatibility in the future
