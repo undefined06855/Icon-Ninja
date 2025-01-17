@@ -1,5 +1,14 @@
 #include "Swipe.hpp"
 
+unsigned int* getNumberOfDraws() {
+    #ifdef GEODE_IS_MACOS
+    static_assert(GEODE_COMP_GD_VERSION == 22074, "Please update macOS offsets");
+    return reinterpret_cast<unsigned int*>(geode::base::get() + GEODE_ARM_MAC(0x8b0f60) GEODE_INTEL_MAC(0x98bf30));
+    #else
+    return &g_uNumberOfDraws;
+    #endif
+}
+
 Swipe* Swipe::create(cocos2d::CCTexture2D* texture) {
     auto ret = new Swipe;
     if (ret->init(texture)) {
@@ -70,10 +79,7 @@ void Swipe::draw() {
     glVertexAttribPointer(cocos2d::kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, 0, texCoords.data());
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, points.size());
-#ifndef GEODE_IS_MACOS
-    // req. g_uNumberOfDraws which literally cannot be found on mac/ios since broma doesnt support it
-    CC_INCREMENT_GL_DRAWS(1);
-#endif
+    *getNumberOfDraws() += 1;
 }
 
 void Swipe::addPoint(cocos2d::CCPoint point) {
