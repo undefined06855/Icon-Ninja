@@ -1,6 +1,6 @@
 # Icon Ninja Changelog
 ## v1.2.6
-- Fixed issues in the mod description1
+- Fixed issues in the mod description
 ## v1.2.5
 - MacOS support! #16, by Jasmine (hiimjustin000)
 ## v1.2.4
