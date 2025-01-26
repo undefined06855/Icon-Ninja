@@ -8,14 +8,17 @@
 
 	"id": "undefined0.icon_ninja",
 	"name": "Icon Ninja",
-	"version": "v1.2.6",
+	"version": "v1.2.7",
 	"developer": "undefined0",
 	"description": "Makes killing icons like Fruit Ninja!",
 	"tags": [ "joke", "offline", "modtober24" ],
 
 	"resources": {
-		"sprites": [ "./resources/*.png" ],
-		"files": [ "./resources/*.wav" ]
+		"sprites": [ "resources/swipe.png" ],
+		"files": [ "resources/*.wav" ],
+		"spritesheets": {
+			"bombforhuesprite": [ "resources/bomb.png" ]
+		}
 	},
 
 	"links": { "source": "https://github.com/undefined06855/icon-ninja" },

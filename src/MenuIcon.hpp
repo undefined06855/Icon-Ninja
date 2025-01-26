@@ -1,5 +1,5 @@
 #pragma once
-#include <Geode/Geode.hpp>
+#include "CCSpriteWithLuminosity.hpp"
 
 enum class MenuIconType {
     Player = 0, Bomb = 1
@@ -17,7 +17,7 @@ public:
     // either playerobject or bombSprite and particles will be valid
     // one or the other, never both
     PlayerObject* m_playerObject = nullptr;
-    cocos2d::CCSprite* m_bombSprite = nullptr;
+    CCSpriteWithLuminosity* m_bombSprite = nullptr;
     cocos2d::CCParticleSystemQuad* m_particles = nullptr;
     MenuIconType m_type;
     

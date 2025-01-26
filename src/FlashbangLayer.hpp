@@ -1,5 +1,5 @@
 #pragma once
-#include <Geode/Geode.hpp>
+#include <Geode/cocos/include/cocos2d.h>
 
 class FlashbangLayer : public cocos2d::CCLayerColor {
 public:

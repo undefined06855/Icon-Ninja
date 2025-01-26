@@ -1,5 +1,5 @@
 #pragma once
-#include <Geode/Geode.hpp>
+#include <Geode/loader/Log.hpp>
 
 // lazy
 #define LOG_ENABLE_CHECK geode::Mod::get()->getSettingValue<bool>("enable-log")

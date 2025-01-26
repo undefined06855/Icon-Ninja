@@ -6,4 +6,4 @@ Idea from Alphalaneous, see [this discord message](https://discord.com/channels/
 Bomb sprite by [dasshu](https://bsky.app/profile/dasshu.dev). Thanks!! \
 Sound effects from Fruit Ninja are the property of Halfbrick Studios.
 
-FlashbangLayer is free to take and use, as long as this repo is stated in the source (doesn't have to be mentioned as me)
+Feel free to take FlashbangLayer, CCBrighten and CCSpriteWithLuminosity as well as usage of CCLightFlash

@@ -1,7 +1,6 @@
 #pragma once
-#include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
-#include "NinjaSwipeLayer.hpp"
+#include "../NinjaSwipeLayer.hpp"
 
 class $modify(HookedMenuLayer, MenuLayer) {
     static void onModify(auto& self);
