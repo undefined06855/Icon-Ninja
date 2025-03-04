@@ -4,7 +4,7 @@
 #include <random>
 
 enum class State {
-	Default = 0, Gameplay
+    Default = 0, Gameplay
 };
 
 class NinjaSwipeLayer : public cocos2d::CCLayer {
@@ -56,10 +56,10 @@ public:
 
     void killPlayer(MenuIcon* player);
     void removePlayer(MenuIcon* player);
-	void spawnPlayers();
+    void spawnPlayers();
     void spawnPlayerExplosionParticles(const cocos2d::CCPoint& pos, const cocos2d::ccColor3B& col);
-	void exitGameplay(CCObject* sender);
-	void enterGameplay();
+    void exitGameplay(CCObject* sender);
+    void enterGameplay();
     void updateComboShit();
     void resetCombo();
     void startShake();

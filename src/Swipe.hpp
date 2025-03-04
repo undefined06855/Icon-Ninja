@@ -1,5 +1,5 @@
 #pragma once
-#include <Geode/Geode.hpp>
+#include <Geode/cocos/include/cocos2d.h>
 #include "SwipePoint.hpp"
 
 class Swipe : public cocos2d::CCNode {

@@ -1,8 +1,9 @@
 #include "NinjaSwipeLayer.hpp"
-#include "MenuLayer.hpp"
+#include "hooks/MenuLayer.hpp"
 #include "utils/random.hpp"
 #include "utils/log.hpp"
 #include "FlashbangLayer.hpp"
+#include "CCBrighten.hpp"
 
 NinjaSwipeLayer* NinjaSwipeLayer::create() {
     auto ret = new NinjaSwipeLayer;
@@ -216,9 +217,11 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
         );
 
         player->m_bombSprite->runAction(
-            cocos2d::CCSpawn::createWithTwoActions(
-                cocos2d::CCScaleBy::create(1.6f, 1.7f),
-                cocos2d::CCRepeat::create(shake, 69420)
+            cocos2d::CCSpawn::create(
+                cocos2d::CCScaleBy::create(1.6f, 1.6f),
+                cocos2d::CCRepeat::create(shake, 69420),
+                CCBrighten::create(1.6f),
+                NULL
             )
         );
 

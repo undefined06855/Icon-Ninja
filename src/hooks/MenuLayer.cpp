@@ -1,7 +1,7 @@
 #include "MenuLayer.hpp"
 #include "MenuGameLayer.hpp"
-#include "utils/random.hpp"
-#include "utils/log.hpp"
+#include "../utils/random.hpp"
+#include "../utils/log.hpp"
 
 void HookedMenuLayer::onModify(auto& self) {
     ninja::log::info("hook prio time");

@@ -1,5 +1,5 @@
 #include "CCAnimatedSprite.hpp"
-#include "utils/log.hpp"
+#include "../utils/log.hpp"
 
 void HookedCCAnimatedSprite::runAnimation(gd::string animID) {
     std::string replacement = getReplacementAnimID(animID);

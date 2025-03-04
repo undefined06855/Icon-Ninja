@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+#include <Geode/binding/PlayerObject.hpp>
 #include "random.hpp"
 #include "log.hpp"
 #include "../external/KnownPlayers.h"

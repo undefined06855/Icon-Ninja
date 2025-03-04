@@ -1,4 +1,7 @@
 # Icon Ninja Changelog
+## v1.2.7
+- (Internal) Move hooks to separate folder
+- Make bomb brighten while exploding
 ## v1.2.6
 - Fixed issues in the mod description
 ## v1.2.5

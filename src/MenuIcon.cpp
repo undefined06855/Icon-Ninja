@@ -1,5 +1,5 @@
 #include "MenuIcon.hpp"
-#include "MenuLayer.hpp"
+#include "hooks/MenuLayer.hpp"
 #include "utils/random.hpp"
 
 MenuIcon* MenuIcon::create(MenuIconType type) {
@@ -17,7 +17,12 @@ bool MenuIcon::init(MenuIconType type) {
     m_type = type;
 
     if (type == MenuIconType::Bomb) {
-        m_bombSprite = cocos2d::CCSprite::create("bomb.png"_spr);
+        auto frame = cocos2d::CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("bomb.png"_spr);
+        // the CCSpriteWithLuminosity is CCSpriteWithHue but with a shader that
+        // actually cares about u_lum
+        // ccspritegrayscale is the same thing but with a different shader
+        m_bombSprite = CCSpriteWithLuminosity::createWithSpriteFrame(frame);
+        m_bombSprite->setFixedLuminance(1.f);
         m_bombSprite->setScale(.7f);
         m_bombSprite->setID("bomb-icon");
         addChild(m_bombSprite);
