@@ -45,6 +45,8 @@ public:
     float m_shakeTick = 0.f;
     const float m_maxShakeTick = 0.7f;
 
+    int m_numTouches = 0;
+
     bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;

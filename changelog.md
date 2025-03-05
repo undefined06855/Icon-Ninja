@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.2.8
+- Refix issues with multiple touches on mobile (literally fixed 2 months ago but just did not fix for some reason :broken_heart:)
 ## v1.2.7
 - (Internal) Move hooks to separate folder
 - Make bomb brighten while exploding

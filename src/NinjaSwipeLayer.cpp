@@ -55,6 +55,7 @@ bool NinjaSwipeLayer::init() {
     std::string fontString = "bigFont.fnt";
     int64_t font = geode::Mod::get()->getSettingValue<int64_t>("font");
     if (font > 1) {
+        // @geode-ignore(unknown-resource)
         fontString = fmt::format("gjFont{:02}.fnt", font - 1);
     }
 
@@ -88,6 +89,9 @@ bool NinjaSwipeLayer::init() {
 }
 
 bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+    m_numTouches++;
+    if (m_numTouches != 1) return false;
+
     // by not clearing the point list before this adds the point causes the end
     // of the last swipe to connect to the next swipe but nobody is going to
     // notice unless you have speedhack on and in that case youll see that the
@@ -101,6 +105,8 @@ bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
 
 void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     if (m_lastSwipePoint.getDistanceSq(touch->getLocation()) < 1.f) return; // too close smh stop being stupid
+    m_numTouches++;
+    if (m_numTouches != 1) return;
 
     checkSwipeIntersection(m_lastSwipePoint, touch->getLocation());
     m_swipe->addPoint(touch->getLocation());
@@ -108,6 +114,9 @@ void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
 }
 
 void NinjaSwipeLayer::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+    m_numTouches++;
+    if (m_numTouches != 1) return;
+
     checkSwipeIntersection(m_lastSwipePoint, touch->getLocation());
     m_swipe->addPoint(touch->getLocation());
 }
@@ -287,6 +296,7 @@ void NinjaSwipeLayer::spawnPlayerExplosionParticles(const cocos2d::CCPoint& pos,
 }
 
 void NinjaSwipeLayer::update(float dt) {
+    m_numTouches = 0; // reset # of touches this frame
     m_swipe->setVisible(!m_isBombCurrentlyExploding);
 
     // physics
