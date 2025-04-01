@@ -8,7 +8,6 @@
 #include "utils/log.hpp"
 #include "FlashbangLayer.hpp"
 #include "CCBrighten.hpp"
-#include <chrono>
 
 NinjaSwipeLayer* NinjaSwipeLayer::create() {
     auto ret = new NinjaSwipeLayer;
@@ -91,10 +90,10 @@ bool NinjaSwipeLayer::init() {
 #endif
 
     auto currentTime = std::time(0);
-    tm timeInfo;
-    localtime_s(&timeInfo, &currentTime);
+    // deprecated or something by microsoft? works multi-platform whereas localtime_s doesnt
+    auto timeInfo = std::localtime(&currentTime);
     // months are zero indexed, days are one indexed
-    if (timeInfo.tm_mday == 1 && timeInfo.tm_mon == 3) {
+    if (timeInfo->tm_mday == 1 && timeInfo->tm_mon == 3) {
         m_isAprilFools = true;
         geode::log::info("April fools!");
     }
@@ -259,11 +258,12 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
                         label->setRotation(std::sin(rand()) * 20);
                         label->setPosition(player->getPosition());
                         label->setID("april-fools-label");
-                        label->setScale(.9f);
+                        label->setScale(0.f);
                         addChild(label);
 
                         label->runAction(
                             cocos2d::CCSequence::create(
+                                cocos2d::CCScaleTo::create(.2f, .9f),
                                 cocos2d::CCDelayTime::create(1.f),
                                 cocos2d::CCFadeOut::create(1.f),
                                 cocos2d::CCRemoveSelf::create(),
