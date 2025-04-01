@@ -1,5 +1,6 @@
 # Icon Ninja Changelog
 ## v1.2.9
+- (Internal) Prefix globals with g_ like they should've been
 - April Fools!
 ## v1.2.8
 - Refix issues with multiple touches on mobile (literally fixed 2 months ago but just did not fix for some reason :broken_heart:)
