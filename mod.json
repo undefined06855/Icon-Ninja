@@ -1,5 +1,5 @@
 {
-	"geode": "4.2.0",
+	"geode": "4.3.1",
 	"gd": {
 		"win": "2.2074",
 		"android": "2.2074",
@@ -8,7 +8,7 @@
 
 	"id": "undefined0.icon_ninja",
 	"name": "Icon Ninja",
-	"version": "v1.2.8",
+	"version": "v1.2.9",
 	"developer": "undefined0",
 	"description": "Makes killing icons like Fruit Ninja!",
 	"tags": [ "joke", "offline", "modtober24" ],
@@ -83,6 +83,11 @@
 		"enable-log": {
 			"name": "Enable logging",
 			"description": "Enables logging to help debugging the mod.",
+			"type": "bool",
+			"default": false
+		},
+		"april-unfools": {
+			"name": "Disable April Fools jokes",
 			"type": "bool",
 			"default": false
 		}

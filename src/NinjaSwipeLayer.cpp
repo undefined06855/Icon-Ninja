@@ -1,9 +1,14 @@
 #include "NinjaSwipeLayer.hpp"
+#include "Geode/cocos/actions/CCActionInstant.h"
+#include "Geode/cocos/actions/CCActionInterval.h"
+#include "Geode/cocos/label_nodes/CCLabelBMFont.h"
+#include "MenuIcon.hpp"
 #include "hooks/MenuLayer.hpp"
 #include "utils/random.hpp"
 #include "utils/log.hpp"
 #include "FlashbangLayer.hpp"
 #include "CCBrighten.hpp"
+#include <chrono>
 
 NinjaSwipeLayer* NinjaSwipeLayer::create() {
     auto ret = new NinjaSwipeLayer;
@@ -38,7 +43,7 @@ bool NinjaSwipeLayer::init() {
     );
     m_exitButton->setPosition({20.f, dir->getScreenTop() - 20.f + 50.f}); // +50 so its offscreen and can move down later
     auto menu = cocos2d::CCMenu::create();
-    menu->setID("gameplay-exit-button"_spr);
+    menu->setID("gameplay-exit-button");
     menu->addChild(m_exitButton);
     menu->setPosition({0, 0});
     addChild(menu);
@@ -46,7 +51,7 @@ bool NinjaSwipeLayer::init() {
     // create label for gameplay
     m_scoreLayer = cocos2d::CCLayerRGBA::create();
     m_scoreLayer->setCascadeOpacityEnabled(true);
-    m_scoreLayer->setID("score-layer"_spr);
+    m_scoreLayer->setID("score-layer");
     m_scoreLayer->setPosition(dir->getWinSize() / 2);
     m_scoreLayer->setPositionY(m_scoreLayer->getPositionY() + 140.f);
     m_scoreLayer->runAction(cocos2d::CCFadeOut::create(0.f)); // setOpacity(0) doesnt work idfk please tell me why
@@ -84,6 +89,17 @@ bool NinjaSwipeLayer::init() {
     m_debugNode->setZOrder(999999);
     addChild(m_debugNode);
 #endif
+
+    auto currentTime = std::time(0);
+    tm timeInfo;
+    localtime_s(&timeInfo, &currentTime);
+    // months are zero indexed, days are one indexed
+    if (timeInfo.tm_mday == 1 && timeInfo.tm_mon == 3) {
+        m_isAprilFools = true;
+        geode::log::info("April fools!");
+    }
+
+    setID("ninja-swipe-layer"_spr);
 
     return true;
 }
@@ -230,7 +246,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
                 cocos2d::CCScaleBy::create(1.6f, 1.6f),
                 cocos2d::CCRepeat::create(shake, 69420),
                 CCBrighten::create(1.6f),
-                NULL
+                nullptr
             )
         );
 
@@ -238,6 +254,24 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
             cocos2d::CCSequence::createWithTwoActions(
                 cocos2d::CCDelayTime::create(1.6f),
                 geode::cocos::CallFuncExt::create([this, player]{
+                    if (m_isAprilFools) {
+                        auto label = cocos2d::CCLabelBMFont::create("April Fools!", "bigFont.fnt");
+                        label->setRotation(std::sin(rand()) * 20);
+                        label->setPosition(player->getPosition());
+                        label->setID("april-fools-label");
+                        label->setScale(.9f);
+                        addChild(label);
+
+                        label->runAction(
+                            cocos2d::CCSequence::create(
+                                cocos2d::CCDelayTime::create(1.f),
+                                cocos2d::CCFadeOut::create(1.f),
+                                cocos2d::CCRemoveSelf::create(),
+                                nullptr
+                            )
+                        );
+                    }
+
                     // spawn particles and delete bomb
                     spawnPlayerExplosionParticles(player->getPosition(), { 65, 64, 66 });
                     resetCombo();
@@ -251,13 +285,6 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
                     }
 
                     startShake();
-
-                    // funny
-                    // auto skibidi = cocos2d::CCNode::create();
-                    // skibidi->release();
-                    // geode::Loader::get()->queueInMainThread([=]{
-                    //     ninja::log::info("{}", skibidi);
-                    // });
                 })
             )
         );
@@ -482,12 +509,18 @@ void NinjaSwipeLayer::spawnPlayers() {
     if (m_players.size() != 0) return;
 
     int type;
-    do {
-        type = ninja::random::spawnTypeDistribution(ninja::random::gen);
-    } while (type == m_lastSpawnType);
+    if (m_isAprilFools) {
+        type = 1; // always spree
+    } else {
+        // new random type that isnt m_lastSpawnType
+        do {
+            type = ninja::random::spawnTypeDistribution(ninja::random::gen);
+        } while (type == m_lastSpawnType);
+    }
 
     ninja::log::info("spawning players (type: {})", type);
     m_lastSpawnType = type;
+
     switch(type) {
         case 0: {
             // all go to the same height
@@ -509,7 +542,8 @@ void NinjaSwipeLayer::spawnPlayers() {
             // alright guys lets cocos action this up
             auto spawnSequence = cocos2d::CCSequence::createWithTwoActions(
                 geode::cocos::CallFuncExt::create([this]{
-                    auto icon = MenuIcon::create(MenuIconType::Player);
+                    auto type = m_isAprilFools ? MenuIconType::Bomb : MenuIconType::Player;
+                    auto icon = MenuIcon::create(type);
                     m_players.push_back(icon);
                     // usually done at the end of this function (adds all of m_players)
                     // but cant for obvious reasons

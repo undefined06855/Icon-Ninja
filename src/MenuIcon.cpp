@@ -44,6 +44,8 @@ bool MenuIcon::init(MenuIconType type) {
 
     initialiseValues();
 
+    setID("menu-icon");
+    
     return true;
 }
 

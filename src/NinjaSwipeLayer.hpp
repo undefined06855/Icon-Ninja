@@ -47,6 +47,8 @@ public:
 
     int m_numTouches = 0;
 
+    bool m_isAprilFools = false;
+
     bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
     void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
