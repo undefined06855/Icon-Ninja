@@ -295,6 +295,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
         // taken from MenuGameLayer::killPlayer - thanks prevter for decomp
         if (!geode::Mod::get()->getSettingValue<bool>("disable-stats-increment"))
             GameStatsManager::sharedState()->incrementStat("9", 1);
+        // @geode-ignore(unknown-resource)
         FMODAudioEngine::sharedEngine()->playEffect("explode_11.ogg", 1.0f, 0.0f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
         
         spawnPlayerExplosionParticles(player->getPosition(), player->m_playerObject->m_playerColor1);
@@ -390,8 +391,8 @@ void NinjaSwipeLayer::updateShake(float dt) {
     m_shakeTick -= dt;
     float shakePercentage = m_shakeTick / m_maxShakeTick;
     
-    float offsetX = ninja::random::shakeMovementDistribution(ninja::random::gen) * 12.f * shakePercentage;
-    float offsetY = ninja::random::shakeMovementDistribution(ninja::random::gen) * 12.f * shakePercentage;
+    float offsetX = ninja::random::g_shakeMovementDistribution(ninja::random::g_gen) * 12.f * shakePercentage;
+    float offsetY = ninja::random::g_shakeMovementDistribution(ninja::random::g_gen) * 12.f * shakePercentage;
 
     MenuLayer::get()->setPosition({ offsetX, offsetY });
 }
@@ -514,7 +515,7 @@ void NinjaSwipeLayer::spawnPlayers() {
     } else {
         // new random type that isnt m_lastSpawnType
         do {
-            type = ninja::random::spawnTypeDistribution(ninja::random::gen);
+            type = ninja::random::g_spawnTypeDistribution(ninja::random::g_gen);
         } while (type == m_lastSpawnType);
     }
 
@@ -524,10 +525,10 @@ void NinjaSwipeLayer::spawnPlayers() {
     switch(type) {
         case 0: {
             // all go to the same height
-            float sharedHeight = ninja::random::launchSpeedYDistribution(ninja::random::gen);
-            int count = ninja::random::playerSpawnDistribution(ninja::random::gen);
+            float sharedHeight = ninja::random::g_launchSpeedYDistribution(ninja::random::g_gen);
+            int count = ninja::random::g_playerSpawnDistribution(ninja::random::g_gen);
             for (int i = 0; i < count; i++) {
-                auto player = MenuIcon::create(static_cast<MenuIconType>(ninja::random::menuIconTypeDistribution(ninja::random::gen)));
+                auto player = MenuIcon::create(static_cast<MenuIconType>(ninja::random::g_menuIconTypeDistribution(ninja::random::g_gen)));
                 player->m_speed.y = sharedHeight;
                 m_players.push_back(player);
             }
@@ -536,7 +537,7 @@ void NinjaSwipeLayer::spawnPlayers() {
 
         case 1: {
             // spree, bunch get sent out randomly in quick succession
-            int count = ninja::random::spreeIconCountDistribution(ninja::random::gen);
+            int count = ninja::random::g_spreeIconCountDistribution(ninja::random::g_gen);
             m_isSendingOutSpree = true;
 
             // alright guys lets cocos action this up
@@ -565,7 +566,7 @@ void NinjaSwipeLayer::spawnPlayers() {
 
         case 2: {
             // random # of bombs
-            int count = ninja::random::bombSpawnDistribution(ninja::random::gen);
+            int count = ninja::random::g_bombSpawnDistribution(ninja::random::g_gen);
             for (int i = 0; i < count; i++) {
                 m_players.push_back(MenuIcon::create(MenuIconType::Bomb));
             }
@@ -575,7 +576,7 @@ void NinjaSwipeLayer::spawnPlayers() {
         case 3:
         case 4: {
             // random # of icons
-            int count = ninja::random::playerSpawnDistribution(ninja::random::gen);
+            int count = ninja::random::g_playerSpawnDistribution(ninja::random::g_gen);
             for (int i = 0; i < count; i++) {
                 m_players.push_back(MenuIcon::create(MenuIconType::Player));
             }
@@ -585,9 +586,9 @@ void NinjaSwipeLayer::spawnPlayers() {
         case 5:
         case 6: {
             // random mix
-            int count = ninja::random::mixIconCountDistribution(ninja::random::gen);
+            int count = ninja::random::g_mixIconCountDistribution(ninja::random::g_gen);
             for (int i = 0; i < count; i++) {
-                m_players.push_back(MenuIcon::create(static_cast<MenuIconType>(ninja::random::menuIconTypeDistribution(ninja::random::gen))));
+                m_players.push_back(MenuIcon::create(static_cast<MenuIconType>(ninja::random::g_menuIconTypeDistribution(ninja::random::g_gen))));
             }
             break;
         }

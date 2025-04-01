@@ -51,11 +51,11 @@ bool MenuIcon::init(MenuIconType type) {
 
 void MenuIcon::initialiseValues() {
     setPosition({
-        ninja::random::startXDistribution(ninja::random::gen),
+        ninja::random::g_startXDistribution(ninja::random::g_gen),
         -40.f
     });
 
-    float launchSpeedX = ninja::random::launchSpeedXDistribution(ninja::random::gen);
+    float launchSpeedX = ninja::random::g_launchSpeedXDistribution(ninja::random::g_gen);
     if (getPositionX() > cocos2d::CCDirector::sharedDirector()->getScreenRight()/2) {
         // go to the left if it starts on the right
         launchSpeedX = -launchSpeedX;
@@ -63,10 +63,10 @@ void MenuIcon::initialiseValues() {
 
     m_speed = cocos2d::CCPoint{
         launchSpeedX,
-        ninja::random::launchSpeedYDistribution(ninja::random::gen)
+        ninja::random::g_launchSpeedYDistribution(ninja::random::g_gen)
     };
 
-    m_rotationSpeed = ninja::random::rotationSpeedDistribution(ninja::random::gen);
+    m_rotationSpeed = ninja::random::g_rotationSpeedDistribution(ninja::random::g_gen);
 }
 
 cocos2d::CCPoint MenuIcon::getWorldPos() {

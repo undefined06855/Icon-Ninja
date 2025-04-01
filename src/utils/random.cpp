@@ -7,18 +7,18 @@ namespace ninja {
 namespace random {
 
 std::random_device seed;
-std::mt19937 gen = std::mt19937(seed());
-auto startXDistribution = std::uniform_real_distribution<float>(70.f, cocos2d::CCDirector::sharedDirector()->getScreenRight() - 70.f);
-auto launchSpeedXDistribution = std::uniform_real_distribution<float>(0.f, 200.f); // could become 0 to -200 depending on start side
-auto launchSpeedYDistribution = std::uniform_real_distribution<float>(340.0, 400.f); 
-auto rotationSpeedDistribution = std::uniform_real_distribution<float>(-6.f, 6.f); 
-auto spawnTypeDistribution = std::uniform_int_distribution<int>(0, 6);
-auto playerSpawnDistribution = std::uniform_int_distribution<int>(1, 4);
-auto bombSpawnDistribution = std::uniform_int_distribution<int>(1, 3);
-auto menuIconTypeDistribution = std::uniform_int_distribution<int>(0, 1); // 0 = MenuIconType::Player  1 = MenuIconType::Bomb
-auto spreeIconCountDistribution = std::uniform_int_distribution<int>(4, 15); // should be a bit more than normal
-auto mixIconCountDistribution = std::uniform_int_distribution<int>(3, 5); // should be a bit more than normal
-auto shakeMovementDistribution = std::uniform_real_distribution<float>(-1.f, 1.f);
+std::mt19937 g_gen = std::mt19937(seed());
+auto g_startXDistribution = std::uniform_real_distribution<float>(70.f, cocos2d::CCDirector::sharedDirector()->getScreenRight() - 70.f);
+auto g_launchSpeedXDistribution = std::uniform_real_distribution<float>(0.f, 200.f); // could become 0 to -200 depending on start side
+auto g_launchSpeedYDistribution = std::uniform_real_distribution<float>(340.0, 400.f); 
+auto g_rotationSpeedDistribution = std::uniform_real_distribution<float>(-6.f, 6.f); 
+auto g_spawnTypeDistribution = std::uniform_int_distribution<int>(0, 6);
+auto g_playerSpawnDistribution = std::uniform_int_distribution<int>(1, 4);
+auto g_bombSpawnDistribution = std::uniform_int_distribution<int>(1, 3);
+auto g_menuIconTypeDistribution = std::uniform_int_distribution<int>(0, 1); // 0 = MenuIconType::Player  1 = MenuIconType::Bomb
+auto g_spreeIconCountDistribution = std::uniform_int_distribution<int>(4, 15); // should be a bit more than normal
+auto g_mixIconCountDistribution = std::uniform_int_distribution<int>(3, 5); // should be a bit more than normal
+auto g_shakeMovementDistribution = std::uniform_real_distribution<float>(-1.f, 1.f);
 
 
 PlayerObject* createRandomPlayerObject() {

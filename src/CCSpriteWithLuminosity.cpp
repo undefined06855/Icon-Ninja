@@ -13,7 +13,7 @@ CCSpriteWithLuminosity* CCSpriteWithLuminosity::createWithSpriteFrame(cocos2d::C
 
 gd::string CCSpriteWithLuminosity::getShaderName() { return "ninja_luminosity_program"; }
 const char* CCSpriteWithLuminosity::shaderBody() {
-    // general syntax based on rob's ccspritegrayscale shaderBody but changed
+    // g_general syntax based on rob's ccspritegrayscale shaderBody but changed
     // to not make it greyscale
     return R"(
 #ifdef GL_ES
