@@ -4,7 +4,7 @@ unsigned int* getNumberOfDraws() {
 #ifdef GEODE_IS_MACOS
     static_assert(GEODE_COMP_GD_VERSION == 22074, "Please update macOS offsets");
     return reinterpret_cast<unsigned int*>(geode::base::get() + GEODE_ARM_MAC(0x8b0f60) GEODE_INTEL_MAC(0x98bf30));
-#elif GEODE_IS_IOS
+#elifdef GEODE_IS_IOS
     static_assert(GEODE_COMP_GD_VERSION == 22074, "Please update iOS offsets");
     return reinterpret_cast<unsigned int*>(geode::base::get() + 0x0); // TODO:
 #else
