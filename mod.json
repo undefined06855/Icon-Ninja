@@ -86,11 +86,6 @@
 			"description": "Enables logging to help debugging the mod.",
 			"type": "bool",
 			"default": false
-		},
-		"april-unfools": {
-			"name": "Disable April Fools jokes",
-			"type": "bool",
-			"default": false
 		}
 	}
 }
