@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.2.10
+- iOS support!
 ## v1.2.9
 - (Internal) Prefix globals with g_ like they should've been
 - April Fools!

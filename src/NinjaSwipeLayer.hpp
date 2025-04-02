@@ -1,7 +1,6 @@
 #pragma once
 #include "Swipe.hpp"
 #include "MenuIcon.hpp"
-#include <random>
 
 enum class State {
     Default = 0, Gameplay

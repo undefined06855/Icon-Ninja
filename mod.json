@@ -3,12 +3,13 @@
 	"gd": {
 		"win": "2.2074",
 		"android": "2.2074",
-		"mac": "2.2074"
+		"mac": "2.2074",
+		"ios": "2.2074"
 	},
 
 	"id": "undefined0.icon_ninja",
 	"name": "Icon Ninja",
-	"version": "v1.2.9",
+	"version": "v1.2.10",
 	"developer": "undefined0",
 	"description": "Makes killing icons like Fruit Ninja!",
 	"tags": [ "joke", "offline", "modtober24" ],

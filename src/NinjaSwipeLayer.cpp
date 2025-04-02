@@ -90,10 +90,9 @@ bool NinjaSwipeLayer::init() {
 #endif
 
     auto currentTime = std::time(0);
-    // deprecated or something by microsoft? works multi-platform whereas localtime_s doesnt
-    auto timeInfo = std::localtime(&currentTime);
+    auto timeInfo = fmt::localtime(currentTime);
     // months are zero indexed, days are one indexed
-    if (timeInfo->tm_mday == 1 && timeInfo->tm_mon == 3) {
+    if (timeInfo.tm_mday == 1 && timeInfo.tm_mon == 3) {
         m_isAprilFools = true;
         geode::log::info("April fools!");
     }
