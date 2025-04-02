@@ -9,6 +9,7 @@ else()
 endif()
 
 # add_definitions( -DDEBUG_DRAW_NODE )
+add_definitions(-DGLES_SILENCE_DEPRECATION)
 
 project(IconNinja VERSION 1.0.0)
 
