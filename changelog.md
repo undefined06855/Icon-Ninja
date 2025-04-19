@@ -1,18 +1,22 @@
 # Icon Ninja Changelog
+## v1.2.11
+- Made all lines in changlog consistently past tense
+- (Internal) Prefixed members in fields with m_
+- Fix issues when the back button is clicked while returning back to the main menu
 ## v1.2.10
-- iOS support!
+- iOS support added!
 ## v1.2.9
-- (Internal) Prefix globals with g_ like they should've been
+- (Internal) Prefixed globals with g_ like they should've been
 - April Fools!
 ## v1.2.8
-- Refix issues with multiple touches on mobile (literally fixed 2 months ago but just did not fix for some reason :broken_heart:)
+- Refixed issues with multiple touches on mobile (literally fixed 2 months ago but just did not fix for some reason :broken_heart:)
 ## v1.2.7
-- (Internal) Move hooks to separate folder
-- Make bomb brighten while exploding
+- (Internal) Moved hooks to separate folder
+- Made bomb brighten while exploding
 ## v1.2.6
 - Fixed issues in the mod description
 ## v1.2.5
-- MacOS support! #16, by Jasmine (hiimjustin000)
+- MacOS support added! #16, by Jasmine (hiimjustin000)
 ## v1.2.4
 - Added Geodify compatibility
 - Checked Z orders to allow more mod compatibility in the future

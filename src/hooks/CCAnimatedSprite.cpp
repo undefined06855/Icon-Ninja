@@ -1,5 +1,6 @@
 #include "CCAnimatedSprite.hpp"
 #include "../utils/log.hpp"
+#include <Geode/binding/MenuLayer.hpp>
 
 void HookedCCAnimatedSprite::runAnimation(gd::string animID) {
     std::string replacement = getReplacementAnimID(animID);

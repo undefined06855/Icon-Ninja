@@ -1,7 +1,13 @@
 #include "NinjaSwipeLayer.hpp"
-#include "Geode/cocos/actions/CCActionInstant.h"
-#include "Geode/cocos/actions/CCActionInterval.h"
-#include "Geode/cocos/label_nodes/CCLabelBMFont.h"
+#include <Geode/cocos/actions/CCActionInstant.h>
+#include <Geode/cocos/actions/CCActionInterval.h>
+#include <Geode/cocos/label_nodes/CCLabelBMFont.h>
+#include <Geode/binding/FMODAudioEngine.hpp>
+#include <Geode/binding/CCLightFlash.hpp>
+#include <Geode/binding/GameStatsManager.hpp>
+#include <Geode/binding/CCCircleWave.hpp>
+#include <Geode/binding/PlayerObject.hpp>
+#include <Geode/binding/GameManager.hpp>
 #include "MenuIcon.hpp"
 #include "hooks/MenuLayer.hpp"
 #include "utils/random.hpp"
@@ -444,6 +450,8 @@ void NinjaSwipeLayer::enterGameplay() {
         cocos2d::CCFadeIn::create(.9f)
     ));
 
+    m_exitButton->setEnabled(true);
+
     FMODAudioEngine::sharedEngine()->fadeOutMusic(1.f, 0);
     FMODAudioEngine::sharedEngine()->playEffect("gamestart.wav"_spr, 1.f, 0.f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
 }
@@ -461,6 +469,8 @@ void NinjaSwipeLayer::exitGameplay(cocos2d::CCObject* sender) {
         cocos2d::CCEaseBackOut::create(cocos2d::CCMoveBy::create(.9f, {0.f, 50.f})),
         cocos2d::CCFadeOut::create(.9f)
     ));
+
+    m_exitButton->setEnabled(false);
 
     FMODAudioEngine::sharedEngine()->fadeInMusic(1.f, 0);
     FMODAudioEngine::sharedEngine()->playEffect("gameover.wav"_spr, 1.f, 0.f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));

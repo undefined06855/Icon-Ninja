@@ -1,4 +1,5 @@
 #pragma once
+#include <Geode/loader/Mod.hpp>
 #include <Geode/loader/Log.hpp>
 
 // lazy

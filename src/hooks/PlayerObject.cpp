@@ -1,4 +1,6 @@
 #include "PlayerObject.hpp"
+#include <Geode/binding/PlayerFireBoostSprite.hpp>
+#include <Geode/binding/MenuLayer.hpp>
 
 void HookedPlayerObject::updateSwingFire() {
     // see if we're in menulayer

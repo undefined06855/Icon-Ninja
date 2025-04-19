@@ -49,8 +49,8 @@ bool HookedMenuLayer::init() {
 
 
     // add our very own brand spanking new shiny icon ninja custom layer!!!!!!!!
-    m_fields->ninjaSwipeLayer = NinjaSwipeLayer::create();
-    addChild(m_fields->ninjaSwipeLayer, -1);
+    m_fields->m_ninjaSwipeLayer = NinjaSwipeLayer::create();
+    addChild(m_fields->m_ninjaSwipeLayer, -1);
     
     m_menuGameLayer->setZOrder(-5); // get back there
 
@@ -58,7 +58,7 @@ bool HookedMenuLayer::init() {
 }
 
 void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code) {
-    auto ninja = m_fields->ninjaSwipeLayer;
+    auto ninja = m_fields->m_ninjaSwipeLayer;
 
     if (ninja->m_state == State::Gameplay) {
         if (code == cocos2d::enumKeyCodes::KEY_Escape) ninja->exitGameplay(nullptr);
@@ -74,14 +74,14 @@ void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code) {
 
 void HookedMenuLayer::runEnterGameplayAnimations() {
     auto dir = cocos2d::CCDirector::sharedDirector();
-    m_fields->movedNodeMovements.clear();
+    m_fields->m_movedNodeMovements.clear();
 
     // dw about this code
     // rewrite it if you wish
     // gets all children and if they should be moved figures out where they
     // should move to and stores it in (std::map)m_fields->movedNodeMovements
     for (auto& child : geode::cocos::CCArrayExt<CCNode*>(getChildren())) {
-        if (child->getZOrder() <= m_fields->ninjaSwipeLayer->getZOrder()) continue;
+        if (child->getZOrder() <= m_fields->m_ninjaSwipeLayer->getZOrder()) continue;
         
         // get side + move dist
         cocos2d::CCPoint movement;
@@ -104,14 +104,14 @@ void HookedMenuLayer::runEnterGameplayAnimations() {
         }
 
         child->runAction(FADE_OUT_ACTION(movement));
-        m_fields->movedNodeMovements[child] = movement;
+        m_fields->m_movedNodeMovements[child] = movement;
     }
 }
 
 void HookedMenuLayer::runExitGameplayAnimations() {
-    for (auto& pair : m_fields->movedNodeMovements) {
-        auto& child = pair.first;
-        auto movement = pair.second;
-        child->runAction(FADE_IN_ACTION(movement));
+    for (auto& [_node, movement] : m_fields->m_movedNodeMovements) {
+        if (auto node = _node.lock()) {
+            node->runAction(FADE_IN_ACTION(movement));
+        }
     }
 }

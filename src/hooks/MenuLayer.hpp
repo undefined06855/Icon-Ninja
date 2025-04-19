@@ -6,8 +6,8 @@ class $modify(HookedMenuLayer, MenuLayer) {
     static void onModify(auto& self);
     
     struct Fields {
-        std::map<cocos2d::CCNode*, cocos2d::CCPoint> movedNodeMovements;
-        NinjaSwipeLayer* ninjaSwipeLayer;
+        std::map<geode::WeakRef<cocos2d::CCNode>, cocos2d::CCPoint> m_movedNodeMovements;
+        NinjaSwipeLayer* m_ninjaSwipeLayer;
     };
 
     bool init();

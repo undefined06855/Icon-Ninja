@@ -1,4 +1,5 @@
 #include "MenuGameLayer.hpp"
+#include <Geode/binding/PlayerObject.hpp>
 
 bool HookedMenuGameLayer::init() {
     if (!MenuGameLayer::init()) return false;

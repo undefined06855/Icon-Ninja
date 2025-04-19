@@ -1,4 +1,5 @@
 #include <Geode/binding/PlayerObject.hpp>
+#include <Geode/binding/GameManager.hpp>
 #include "random.hpp"
 #include "log.hpp"
 #include "../external/KnownPlayers.h"
