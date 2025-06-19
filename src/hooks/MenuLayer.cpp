@@ -1,7 +1,6 @@
 #include "MenuLayer.hpp"
-#include "MenuGameLayer.hpp"
-#include "../utils/random.hpp"
 #include "../utils/log.hpp"
+#include "../shaders.hpp"
 
 void HookedMenuLayer::onModify(auto& self) {
     ninja::log::info("hook prio time");
@@ -47,6 +46,19 @@ bool HookedMenuLayer::init() {
         }
     }
 
+    if (g_swipeShaderFailedToLoad) {
+        auto pop = FLAlertLayer::create(
+            "Icon Ninja",
+            "The <co>shader</c> for the <cy>swipe trail</c> did <cr>not</c> "
+            "compile properly!"
+            "\n\n"
+            "Please report this as a <cr>bug</c>, and send your "
+            "<co>log files</c> when reporting!",
+            "ok"
+        );
+        pop->m_scene = this;
+        pop->show();
+    }
 
     // add our very own brand spanking new shiny icon ninja custom layer!!!!!!!!
     m_fields->m_ninjaSwipeLayer = NinjaSwipeLayer::create();

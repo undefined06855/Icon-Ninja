@@ -1,3 +1,2 @@
-- Customisable swords (based on player colours, perhaps)
 - leaderboards???????????
 - window shake if in windowed

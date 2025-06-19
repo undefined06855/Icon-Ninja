@@ -1,91 +1,101 @@
 {
-	"geode": "4.5.0",
-	"gd": {
-		"win": "2.2074",
-		"android": "2.2074",
-		"mac": "2.2074",
-		"ios": "2.2074"
-	},
+    "geode": "4.5.0",
+    "gd": {
+        "win": "2.2074",
+        "android": "2.2074",
+        "mac": "2.2074",
+        "ios": "2.2074"
+    },
 
-	"id": "undefined0.icon_ninja",
-	"name": "Icon Ninja",
-	"version": "v1.2.12",
-	"developer": "undefined0",
-	"description": "Makes killing icons like Fruit Ninja!",
-	"tags": [ "joke", "offline", "modtober24" ],
+    "id": "undefined0.icon_ninja",
+    "name": "Icon Ninja",
+    "version": "v1.3.0",
+    "developer": "undefined0",
+    "description": "Makes killing icons like Fruit Ninja!",
+    "tags": [ "joke", "offline", "modtober24" ],
 
-	"resources": {
-		"sprites": [ "resources/swipe.png" ],
-		"files": [ "resources/*.wav" ],
-		"spritesheets": {
-			"bombforhuesprite": [ "resources/bomb.png" ]
-		}
-	},
+    "resources": {
+        "sprites": [ "resources/swipe.png" ],
+        "files": [ "resources/*.wav" ],
+        "spritesheets": {
+            "bombforhuesprite": [ "resources/bomb.png" ]
+        }
+    },
 
-	"links": { "source": "https://github.com/undefined06855/icon-ninja" },
+    "links": { "source": "https://github.com/undefined06855/icon-ninja" },
 
-	"settings": {
-		"enable-gameplay": {
-			"name": "Enable custom gameplay",
-			"description": "When you kill an icon, the UI disappears and a combo meter appears to really allow you to find your inner ninja!",
-			"type": "bool",
-			"default": true
-		},
-		"sfx-volume": {
-			"name": "SFX Volume",
-			"type": "float",
-			"default": 1.0,
-			"min": 0.0,
-			"max": 1.0,
-			"control": {
-				"slider": true,
-				"arrows": false,
-				"input": true
-			},
-			"enable-if": "enable-gameplay"
-		},
-		"flashbang": {
-			"name": "FLASHBANG MODE",
-			"description": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-			"type": "bool",
-			"default": false
-		},
-		"particles": {
-			"name": "Enable bomb particles",
-			"description": "Can be buggy at times, so has been disabled by default. Made by flingus!",
-			"type": "bool",
-			"default": false
-		},
-		"disable-stats-increment": {
-			"name": "Disable \"Players Destroyed\" stats incrementing",
-			"description": "This disables the Players Destroyed stats incrementing when an icon is killed using this mod.",
-			"type": "bool",
-			"default": false
-		},
-		"disable-margin": {
-			"name": "Disable extra margin",
-			"description": "The disables the extra 5px margin added to make killing small icons easier. Hard mode!",
-			"type": "bool",
-			"default": false
-		},
-		"font": {
-			"name": "Font",
-			"description": "The font used - see https://gdcolon.com/gdfont",
-			"type": "int",
-			"default": 32,
-			"min": 1,
-			"max": 60,
-			"control": {
-				"slider": false,
-				"arrows": true,
-				"input": true
-			}
-		},
-		"enable-log": {
-			"name": "Enable logging",
-			"description": "Enables logging to help debugging the mod.",
-			"type": "bool",
-			"default": false
-		}
-	}
+    "settings": {
+        "enable-gameplay": {
+            "name": "Enable Custom Gameplay",
+            "description": "When you kill an icon, the UI disappears and a combo meter appears to really allow you to find your inner ninja!",
+            "type": "bool",
+            "default": true
+        },
+        "main-col": {
+            "name": "Outline",
+            "type": "rgb",
+            "default": "#7592b5"
+        },
+        "inner-col": {
+            "name": "Inner",
+            "type": "rgb",
+            "default": "#ffffff"
+        },
+        "sfx-volume": {
+            "name": "SFX Volume",
+            "type": "float",
+            "default": 1.0,
+            "min": 0.0,
+            "max": 1.0,
+            "control": {
+                "slider": true,
+                "arrows": false,
+                "input": true
+            },
+            "enable-if": "enable-gameplay"
+        },
+        "flashbang": {
+            "name": "FLASHBANG MODE",
+            "description": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "type": "bool",
+            "default": false
+        },
+        "particles": {
+            "name": "Enable Bomb Particles",
+            "description": "Can be buggy at times, so has been disabled by default. Made by flingus!",
+            "type": "bool",
+            "default": false
+        },
+        "disable-stats-increment": {
+            "name": "Disable \"Players Destroyed\" Stats Incrementing",
+            "description": "This disables the Players Destroyed stats incrementing when an icon is killed using this mod.",
+            "type": "bool",
+            "default": false
+        },
+        "disable-margin": {
+            "name": "Disable Extra Margin",
+            "description": "The disables the extra 5px margin added to make killing small icons easier. Hard mode!",
+            "type": "bool",
+            "default": false
+        },
+        "font": {
+            "name": "Font",
+            "description": "The font used - see https://gdcolon.com/gdfont",
+            "type": "int",
+            "default": 32,
+            "min": 1,
+            "max": 60,
+            "control": {
+                "slider": false,
+                "arrows": true,
+                "input": true
+            }
+        },
+        "enable-log": {
+            "name": "Enable Logging",
+            "description": "Enables logging to help debugging the mod.",
+            "type": "bool",
+            "default": false
+        }
+    }
 }

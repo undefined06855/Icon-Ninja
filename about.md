@@ -3,7 +3,7 @@ by [undefined0](user:13351341)
 
 ---
 
-Liked Fruit Ninja, and wanted a similar experience in GD? Well now you can, right from the main menu! Now icons fly up from the bottom of the screen, which you can swipe to kill, just like in Fruit Ninja!
+Liked Fruit Ninja, and wanted a similar experience in GD? Well now you can, right from the main menu! Now icons fly up from the bottom of the screen, which you can swipe to kill, just like in Fruit Ninja! Set custom colours in the mod settings, to customise the swipe trail how you want!
 
 Idea from Alphalaneous, see [this discord message](https://discord.com/channels/911701438269386882/911702535373475870/1303111747539963905)! \
 Bomb sprite by [dasshu](https://bsky.app/profile/dasshu.dev)!

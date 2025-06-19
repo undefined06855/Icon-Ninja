@@ -7,7 +7,6 @@ public:
     static Swipe* create(cocos2d::CCTexture2D* texture);
     bool init(cocos2d::CCTexture2D* texture);
 
-    cocos2d::CCGLProgram* m_program;
     cocos2d::CCPoint m_lastPoint; // used to calculate angle
     std::vector<SwipePoint> m_points;
     cocos2d::CCTexture2D* m_texture;

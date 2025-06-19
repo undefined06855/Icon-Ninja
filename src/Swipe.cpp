@@ -30,7 +30,7 @@ bool Swipe::init(cocos2d::CCTexture2D* texture) {
 
     m_texture = texture;
 
-    setShaderProgram(cocos2d::CCShaderCache::sharedShaderCache()->programForKey(kCCShader_PositionTexture));
+    setShaderProgram(cocos2d::CCShaderCache::sharedShaderCache()->programForKey("ninja_swipe_shader"));
 
     scheduleUpdate();
     return true;
@@ -54,7 +54,15 @@ void Swipe::draw() {
 
     CC_NODE_DRAW_SETUP();
 
-    cocos2d::ccGLEnableVertexAttribs(cocos2d::kCCVertexAttribFlag_Position |  cocos2d::kCCVertexAttribFlag_TexCoords);
+    auto outerCol = geode::Mod::get()->getSettingValue<cocos2d::ccColor3B>("main-col");
+    auto outlineUniformLoc = m_pShaderProgram->getUniformLocationForName("u_outlineColor");
+    m_pShaderProgram->setUniformLocationWith3f(outlineUniformLoc, outerCol.r / 255.f, outerCol.g / 255.f, outerCol.b / 255.f);
+
+    auto innerCol = geode::Mod::get()->getSettingValue<cocos2d::ccColor3B>("inner-col");
+    auto innerUniformLoc = m_pShaderProgram->getUniformLocationForName("u_innerColor");
+    m_pShaderProgram->setUniformLocationWith3f(innerUniformLoc, innerCol.r / 255.f, innerCol.g / 255.f, innerCol.b / 255.f);
+
+    cocos2d::ccGLEnableVertexAttribs(cocos2d::kCCVertexAttribFlag_Position | cocos2d::kCCVertexAttribFlag_TexCoords);
     cocos2d::ccGLBindTexture2D(m_texture->getName());
 
     cocos2d::ccGLBlendFunc(CC_BLEND_SRC, CC_BLEND_DST);

@@ -3,6 +3,8 @@
 - Fixed compatibility with One Life
 - (Internal) Fixed memory leak and codebase quality overall
 - Improved swipe collision check to take into account previous points
+- Updated mod icon to be more in line with other mod icons
+- Added option to set trail color in mod settings
 ## v1.2.11
 - Made all lines in changlog consistently past tense
 - (Internal) Prefixed members in fields with m_
