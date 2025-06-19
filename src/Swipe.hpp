@@ -9,7 +9,7 @@ public:
 
     cocos2d::CCGLProgram* m_program;
     cocos2d::CCPoint m_lastPoint; // used to calculate angle
-    std::vector<SwipePoint*> m_points;
+    std::vector<SwipePoint> m_points;
     cocos2d::CCTexture2D* m_texture;
 
     void update(float dt);

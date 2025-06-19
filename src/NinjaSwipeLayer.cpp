@@ -118,38 +118,42 @@ bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
     // trail actually folds in on itself and caves in in some circumstances oh
     // god ive said too much ok goodbye good luck with the rest of the code
 
-    m_lastSwipePoint = touch->getLocation();
     m_swipe->addPoint(touch->getLocation());
     return true; // claim touch
 }
 
 void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
-    if (m_lastSwipePoint.getDistanceSq(touch->getLocation()) < 1.f) return; // too close smh stop being stupid
     m_numTouches++;
     if (m_numTouches != 1) return;
 
-    checkSwipeIntersection(m_lastSwipePoint, touch->getLocation());
+    auto points = m_swipe->m_points;
+    if (points.size() != 0) {
+        auto lastPoint = points[points.size() - 1].m_location;
+        if (lastPoint.getDistanceSq(touch->getLocation()) < 1.f) return; // too close smh stop being stupid
+    }
+
     m_swipe->addPoint(touch->getLocation());
-    m_lastSwipePoint = touch->getLocation();
+    
+    if (points.size() > 1) {
+        float totalDistance = 0.f;
+        for (int i = 1; totalDistance < 50.f && i < points.size() - 1; i++) {
+            auto lastPoint = points[points.size() - i - 1].m_location;
+            auto thisPoint = points[points.size() - i].m_location;
+            totalDistance += lastPoint.getDistanceSq(thisPoint);
+            checkSwipeIntersection(lastPoint, thisPoint);
+        }
+    }
 }
 
 void NinjaSwipeLayer::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     m_numTouches++;
     if (m_numTouches != 1) return;
 
-    checkSwipeIntersection(m_lastSwipePoint, touch->getLocation());
     m_swipe->addPoint(touch->getLocation());
 }
 
 void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to) {
-    // dont let the player just click the icons
-    if (from.getDistanceSq(to) < .5f) return;
     if (m_isBombCurrentlyExploding) return;
-
-#ifdef DEBUG_DRAW_NODE
-    m_debugLastCheckFrom = from;
-    m_debugLastCheckTo = to;
-#endif
 
     for (auto player : m_players) {
         if (!player || player->retainCount() == 0) {
@@ -332,6 +336,11 @@ void NinjaSwipeLayer::update(float dt) {
     m_numTouches = 0; // reset # of touches this frame
     m_swipe->setVisible(!m_isBombCurrentlyExploding);
 
+    // if someone focused off of the game
+    if (dt > .5f) {
+        dt = 0.016f;
+    }
+
     // physics
     std::vector<MenuIcon*> playersToRemove = {};
     for (auto player : m_players) {
@@ -346,7 +355,8 @@ void NinjaSwipeLayer::update(float dt) {
             playersToRemove.push_back(player);
 
             // offscreen, below starting point, remove and reset combo
-            if (player->m_type != MenuIconType::Bomb) {
+            // though not when bomb is exploding (for added tension)
+            if (player->m_type != MenuIconType::Bomb && !m_isBombCurrentlyExploding) {
                 resetCombo();
             }
         }
@@ -381,13 +391,25 @@ void NinjaSwipeLayer::update(float dt) {
         m_debugNode->drawCircle(origin, radius, { 0.f, 0.f, 0.f, 0.f }, 0.5f, col, 32); // no fill
     }
 
-    m_debugNode->drawSegment(m_debugLastCheckFrom, m_debugLastCheckTo, 1.f, { 0.f, 1.f, 0.f, 1.f });
+    auto points = m_swipe->m_points;
+    if (points.size() > 2) {
+        float distance = 0.f;
+        for (int i = 1; distance < 50.f && i < points.size() - 1; i++) {
+            auto lastPoint = points[points.size() - i - 1].m_location;
+            auto thisPoint = points[points.size() - i].m_location;
+            distance += lastPoint.getDistanceSq(thisPoint);
+            m_debugNode->drawSegment(lastPoint, thisPoint, 1.f, { 0.f, 1.f, 0.f, 1.f });
+        }
+    }
 #endif
 
     updateShake(dt);
 }
 
 void NinjaSwipeLayer::updateShake(float dt) {
+    // One Life makes menulayer nullptr while you're on it and breaks stuff
+    if (!MenuLayer::get()) return;
+
     if (m_shakeTick <= 0) {
         MenuLayer::get()->setPosition({ 0.f, 0.f });
         return;

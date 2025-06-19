@@ -1,5 +1,5 @@
 {
-	"geode": "4.3.1",
+	"geode": "4.5.0",
 	"gd": {
 		"win": "2.2074",
 		"android": "2.2074",
@@ -9,7 +9,7 @@
 
 	"id": "undefined0.icon_ninja",
 	"name": "Icon Ninja",
-	"version": "v1.2.11",
+	"version": "v1.2.12",
 	"developer": "undefined0",
 	"description": "Makes killing icons like Fruit Ninja!",
 	"tags": [ "joke", "offline", "modtober24" ],

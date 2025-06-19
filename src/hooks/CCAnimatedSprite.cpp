@@ -10,7 +10,7 @@ void HookedCCAnimatedSprite::runAnimation(gd::string animID) {
 
 std::string HookedCCAnimatedSprite::getReplacementAnimID(std::string origID) {
     // check if we're in menulayer
-    if (!cocos2d::CCScene::get()->getChildByType<MenuLayer>(0)) {
+    if (!MenuLayer::get()) {
         // nevermind...
         return origID;
     }

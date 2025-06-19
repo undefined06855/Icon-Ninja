@@ -1,8 +1,12 @@
 # Icon Ninja Changelog
+## v1.2.12
+- Fixed compatibility with One Life
+- (Internal) Fixed memory leak and codebase quality overall
+- Improved swipe collision check to take into account previous points
 ## v1.2.11
 - Made all lines in changlog consistently past tense
 - (Internal) Prefixed members in fields with m_
-- Fix issues when the back button is clicked while returning back to the main menu
+- Fixed issues when the back button is clicked while returning back to the main menu
 ## v1.2.10
 - iOS support added!
 ## v1.2.9

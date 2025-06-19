@@ -55,52 +55,52 @@ void randomisePlayerObject(PlayerObject* player) {
     player->setSecondColor(GameManager::sharedState()->colorForIdx((float)rand() / RAND_MAX * 108.0));
 
     float randFloat = (float)rand() / RAND_MAX;
-    if (randFloat < 0.12) {
+    if (randFloat < .12f) {
         player->toggleFlyMode(true, false);
-        int shipFrame = (float)rand() / RAND_MAX * 169.0;
+        int shipFrame = (float)rand() / RAND_MAX * 169.f;
         player->updatePlayerShipFrame(shipFrame);
-    } else if (randFloat < 0.24) {
+    } else if (randFloat < .24f) {
         player->toggleRollMode(true, false);
-        int rollFrame = (float)rand() / RAND_MAX * 118.0;
+        int rollFrame = (float)rand() / RAND_MAX * 118.f;
         if (rollFrame <= 1) rollFrame = 1;
         player->updatePlayerRollFrame(rollFrame);
-    } else if (randFloat < 0.36) {
+    } else if (randFloat < .36f) {
         player->toggleBirdMode(true, false);
-        int birdFrame = (float)rand() / RAND_MAX * 149.0;
+        int birdFrame = (float)rand() / RAND_MAX * 149.f;
         player->updatePlayerBirdFrame(birdFrame);
-    } else if (randFloat < 0.48) {
+    } else if (randFloat < .48f) {
         player->toggleDartMode(true, false);
-        int dartFrame = (float)rand() / RAND_MAX * 96.0;
+        int dartFrame = (float)rand() / RAND_MAX * 96.f;
         player->updatePlayerDartFrame(dartFrame);
-    } else if (randFloat < 0.6) {
+    } else if (randFloat < .6f) {
         player->toggleRobotMode(true, false);
-        int robotFrame = (float)rand() / RAND_MAX * 68.0;
+        int robotFrame = (float)rand() / RAND_MAX * 68.f;
         player->updatePlayerRobotFrame(robotFrame);
-    } else if (randFloat < 0.7) {
+    } else if (randFloat < .7f) {
         player->toggleSpiderMode(true, false);
-        int spiderFrame = (float)rand() / RAND_MAX * 69.0;
+        int spiderFrame = (float)rand() / RAND_MAX * 69.f;
         player->updatePlayerSpiderFrame(spiderFrame);
-    } else if (randFloat < 0.8) {
+    } else if (randFloat < .8f) {
         player->toggleSwingMode(true, false);
-        int swingFrame = (float)rand() / RAND_MAX * 43.0;
+        int swingFrame = (float)rand() / RAND_MAX * 43.f;
         player->updatePlayerSwingFrame(swingFrame);
     } else {
-        int frame = (float)rand() / RAND_MAX * 485.0;
+        int frame = (float)rand() / RAND_MAX * 485.f;
         if (frame < 1) frame = 1;
         player->updatePlayerFrame(frame);
         player->switchedToMode(GameObjectType::CubePortal);
     }
 
-    player->togglePlayerScale((float)rand() / RAND_MAX <= 0.1, false);
+    player->togglePlayerScale((float)rand() / RAND_MAX <= .1f, false);
     player->updateGlowColor();
 
-    float timeMod = 0;
+    float timeMod = 0.f;
     randFloat = (float)rand() / RAND_MAX;
 
-         if (randFloat < 0.2)  timeMod = 1.3f;
-    else if (randFloat < 0.4)  timeMod = 1.1f;
-    else if (randFloat < 0.6)  timeMod = 0.7f;
-    else if (randFloat < 0.65) timeMod = 1.6f;
+         if (randFloat < .2f)  timeMod = 1.3f;
+    else if (randFloat < .4f)  timeMod = 1.1f;
+    else if (randFloat < .6f)  timeMod = 0.7f;
+    else if (randFloat < .65f) timeMod = 1.6f;
     else                       timeMod = 0.9f;
     
     player->updateTimeMod(timeMod, false);

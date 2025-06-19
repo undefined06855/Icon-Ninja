@@ -6,17 +6,17 @@ SwipePoint::SwipePoint(cocos2d::CCPoint location, float direction) {
 }
 
 std::pair<cocos2d::CCPoint, cocos2d::CCPoint> SwipePoint::calculatePointPositions() {
-    float angle1 = fmod(m_direction + 1.5708f, 2.f * M_PI);
-    float angle2 = fmod(m_direction - 1.5708f, 2.f * M_PI);
+    float angle1 = std::fmod(m_direction + 1.5708f, 2.f * M_PI);
+    float angle2 = std::fmod(m_direction - 1.5708f, 2.f * M_PI);
 
-    float dist = getDistanceFromTick();
+    float dist = distanceForTick();
 
-    cocos2d::CCPoint p1 = m_location + cocos2d::CCPoint{ cos(angle1)*dist, sin(angle1)*dist };
-    cocos2d::CCPoint p2 = m_location + cocos2d::CCPoint{ cos(angle2)*dist, sin(angle2)*dist };
+    auto p1 = m_location + cocos2d::CCPoint{ std::cos(angle1)*dist, std::sin(angle1)*dist };
+    auto p2 = m_location + cocos2d::CCPoint{ std::cos(angle2)*dist, std::sin(angle2)*dist };
     return { p1, p2 };
 }
 
-float SwipePoint::getDistanceFromTick() {
+float SwipePoint::distanceForTick() {
     // https://www.desmos.com/calculator/mcb1ys1alb
     if (m_tick < 0.03f) {
         return m_tick * 185.f;

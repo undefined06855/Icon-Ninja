@@ -76,8 +76,6 @@ void HookedMenuLayer::runEnterGameplayAnimations() {
     auto dir = cocos2d::CCDirector::sharedDirector();
     m_fields->m_movedNodeMovements.clear();
 
-    // dw about this code
-    // rewrite it if you wish
     // gets all children and if they should be moved figures out where they
     // should move to and stores it in (std::map)m_fields->movedNodeMovements
     for (auto& child : geode::cocos::CCArrayExt<CCNode*>(getChildren())) {
@@ -115,3 +113,6 @@ void HookedMenuLayer::runExitGameplayAnimations() {
         }
     }
 }
+
+#undef FADE_OUT_ACTION
+#undef FADE_IN_ACTION

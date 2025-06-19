@@ -4,7 +4,7 @@
 
 void HookedPlayerObject::updateSwingFire() {
     // see if we're in menulayer
-    if (!cocos2d::CCScene::get()->getChildByType<MenuLayer>(0)) {
+    if (!MenuLayer::get()) {
         PlayerObject::updateSwingFire();
         return;
     }

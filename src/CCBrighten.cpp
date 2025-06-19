@@ -16,5 +16,5 @@ CCBrighten* CCBrighten::create(float duration) {
 void CCBrighten::update(float time) {
     auto cast = geode::cast::typeinfo_cast<CCSpriteWithLuminosity*>(m_pTarget);
     if (!cast) return ninja::log::warn("not a CCSpriteWithLuminosity dumbass");
-    cast->setFixedLuminance(time * 2 + 1);
+    cast->setFixedLuminance(time * 3.f + 1.f);
 }
