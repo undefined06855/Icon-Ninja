@@ -1,5 +1,5 @@
 # Icon Ninja Changelog
-## v1.2.12
+## v1.3.0
 - Fixed compatibility with One Life
 - (Internal) Fixed memory leak and codebase quality overall
 - Improved swipe collision check to take into account previous points
