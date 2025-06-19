@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.3.1
+- Fixed a bug where player animations would get overridden not on the main menu
 ## v1.3.0
 - Fixed compatibility with One Life
 - (Internal) Fixed memory leak and codebase quality overall

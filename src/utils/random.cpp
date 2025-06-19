@@ -90,7 +90,7 @@ void randomisePlayerObject(PlayerObject* player) {
         player->updatePlayerFrame(frame);
         player->switchedToMode(GameObjectType::CubePortal);
     }
-
+    
     player->togglePlayerScale((float)rand() / RAND_MAX <= .1f, false);
     player->updateGlowColor();
 

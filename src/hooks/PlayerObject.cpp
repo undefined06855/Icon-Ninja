@@ -4,7 +4,7 @@
 
 void HookedPlayerObject::updateSwingFire() {
     // see if we're in menulayer
-    if (!MenuLayer::get()) {
+    if (GJBaseGameLayer::get()) {
         PlayerObject::updateSwingFire();
         return;
     }

@@ -10,7 +10,7 @@ void HookedCCAnimatedSprite::runAnimation(gd::string animID) {
 
 std::string HookedCCAnimatedSprite::getReplacementAnimID(std::string origID) {
     // check if we're in menulayer
-    if (!MenuLayer::get()) {
+    if (GJBaseGameLayer::get()) {
         // nevermind...
         return origID;
     }
