@@ -461,7 +461,7 @@ void NinjaSwipeLayer::startShake() {
         return;
     }
 
-    info.env->CallStaticVoidMethod(info.classID, info.methodID, (long)1500);
+    info.env->CallStaticVoidMethod(info.classID, info.methodID, (long)800);
     info.env->DeleteLocalRef(info.classID);
 #endif
 }
