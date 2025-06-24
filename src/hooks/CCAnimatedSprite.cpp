@@ -3,8 +3,8 @@
 #include <Geode/binding/MenuLayer.hpp>
 
 void HookedCCAnimatedSprite::runAnimation(gd::string animID) {
-    std::string replacement = getReplacementAnimID(animID);
-    ninja::log::info("convert anim {} -> {}", animID, replacement);
+    auto replacement = getReplacementAnimID(animID);
+    ninja::log::debug("convert anim {} -> {}", animID, replacement);
     CCAnimatedSprite::runAnimation(replacement);
 }
 

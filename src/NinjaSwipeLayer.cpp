@@ -15,6 +15,10 @@
 #include "FlashbangLayer.hpp"
 #include "CCBrighten.hpp"
 
+#ifdef GEODE_IS_ANDROID
+#include <Geode/cocos/platform/android/jni/JniHelper.h>
+#endif
+
 NinjaSwipeLayer* NinjaSwipeLayer::create() {
     auto ret = new NinjaSwipeLayer;
     if (ret->init()) {
@@ -449,6 +453,17 @@ void NinjaSwipeLayer::startShake() {
 
     m_shakeTick = m_maxShakeTick;
     ninja::log::info("shakey bakey");
+
+#ifdef GEODE_IS_ANDROID
+    auto info = cocos2d::JniMethodInfo();
+    if (!cocos2d::JniHelper::getStaticMethodInfo(info, "com/geode/launcher/utils/GeodeUtils", "vibrate", "(J)V")) {
+        ninja::log::warn("Failed to get JNI method info for vibration!");
+        return;
+    }
+
+    info.env->CallStaticVoidMethod(info.classID, info.methodID, (long)1500);
+    info.env->DeleteLocalRef(info.classID);
+#endif
 }
 
 void NinjaSwipeLayer::removePlayer(MenuIcon* player) {

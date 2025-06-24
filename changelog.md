@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.4.0
+- Added haptics on android when a bomb is hit
 ## v1.3.1
 - Fixed a bug where player animations would get overridden not on the main menu
 ## v1.3.0
