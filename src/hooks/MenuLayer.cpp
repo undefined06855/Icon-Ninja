@@ -19,7 +19,7 @@ bool HookedMenuLayer::init() {
 
     // day and night system compatibility
     if (auto dnsEventNode = getChildByID("ninsam.day_and_night_system/Events")) {
-        ninja::log::info("day and night system momento"); 
+        ninja::log::info("day and night system momento");
         dnsEventNode->setZOrder(-2);
     }
 
@@ -63,13 +63,13 @@ bool HookedMenuLayer::init() {
     // add our very own brand spanking new shiny icon ninja custom layer!!!!!!!!
     m_fields->m_ninjaSwipeLayer = NinjaSwipeLayer::create();
     addChild(m_fields->m_ninjaSwipeLayer, -1);
-    
+
     m_menuGameLayer->setZOrder(-5); // get back there
 
     return true;
 }
 
-void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code) {
+void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code, double timestamp) {
     auto ninja = m_fields->m_ninjaSwipeLayer;
 
     if (ninja->m_state == State::Gameplay) {
@@ -78,7 +78,7 @@ void HookedMenuLayer::keyDown(cocos2d::enumKeyCodes code) {
         return;
     }
 
-    MenuLayer::keyDown(code);
+    MenuLayer::keyDown(code, timestamp);
 }
 
 #define FADE_OUT_ACTION(movement) cocos2d::CCSpawn::createWithTwoActions(cocos2d::CCEaseBackIn::create(cocos2d::CCMoveBy::create(.9f, movement)), cocos2d::CCFadeOut::create(.9f))
@@ -92,7 +92,7 @@ void HookedMenuLayer::runEnterGameplayAnimations() {
     // should move to and stores it in (std::map)m_fields->movedNodeMovements
     for (auto& child : geode::cocos::CCArrayExt<CCNode*>(getChildren())) {
         if (child->getZOrder() <= m_fields->m_ninjaSwipeLayer->getZOrder()) continue;
-        
+
         // get side + move dist
         cocos2d::CCPoint movement;
 

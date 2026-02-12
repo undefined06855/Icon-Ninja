@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.4.1
+- Geode v5 and 2.2081 support!
 ## v1.4.0
 - Added haptics on android when a bomb is hit
 ## v1.3.1

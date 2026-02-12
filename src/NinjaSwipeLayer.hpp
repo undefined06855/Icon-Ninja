@@ -24,7 +24,7 @@ public:
 
     bool m_isSendingOutSpree = false;
     int m_lastSpawnType = 1; // spree is 1 - so spree will never be the first one
-    
+
     const float m_gravity = 315;
 
     int m_combo = 0;
@@ -41,13 +41,11 @@ public:
     float m_shakeTick = 0.f;
     const float m_maxShakeTick = 0.7f;
 
-    int m_numTouches = 0;
-
     bool m_isAprilFools = false;
 
-    bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
-    void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
-    void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
+    void ccTouchesBegan(cocos2d::CCSet* touch, cocos2d::CCEvent* event) override;
+    void ccTouchesMoved(cocos2d::CCSet* touch, cocos2d::CCEvent* event) override;
+    void ccTouchesEnded(cocos2d::CCSet* touch, cocos2d::CCEvent* event) override;
     void update(float dt) override;
     void updateShake(float dt);
 

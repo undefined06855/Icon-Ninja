@@ -2,7 +2,10 @@
 #include <Geode/binding/GameManager.hpp>
 #include "random.hpp"
 #include "log.hpp"
-#include "../external/KnownPlayers.h"
+
+#ifdef KNOWN_PLAYERS_COMPAT
+#include <iandyh3d.known_players/src/KnownPlayers.h>
+#endif
 
 namespace ninja {
 namespace random {
@@ -11,8 +14,8 @@ std::random_device seed;
 std::mt19937 g_gen = std::mt19937(seed());
 auto g_startXDistribution = std::uniform_real_distribution<float>(70.f, cocos2d::CCDirector::sharedDirector()->getScreenRight() - 70.f);
 auto g_launchSpeedXDistribution = std::uniform_real_distribution<float>(0.f, 200.f); // could become 0 to -200 depending on start side
-auto g_launchSpeedYDistribution = std::uniform_real_distribution<float>(340.0, 400.f); 
-auto g_rotationSpeedDistribution = std::uniform_real_distribution<float>(-6.f, 6.f); 
+auto g_launchSpeedYDistribution = std::uniform_real_distribution<float>(340.0, 400.f);
+auto g_rotationSpeedDistribution = std::uniform_real_distribution<float>(-6.f, 6.f);
 auto g_spawnTypeDistribution = std::uniform_int_distribution<int>(0, 6);
 auto g_playerSpawnDistribution = std::uniform_int_distribution<int>(1, 4);
 auto g_bombSpawnDistribution = std::uniform_int_distribution<int>(1, 3);
@@ -26,6 +29,7 @@ PlayerObject* createRandomPlayerObject() {
     auto ret = PlayerObject::create(1, 1, nullptr, cocos2d::CCLayer::create(), false);
 
     // known players compatibility
+#ifdef KNOWN_PLAYERS_COMPAT
     if (geode::Loader::get()->isModLoaded("iandyhd3.known_players")) {
         auto event = known_players::events::NextIconModifyPlayerObject(ret);
         event.post();
@@ -37,12 +41,15 @@ PlayerObject* createRandomPlayerObject() {
     } else {
         randomisePlayerObject(ret);
     }
+#else
+    randomisePlayerObject(ret);
+#endif
 
     return ret;
 }
 
 // reimplemented from MenuGameLayer::resetPlayer
-// it kinda broke when i tried to use resetPlayer without using the menugamelayer's 
+// it kinda broke when i tried to use resetPlayer without using the menugamelayer's
 // m_playerObject so thanks to prevter for remaking it well enough so that it can
 // be used in this silly joke mod
 // https://discord.com/channels/911701438269386882/911702535373475870/1310683736152477708
@@ -90,7 +97,7 @@ void randomisePlayerObject(PlayerObject* player) {
         player->updatePlayerFrame(frame);
         player->switchedToMode(GameObjectType::CubePortal);
     }
-    
+
     player->togglePlayerScale((float)rand() / RAND_MAX <= .1f, false);
     player->updateGlowColor();
 
@@ -102,7 +109,7 @@ void randomisePlayerObject(PlayerObject* player) {
     else if (randFloat < .6f)  timeMod = 0.7f;
     else if (randFloat < .65f) timeMod = 1.6f;
     else                       timeMod = 0.9f;
-    
+
     player->updateTimeMod(timeMod, false);
     player->updateEffects(0.f);
 }

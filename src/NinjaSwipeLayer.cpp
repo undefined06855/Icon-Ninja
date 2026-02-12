@@ -37,11 +37,6 @@ bool NinjaSwipeLayer::init() {
     m_swipe = Swipe::create(spr->getTexture());
     addChild(m_swipe);
 
-    // stupid cocos touch 
-    setTouchEnabled(true);
-    cocos2d::CCTouchDispatcher::get()->addTargetedDelegate(this, cocos2d::kCCMenuHandlerPriority, true);
-    setTouchMode(cocos2d::kCCTouchesAllAtOnce);
-
     // add layers n shit
     auto dir = cocos2d::CCDirector::sharedDirector();
 
@@ -63,8 +58,8 @@ bool NinjaSwipeLayer::init() {
     m_scoreLayer->setID("score-layer");
     m_scoreLayer->setPosition(dir->getWinSize() / 2);
     m_scoreLayer->setPositionY(m_scoreLayer->getPositionY() + 140.f);
-    m_scoreLayer->runAction(cocos2d::CCFadeOut::create(0.f)); // setOpacity(0) doesnt work idfk please tell me why
-    m_scoreLayer->setOpacity(0); // for the platforms where it does (also it might have fixed itself maybe)
+    m_scoreLayer->setOpacity(0);
+    m_scoreLayer->runAction(cocos2d::CCFadeTo::create(0.f, 0)); // uh
 
     std::string fontString = "bigFont.fnt";
     int64_t font = geode::Mod::get()->getSettingValue<int64_t>("font");
@@ -100,7 +95,7 @@ bool NinjaSwipeLayer::init() {
 #endif
 
     auto currentTime = std::time(0);
-    auto timeInfo = fmt::localtime(currentTime);
+    auto timeInfo = geode::localtime(currentTime);
     // months are zero indexed, days are one indexed
     if (timeInfo.tm_mday == 1 && timeInfo.tm_mon == 3) {
         m_isAprilFools = true;
@@ -108,13 +103,14 @@ bool NinjaSwipeLayer::init() {
     }
 
     setID("ninja-swipe-layer"_spr);
+    setTouchEnabled(true);
+    setMouseEnabled(true);
 
     return true;
 }
 
-bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
-    m_numTouches++;
-    if (m_numTouches != 1) return false;
+void NinjaSwipeLayer::ccTouchesBegan(cocos2d::CCSet* touch, cocos2d::CCEvent* event) {
+    auto pos = static_cast<cocos2d::CCTouch*>(touch->anyObject())->getLocation();
 
     // by not clearing the point list before this adds the point causes the end
     // of the last swipe to connect to the next swipe but nobody is going to
@@ -122,22 +118,20 @@ bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
     // trail actually folds in on itself and caves in in some circumstances oh
     // god ive said too much ok goodbye good luck with the rest of the code
 
-    m_swipe->addPoint(touch->getLocation());
-    return true; // claim touch
+    m_swipe->addPoint(pos);
 }
 
-void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
-    m_numTouches++;
-    if (m_numTouches != 1) return;
+void NinjaSwipeLayer::ccTouchesMoved(cocos2d::CCSet* touch, cocos2d::CCEvent* event) {
+    auto pos = static_cast<cocos2d::CCTouch*>(touch->anyObject())->getLocation();
 
     auto points = m_swipe->m_points;
     if (points.size() != 0) {
         auto lastPoint = points[points.size() - 1].m_location;
-        if (lastPoint.getDistanceSq(touch->getLocation()) < 1.f) return; // too close smh stop being stupid
+        if (lastPoint.getDistanceSq(pos) < 1.f) return; // too close smh stop being stupid
     }
 
-    m_swipe->addPoint(touch->getLocation());
-    
+    m_swipe->addPoint(pos);
+
     if (points.size() > 1) {
         float totalDistance = 0.f;
         for (int i = 1; totalDistance < 50.f && i < points.size() - 1; i++) {
@@ -149,11 +143,8 @@ void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* ev
     }
 }
 
-void NinjaSwipeLayer::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
-    m_numTouches++;
-    if (m_numTouches != 1) return;
-
-    m_swipe->addPoint(touch->getLocation());
+void NinjaSwipeLayer::ccTouchesEnded(cocos2d::CCSet* touch, cocos2d::CCEvent* event) {
+    m_swipe->addPoint(static_cast<cocos2d::CCTouch*>(touch->anyObject())->getLocation());
 }
 
 void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to) {
@@ -170,7 +161,7 @@ void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const
             float margin = 5.f;
             radius += margin * 2.f;
         }
-        
+
         if (lineIntersectsCircle(player->getPosition(), radius, from, to)) {
             // ok so time to kill muahaha
             killPlayer(player);
@@ -310,7 +301,7 @@ void NinjaSwipeLayer::killPlayer(MenuIcon* player) {
             GameStatsManager::sharedState()->incrementStat("9", 1);
         // @geode-ignore(unknown-resource)
         FMODAudioEngine::sharedEngine()->playEffect("explode_11.ogg", 1.0f, 0.0f, geode::Mod::get()->getSettingValue<double>("sfx-volume"));
-        
+
         spawnPlayerExplosionParticles(player->getPosition(), player->m_playerObject->m_playerColor1);
         removePlayer(player);
     }
@@ -329,7 +320,7 @@ void NinjaSwipeLayer::spawnPlayerExplosionParticles(const cocos2d::CCPoint& pos,
     particles->setPosition(pos);
     particles->setStartColor({ col.r / 255.f, col.g / 255.f, col.b / 255.f, 1.0f });
     particles->resetSystem();
-    
+
     auto circleWave = CCCircleWave::create(10.f, 90.f, 0.5f, false);
     circleWave->m_color = col;
     circleWave->setPosition(pos);
@@ -337,7 +328,6 @@ void NinjaSwipeLayer::spawnPlayerExplosionParticles(const cocos2d::CCPoint& pos,
 }
 
 void NinjaSwipeLayer::update(float dt) {
-    m_numTouches = 0; // reset # of touches this frame
     m_swipe->setVisible(!m_isBombCurrentlyExploding);
 
     // if someone focused off of the game
@@ -421,7 +411,7 @@ void NinjaSwipeLayer::updateShake(float dt) {
 
     m_shakeTick -= dt;
     float shakePercentage = m_shakeTick / m_maxShakeTick;
-    
+
     float offsetX = ninja::random::g_shakeMovementDistribution(ninja::random::g_gen) * 12.f * shakePercentage;
     float offsetY = ninja::random::g_shakeMovementDistribution(ninja::random::g_gen) * 12.f * shakePercentage;
 
@@ -470,7 +460,7 @@ void NinjaSwipeLayer::removePlayer(MenuIcon* player) {
     auto location = std::find(m_players.begin(), m_players.end(), player);
     m_players.erase(location);
     player->removeFromParent();
-    
+
 }
 
 void NinjaSwipeLayer::enterGameplay() {
@@ -500,7 +490,7 @@ void NinjaSwipeLayer::exitGameplay(cocos2d::CCObject* sender) {
     ninja::log::info("no more ninja time :broken_heart:");
     auto menuLayer = static_cast<HookedMenuLayer*>(MenuLayer::get());
     menuLayer->runExitGameplayAnimations();
-    
+
     m_scoreLayer->runAction(cocos2d::CCFadeOut::create(.9f));
     m_exitButton->runAction(cocos2d::CCSpawn::createWithTwoActions(
         cocos2d::CCEaseBackOut::create(cocos2d::CCMoveBy::create(.9f, {0.f, 50.f})),
