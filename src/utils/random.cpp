@@ -4,7 +4,7 @@
 #include "log.hpp"
 
 #ifdef KNOWN_PLAYERS_COMPAT
-#include <iandyh3d.known_players/src/KnownPlayers.h>
+#include <iandyhd3.known_players/include/KnownPlayers.hpp>
 #endif
 
 namespace ninja {
@@ -31,13 +31,7 @@ PlayerObject* createRandomPlayerObject() {
     // known players compatibility
 #ifdef KNOWN_PLAYERS_COMPAT
     if (geode::Loader::get()->isModLoaded("iandyhd3.known_players")) {
-        auto event = known_players::events::NextIconModifyPlayerObject(ret);
-        event.post();
-
-        if (!event.done) {
-            ninja::log::warn("Known Players did not return event! Switching to fallback...");
-            randomisePlayerObject(ret);
-        }
+        known_players::events::NextIconModifyPlayerObject(ret).send(ret);
     } else {
         randomisePlayerObject(ret);
     }

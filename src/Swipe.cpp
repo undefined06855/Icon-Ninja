@@ -3,15 +3,17 @@
 unsigned int* getNumberOfDraws() {
     // compiler yells at me if i use #elifdef :broken_heart:
     // thanks to jasmine for ALL of these
-#if defined(GEODE_IS_MACOS)
-    static_assert(GEODE_COMP_GD_VERSION == 22074, "Please update macOS offsets");
-    return reinterpret_cast<unsigned int*>(geode::base::get() + GEODE_ARM_MAC(0x8b0f60) GEODE_INTEL_MAC(0x98bf30));
-#elif defined(GEODE_IS_IOS)
-    static_assert(GEODE_COMP_GD_VERSION == 22074, "Please update iOS offsets");
-    return reinterpret_cast<unsigned int*>(geode::base::get() + 0x8791d0);
-#else
-    return &g_uNumberOfDraws;
-#endif
+    // TODO: update for 2.2081
+// #if defined(GEODE_IS_MACOS)
+//     static_assert(GEODE_COMP_GD_VERSION == 22074, "Please update macOS offsets");
+//     return reinterpret_cast<unsigned int*>(geode::base::get() + GEODE_ARM_MAC(0x8b0f60) GEODE_INTEL_MAC(0x98bf30));
+// #elif defined(GEODE_IS_IOS)
+//     static_assert(GEODE_COMP_GD_VERSION == 22074, "Please update iOS offsets");
+//     return reinterpret_cast<unsigned int*>(geode::base::get() + 0x8791d0);
+// #else
+//     return &g_uNumberOfDraws;
+// #endif
+    return 0x0;
 }
 
 Swipe* Swipe::create(cocos2d::CCTexture2D* texture) {
@@ -88,13 +90,13 @@ void Swipe::draw() {
     glVertexAttribPointer(cocos2d::kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, 0, texCoords.data());
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, points.size());
-    *getNumberOfDraws() += 1;
+    // *getNumberOfDraws() += 1;
 }
 
 void Swipe::addPoint(cocos2d::CCPoint point) {
     // calculate positions of points
     float angle = atan2(m_lastPoint.y - point.y, m_lastPoint.x - point.x);
-    
+
     m_points.push_back({ point, angle });
     m_lastPoint = point;
 }

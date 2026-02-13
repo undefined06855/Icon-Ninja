@@ -8,8 +8,8 @@ else()
     set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 endif()
 
-add_definitions(-DDEBUG_DRAW_NODE)
-# add_definitions(-DKNOWN_PLAYERS_COMPAT)
+# add_definitions(-DDEBUG_DRAW_NODE)
+add_definitions(-DKNOWN_PLAYERS_COMPAT)
 add_definitions(-DGLES_SILENCE_DEPRECATION)
 
 project(IconNinja VERSION 1.0.0)
