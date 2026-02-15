@@ -39,7 +39,7 @@ jobs:
       - uses: hiimjasmine00/download-geode-dependency@main
         with:
           repository: iAndyHD3/KnownPlayers
-          workflow: build.yml
+          workflow: multi-platform.yml
           branch: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
