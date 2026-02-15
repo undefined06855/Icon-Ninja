@@ -40,7 +40,7 @@ jobs:
         with:
           repository: iAndyHD3/KnownPlayers
           workflow: build.yml
-          branch: master
+          branch: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the mod
