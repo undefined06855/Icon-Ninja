@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.4.2
+- Recompile to fix Known Players events because SOMEONE has BROKEN ABI
 ## v1.4.1
 - Geode v5 and 2.2081 support!
 ## v1.4.0
