@@ -37,7 +37,7 @@ public:
 class EarlyNewPlayerEvent : public geode::Event<NewPlayerEvent, bool(PlayerObject*)> {
 public:
     using Event::Event;
-}
+};
 
 }
 
