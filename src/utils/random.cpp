@@ -2,6 +2,7 @@
 #include <Geode/binding/GameManager.hpp>
 #include "random.hpp"
 #include "log.hpp"
+#include "../../include/events.hpp"
 
 #ifdef KNOWN_PLAYERS_COMPAT
 #include <iandyhd3.known_players/include/KnownPlayers.hpp>
@@ -10,6 +11,7 @@
 namespace ninja {
 namespace random {
 
+// TODO: use geode random utils
 std::random_device seed;
 std::mt19937 g_gen = std::mt19937(seed());
 auto g_startXDistribution = std::uniform_real_distribution<float>(70.f, cocos2d::CCDirector::sharedDirector()->getScreenRight() - 70.f);
@@ -28,6 +30,12 @@ auto g_shakeMovementDistribution = std::uniform_real_distribution<float>(-1.f, 1
 PlayerObject* createRandomPlayerObject() {
     auto ret = PlayerObject::create(1, 1, nullptr, cocos2d::CCLayer::create(), false);
 
+    EarlyNewPlayerEvent().send(ret);
+
+    if (ret->getUserFlag("modified"_spr)) {
+        return ret;
+    }
+
     // known players compatibility
 #ifdef KNOWN_PLAYERS_COMPAT
     if (geode::Loader::get()->isModLoaded("iandyhd3.known_players")) {
@@ -38,6 +46,8 @@ PlayerObject* createRandomPlayerObject() {
 #else
     randomisePlayerObject(ret);
 #endif
+
+    NewPlayerEvent().send(ret);
 
     return ret;
 }

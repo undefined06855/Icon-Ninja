@@ -9,7 +9,7 @@
 
     "id": "undefined0.icon_ninja",
     "name": "Icon Ninja",
-    "version": "v1.4.2",
+    "version": "v1.4.3",
     "developer": "undefined0",
     "description": "Makes killing icons like Fruit Ninja!",
     "tags": [ "joke", "offline", "modtober24" ],
@@ -20,6 +20,10 @@
         "spritesheets": {
             "bombforhuesprite": [ "resources/bomb.png" ]
         }
+    },
+
+    "api": {
+        "include": [ "include/*.hpp" ]
     },
 
     "dependencies": {
