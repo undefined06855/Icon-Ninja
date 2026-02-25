@@ -30,9 +30,9 @@ auto g_shakeMovementDistribution = std::uniform_real_distribution<float>(-1.f, 1
 PlayerObject* createRandomPlayerObject() {
     auto ret = PlayerObject::create(1, 1, nullptr, cocos2d::CCLayer::create(), false);
 
-    EarlyNewPlayerEvent().send(ret);
-
-    if (ret->getUserFlag("modified"_spr)) {
+    if (EarlyNewPlayerEvent().send(ret)) {
+        // if it's been eaten, return here
+        NewPlayerEvent().send(ret);
         return ret;
     }
 
