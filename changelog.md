@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.4.4
+- Fixed touch :heart:
 ## v1.4.3
 - Add events for other mods to be able to modify the icons!
 ## v1.4.2

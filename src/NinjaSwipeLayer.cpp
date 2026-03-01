@@ -103,14 +103,20 @@ bool NinjaSwipeLayer::init() {
     }
 
     setID("ninja-swipe-layer"_spr);
+    setTouchPriority(cocos2d::kCCMenuHandlerPriority);
+    setTouchMode(cocos2d::kCCTouchesOneByOne);
     setTouchEnabled(true);
     setMouseEnabled(true);
 
     return true;
 }
 
-void NinjaSwipeLayer::ccTouchesBegan(cocos2d::CCSet* touch, cocos2d::CCEvent* event) {
-    auto pos = static_cast<cocos2d::CCTouch*>(touch->anyObject())->getLocation();
+void NinjaSwipeLayer::registerWithTouchDispatcher() {
+    cocos2d::CCTouchDispatcher::get()->addTargetedDelegate(this, getTouchPriority(), true);
+}
+
+bool NinjaSwipeLayer::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+    auto pos = touch->getLocation();
 
     // by not clearing the point list before this adds the point causes the end
     // of the last swipe to connect to the next swipe but nobody is going to
@@ -119,10 +125,12 @@ void NinjaSwipeLayer::ccTouchesBegan(cocos2d::CCSet* touch, cocos2d::CCEvent* ev
     // god ive said too much ok goodbye good luck with the rest of the code
 
     m_swipe->addPoint(pos);
+
+    return true;
 }
 
-void NinjaSwipeLayer::ccTouchesMoved(cocos2d::CCSet* touch, cocos2d::CCEvent* event) {
-    auto pos = static_cast<cocos2d::CCTouch*>(touch->anyObject())->getLocation();
+void NinjaSwipeLayer::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+    auto pos = touch->getLocation();
 
     auto points = m_swipe->m_points;
     if (points.size() != 0) {
@@ -143,8 +151,8 @@ void NinjaSwipeLayer::ccTouchesMoved(cocos2d::CCSet* touch, cocos2d::CCEvent* ev
     }
 }
 
-void NinjaSwipeLayer::ccTouchesEnded(cocos2d::CCSet* touch, cocos2d::CCEvent* event) {
-    m_swipe->addPoint(static_cast<cocos2d::CCTouch*>(touch->anyObject())->getLocation());
+void NinjaSwipeLayer::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+    m_swipe->addPoint(touch->getLocation());
 }
 
 void NinjaSwipeLayer::checkSwipeIntersection(const cocos2d::CCPoint& from, const cocos2d::CCPoint& to) {

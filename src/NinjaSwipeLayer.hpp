@@ -43,9 +43,10 @@ public:
 
     bool m_isAprilFools = false;
 
-    void ccTouchesBegan(cocos2d::CCSet* touch, cocos2d::CCEvent* event) override;
-    void ccTouchesMoved(cocos2d::CCSet* touch, cocos2d::CCEvent* event) override;
-    void ccTouchesEnded(cocos2d::CCSet* touch, cocos2d::CCEvent* event) override;
+    bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
+    void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
+    void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
+    void registerWithTouchDispatcher() override;
     void update(float dt) override;
     void updateShake(float dt);
 
