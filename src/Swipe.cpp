@@ -32,7 +32,7 @@ bool Swipe::init(cocos2d::CCTexture2D* texture) {
 
     m_texture = texture;
 
-    setShaderProgram(cocos2d::CCShaderCache::sharedShaderCache()->programForKey("ninja_swipe_shader"));
+    setShaderProgram(cocos2d::CCShaderCache::sharedShaderCache()->programForKey("ninja_swipe_shader"_spr));
 
     scheduleUpdate();
     return true;
