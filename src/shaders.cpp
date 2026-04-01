@@ -41,7 +41,7 @@ void main() {
 
 bool g_swipeShaderFailedToLoad = false;
 
-$on_game(TexturesLoaded) {
+void loadShaders() {
     auto program = new cocos2d::CCGLProgram;
     bool ret = program->initWithVertexShaderByteArray(g_swipeShaderVertex, g_swipeShaderFragment);
     if (!ret) {
@@ -61,3 +61,6 @@ $on_game(TexturesLoaded) {
 
     cocos2d::CCShaderCache::sharedShaderCache()->addProgram(program, "ninja_swipe_shader"_spr);
 }
+
+$on_game(TexturesLoaded) { loadShaders(); }
+$on_mod(Loaded) { loadShaders(); }

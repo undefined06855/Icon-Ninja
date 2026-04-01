@@ -1,4 +1,6 @@
 # Icon Ninja Changelog
+## v1.4.6
+- Fixed shaders, fo' sho'
 ## v1.4.5
 - Fixed shaders, perchance
 ## v1.4.3 but also v1.4.4 at the same time
