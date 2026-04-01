@@ -8,22 +8,22 @@
 namespace ninja::log {
 
 template <typename... Args>
-inline void debug(geode::log::impl::FmtStr<Args...> str, Args&&... args) {
+inline void debug(geode::format::FmtStr<Args...> str, Args&&... args) {
     if (LOG_ENABLE_CHECK) geode::log::debug(str, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-inline void info(geode::log::impl::FmtStr<Args...> str, Args&&... args) {
+inline void info(geode::format::FmtStr<Args...> str, Args&&... args) {
     if (LOG_ENABLE_CHECK) geode::log::info(str, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-inline void warn(geode::log::impl::FmtStr<Args...> str, Args&&... args) {
+inline void warn(geode::format::FmtStr<Args...> str, Args&&... args) {
     if (LOG_ENABLE_CHECK) geode::log::warn(str, std::forward<Args>(args)...);
 }
 
 template <typename... Args>
-inline void error(geode::log::impl::FmtStr<Args...> str, Args&&... args) {
+inline void error(geode::format::FmtStr<Args...> str, Args&&... args) {
     if (LOG_ENABLE_CHECK) geode::log::error(str, std::forward<Args>(args)...);
 }
 
