@@ -2,7 +2,7 @@
 #include "../utils/log.hpp"
 #include <Geode/binding/MenuLayer.hpp>
 
-void HookedCCAnimatedSprite::runAnimation(gd::string animID) {
+void HookedCCAnimatedSprite::runAnimation(std::string animID) {
     auto replacement = getReplacementAnimID(animID);
     ninja::log::debug("convert anim {} -> {}", animID, replacement);
     CCAnimatedSprite::runAnimation(replacement);

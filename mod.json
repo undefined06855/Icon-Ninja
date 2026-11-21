@@ -30,9 +30,7 @@
         "iandyhd3.known_players": {
             "version": "v2.0.1",
             "required": false
-        },
-
-        "alk.better-touch-prio": "v1.0.5"
+        }
     },
 
     "links": { "source": "https://github.com/undefined06855/Icon-Ninja" },

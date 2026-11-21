@@ -2,6 +2,6 @@
 #include <Geode/modify/CCAnimatedSprite.hpp>
 
 class $modify(HookedCCAnimatedSprite, CCAnimatedSprite) {
-    void runAnimation(gd::string animID);
+    void runAnimation(std::string animID);
     std::string getReplacementAnimID(std::string origID);
 };
