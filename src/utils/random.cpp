@@ -5,7 +5,7 @@
 #include "../../include/events.hpp"
 
 #ifdef KNOWN_PLAYERS_COMPAT
-#include <iandyhd3.known_players/include/KnownPlayers.hpp>
+#include <iandyhd3.known_players/KnownPlayers.hpp>
 #endif
 
 namespace ninja {
