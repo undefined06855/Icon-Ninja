@@ -1,7 +1,8 @@
 # Icon Ninja Changelog
+## v1.5.1
+- Fixed an incorrect binding on MacOS
 ## v1.5.0
 - Added Geode v6 and GD 2.2091 support!
-
 ## v1.4.6
 - Fixed shaders, fo' sho'
 ## v1.4.5
